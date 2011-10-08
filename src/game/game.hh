@@ -6,6 +6,8 @@
 # define WIDTH 1366
 # define HEIGHT 768
 
+# include "../interface/interface.hh"
+
 struct Game
 {
   Game ();
@@ -14,8 +16,10 @@ struct Game
   void display ();
 
   void process_exit ();
+
   bool done;
   SDL_Surface* screen;
+  Interface interface;
 };
 
 #endif

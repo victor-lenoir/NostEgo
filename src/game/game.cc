@@ -21,6 +21,7 @@ Game::~Game ()
 void Game::process ()
 {
   process_exit ();
+  interface.process ();
 }
 
 void Game::process_exit ()
@@ -41,5 +42,6 @@ void Game::process_exit ()
 
 void Game::display ()
 {
-
+  interface.display (screen);
+  SDL_Flip(screen);
 }
