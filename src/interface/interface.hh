@@ -9,6 +9,7 @@
 # include <vector>
 
 # include "interface_start.hh"
+# include "interface_creation.hh"
 
 class Interface
 {
@@ -21,7 +22,7 @@ public:
 
 private:
    InterfaceStart interface_start;
-   InterfaceStart interface_creation;
+   InterfaceCreation interface_creation;
 };
 
 #endif

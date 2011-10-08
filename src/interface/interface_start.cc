@@ -16,15 +16,13 @@ void create_new_player ()
 
 InterfaceStart::InterfaceStart()
 {
-   int y = 0;
+  int y = 0;
 
    start_font = TTF_OpenFont("media/fonts/stonehenge.ttf", 55);
    if (!start_font)
       std::cout << "TTF OpenFont = " << TTF_GetError() << std::endl;
 
-
    add_image ("media/images/interface/start.png", g_w / 2, 100, true);
-
    y = add_hypertexte (g_w / 2, 350, start_font, "Create new player", &create_new_player, true)->h + 350;
    y = add_hypertexte (g_w / 2, y, start_font, "Load game", 0, true)->h + y;
    y = add_hypertexte (g_w / 2, y, start_font, "Exit", &quit, true)->h + y;

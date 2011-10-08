@@ -7,6 +7,7 @@
 # include <vector>
 # include <string>
 # include <iostream>
+# include "image.hh"
 
 extern int g_w;
 extern int g_h;
@@ -21,7 +22,7 @@ public:
    virtual void process_mouse (int x, int y);
    virtual void process_mouse_click (int x, int y);
 
-   void add_image (const char* img, int x, int y, bool h_center);
+   SDL_Rect* add_image (const char* img, int x, int y, bool h_center);
 
    SDL_Rect* add_hypertexte (int x,
 			     int y,
@@ -29,10 +30,7 @@ public:
 			     const char* text,
 			     t_func handler,
 			     bool h_center);
-   std::vector<SDL_Surface*>  images;
-   std::vector<SDL_Surface*>  images_over;
-   std::vector<SDL_Rect*>     rects;
-   std::vector<t_func>         handlers;
-   std::vector<bool>          over;
+
+  std::vector<Image>	images;
 };
 #endif
