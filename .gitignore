@@ -2,3 +2,4 @@
 *#
 nostego
 *.o
+Makefile.inc

@@ -1,0 +1,6 @@
+#! /bin/bash
+
+rm -f Makefile.inc
+
+echo "HEADERS="`find . -name '*.hh'` >> Makefile.inc
+echo "OBJS="`find . -name '*.cc'|sed 's/\.cc/\.o/g'` >> Makefile.inc

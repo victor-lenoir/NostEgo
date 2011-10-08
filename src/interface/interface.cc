@@ -12,6 +12,7 @@ Interface::Interface ()
   start_font = TTF_OpenFont("media/fonts/stonehenge.ttf", 55);
   if (!start_font)
     std::cout << "TTF OpenFont = " << TTF_GetError() << std::endl;
+  state = -1;
   set_state (START);
 }
 

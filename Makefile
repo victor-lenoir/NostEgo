@@ -2,16 +2,12 @@ CFLAGS=-W -Wall -Wextra -Werror
 LINK=-lSDL -lSDL_image -lSDL_ttf
 CC=g++
 
-HEADERS=	 		\
-src/game/game.hh 		\
-src/interface/interface.hh
+all: Makefile.inc nostego
 
-OBJS=				\
-src/main.o			\
-src/game/game.o	 		\
-src/interface/interface.o
+Makefile.inc:
+	./configure
 
-all: nostego
+include Makefile.inc
 
 nostego: ${OBJS}
 	${CC} ${CFLAGS} ${LINK} ${OBJS} -o nostego
