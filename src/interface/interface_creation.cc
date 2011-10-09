@@ -25,6 +25,7 @@ InterfaceCreation::InterfaceCreation()
 
    add_image ("media/images/interface/start.png", g_w / 2, 100, true);
    y = 350;
+   add_input (g_w / 2 - 50, y + 20, 300, 40);
    y = add_hypertexte (g_w / 2 - 200, y, creation_font, "Name:", 0, false)->h + y + 30;
    y = add_hypertexte (g_w / 2, y, creation_font, "Confirm", &confirm, true)->h + y;
    y = add_hypertexte (g_w / 2, y, creation_font, "Back", &previous, true)->h + y;

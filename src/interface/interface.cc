@@ -10,6 +10,19 @@ Interface::~Interface ()
 {
 }
 
+void Interface::process_keyboard (SDLKey key)
+{
+  switch (g->state)
+    {
+    case START:
+      interface_start.process_keyboard (key);
+      break;
+    case CREATION:
+      interface_creation.process_keyboard (key);
+      break;
+    }
+}
+
 void Interface::process_mouse (int x,
 			       int y)
 {

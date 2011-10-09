@@ -41,6 +41,7 @@ void Game::process ()
 	   interface.process_mouse_click (event.motion.x, event.motion.y);
 	   break;
 	case SDL_KEYDOWN:
+	   interface.process_keyboard (event.key.keysym.sym);
 	   if(event.key.keysym.sym == SDLK_ESCAPE)
 	      done = true;
 	   break;

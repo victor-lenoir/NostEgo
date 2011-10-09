@@ -14,46 +14,45 @@ BaseInterface::~BaseInterface ()
 void BaseInterface::display (SDL_Surface* screen)
 {
    for (size_t i = 0; i < images.size(); ++i)
-     {
-       if (images[i].over && images[i].img_over)
-	 SDL_BlitSurface (images[i].img_over, NULL, screen, &images[i].rect);
-       else
-	 SDL_BlitSurface (images[i].img, NULL, screen, &images[i].rect);
-     }
+     images[i].display (screen);
+   for (size_t i = 0; i < inputs.size(); ++i)
+     inputs[i].display (screen);
 }
 
+void BaseInterface::process_keyboard (SDLKey key)
+{
+  for (size_t i = 0; i < inputs.size(); ++i)
+    inputs[i].process_keyboard (key);
+}
 void BaseInterface::process_mouse (int x, int y)
 {
    for (size_t i = 0; i < images.size(); ++i)
-   {
-      if (images[i].handler)
-      {
-	 if ((x >= images[i].rect.x) &&
-	     (x <= images[i].rect.x + images[i].rect.w)
-	     && (y >= images[i].rect.y) &&
-	     (y <= images[i].rect.y + images[i].rect.h))
-	 {
-	    images[i].over = true;
-	 }
-	 else
-	    images[i].over = false;
-      }
-   }
+     images[i].process_mouse (x, y);
 }
 
 void BaseInterface::process_mouse_click (int x, int y)
 {
    for (size_t i = 0; i < images.size(); ++i)
-   {
-      if (images[i].handler)
-      {
-         if ((x >= images[i].rect.x) && (x <= images[i].rect.x + images[i].rect.w)
-             && (y >= images[i].rect.y) && (y <= images[i].rect.y + images[i].rect.h))
-         {
-	   images[i].handler ();
-         }
-      }
-   }
+     images[i].process_mouse_click (x, y);
+   for (size_t i = 0; i < inputs.size(); ++i)
+     inputs[i].process_mouse_click (x, y);
+}
+
+SDL_Rect* BaseInterface::add_input (int x,
+				    int y,
+				    int w,
+				    int h)
+{
+  Input e;
+
+  e.rect.x = x;
+  e.rect.y = y;
+  e.rect.w = w;
+  e.rect.h = h;
+  e.font = TTF_OpenFont("media/fonts/stonehenge.ttf", 30);
+
+  inputs.push_back (e);
+  return &inputs.back ().rect;
 }
 
 SDL_Rect* BaseInterface::add_image (const char* img,
