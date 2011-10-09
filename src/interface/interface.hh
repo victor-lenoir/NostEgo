@@ -6,6 +6,7 @@
 # include <SDL/SDL_ttf.h>
 # include <iostream>
 # include <string>
+# include <map>
 # include <vector>
 
 # include "interface_start.hh"

@@ -1,9 +1,9 @@
 #ifndef IMAGE_HH_
 # define IMAGE_HH_
 
-typedef void (*t_func)();
-
-struct Image
+//# include "base_interface.hh"
+template <class T> class BaseInterface;
+template <class T> struct Image
 {
   Image ()
   {
@@ -18,7 +18,7 @@ struct Image
   {
     if (handler && (x >= rect.x) && (x <= rect.x + rect.w)
 	&& (y >= rect.y) && (y <= rect.y + rect.h))
-      handler ();
+      (owner_handler->*(handler)) ();
   }
 
   void process_mouse (int x,
@@ -50,7 +50,8 @@ struct Image
   {
   }
   SDL_Rect rect;
-  t_func handler;
+  T* owner_handler;
+  typename BaseInterface<T>::InterfaceHandler handler;
   bool over;
   SDL_Surface* img;
   SDL_Surface* img_over;

@@ -4,12 +4,12 @@
 
 extern Game* g;
 
-void quit ()
+void InterfaceStart::quit ()
 {
    g->done = true;
 }
 
-void create_new_player ()
+void InterfaceStart::create_new_player ()
 {
    g->set_state (CREATION);
 }
@@ -23,9 +23,11 @@ InterfaceStart::InterfaceStart()
       std::cout << "TTF OpenFont = " << TTF_GetError() << std::endl;
 
    add_image ("media/images/interface/start.png", g_w / 2, 100, true);
-   y = add_hypertexte (g_w / 2, 350, start_font, "Create new player", &create_new_player, true)->h + 350;
-   y = add_hypertexte (g_w / 2, y, start_font, "Load game", 0, true)->h + y;
-   y = add_hypertexte (g_w / 2, y, start_font, "Exit", &quit, true)->h + y;
+   y = add_hypertexte (g_w / 2, 350, start_font, "Create new player",
+		       &InterfaceStart::create_new_player, this, true)->h + 350;
+   y = add_hypertexte (g_w / 2, y, start_font, "Load game", 0, this, true)->h + y;
+   y = add_hypertexte (g_w / 2, y, start_font, "Exit", &InterfaceStart::quit, this,
+		       true)->h + y;
 }
 
 InterfaceStart::~InterfaceStart ()

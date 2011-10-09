@@ -3,12 +3,13 @@
 
 # include "base_interface.hh"
 
-class InterfaceStart : public BaseInterface
+class InterfaceStart : public BaseInterface<InterfaceStart>
 {
 public:
    InterfaceStart ();
    ~InterfaceStart ();
-
+  void quit ();
+  void create_new_player ();
 private:
    TTF_Font* start_font;
 };
