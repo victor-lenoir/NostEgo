@@ -24,9 +24,12 @@ InterfaceStart::InterfaceStart()
 
    add_image ("media/images/interface/start.png", g_w / 2, 100, true);
    y = add_hypertexte (g_w / 2, 350, start_font, "Create new player",
-		       &InterfaceStart::create_new_player, this, true)->h + 350;
-   y = add_hypertexte (g_w / 2, y, start_font, "Load game", 0, this, true)->h + y;
-   y = add_hypertexte (g_w / 2, y, start_font, "Exit", &InterfaceStart::quit, this,
+		       &InterfaceStart::create_new_player, this, true)->h +
+     350;
+   y = add_hypertexte (g_w / 2, y, start_font, "Load game", 0, this, true)->h +
+     y;
+   y = add_hypertexte (g_w / 2, y, start_font, "Exit", &InterfaceStart::quit,
+		       this,
 		       true)->h + y;
 }
 

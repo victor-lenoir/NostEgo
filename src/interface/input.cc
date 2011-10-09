@@ -88,7 +88,9 @@ void Input::set_text (std::string str)
           SDL_FreeSurface (img);
           img = 0;
 	}
-      img = TTF_RenderText_Blended(font, text.substr(text.size() - n, n).c_str(), white);
+      img = TTF_RenderText_Blended(font,
+				   text.substr(text.size() - n, n).c_str(),
+				   white);
       if (img->w < rect.w)
 	break;
       --n;
