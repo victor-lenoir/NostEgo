@@ -2,6 +2,7 @@
 
 Input::Input ()
 {
+  cursor_loaded = false;
   focus = false;
   text = "";
   img = 0;
@@ -65,6 +66,22 @@ void Input:: display (SDL_Surface* screen)
       SDL_BlitSurface (img, NULL, screen, &rect);
       rect.w = w;
       rect.h = h;
+    }
+
+  if (!cursor_loaded)
+    {
+      SDL_Surface* tmp = IMG_Load ("media/images/interface/input.png");
+      cursor.load (zoomSurface (tmp, 1.0, rect.h - 10, 0), 0, 0, 2, 1000);
+      SDL_FreeSurface (tmp);
+      cursor_loaded = true;
+    }
+  if (focus)
+    {
+      cursor.rect.y = rect.y + 5;
+      cursor.rect.x = rect.x;
+      if (img)
+	cursor.rect.x += img->w + 2;
+      cursor.display (screen);
     }
 }
 

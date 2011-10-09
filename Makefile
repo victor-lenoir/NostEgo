@@ -1,5 +1,5 @@
 CFLAGS=-W -Wall -Wextra -Werror -std=c++0x
-LINK=-lSDL -lSDL_image -lSDL_ttf
+LINK=-lSDL -lSDL_image -lSDL_ttf -lSDL_gfx
 CC=g++
 
 all: Makefile.inc nostego

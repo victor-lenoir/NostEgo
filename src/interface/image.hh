@@ -1,8 +1,8 @@
 #ifndef IMAGE_HH_
 # define IMAGE_HH_
 
-//# include "base_interface.hh"
 template <class T> class BaseInterface;
+
 template <class T> struct Image
 {
   Image ()
@@ -42,13 +42,18 @@ template <class T> struct Image
   {
     if (over && img_over)
       SDL_BlitSurface (img_over, NULL, screen, &rect);
-    else
+    else if (img)
       SDL_BlitSurface (img, NULL, screen, &rect);
   }
 
   ~Image ()
   {
+    if (img)
+      SDL_FreeSurface (img);
+    if (img_over)
+      SDL_FreeSurface (img_over);
   }
+
   SDL_Rect rect;
   T* owner_handler;
   typename BaseInterface<T>::InterfaceHandler handler;

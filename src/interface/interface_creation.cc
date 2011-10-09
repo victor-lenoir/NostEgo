@@ -11,7 +11,7 @@ void InterfaceCreation::previous ()
 
 void InterfaceCreation::confirm ()
 {
-   std::string name = inputs[0].text;
+   std::string name = inputs[0]->text;
 
    g->set_state (MAP);
 }

@@ -4,7 +4,10 @@
 # include <algorithm>
 # include <SDL/SDL.h>
 # include <SDL/SDL_ttf.h>
+# include <SDL/SDL_image.h>
+# include <SDL/SDL_rotozoom.h>
 # include "animation.hh"
+# include <iostream>
 
 struct Input
 {
@@ -15,11 +18,12 @@ struct Input
   void display (SDL_Surface* screen);
   void set_text (std::string str);
 
+  bool cursor_loaded;
   Animation cursor;
   SDL_Surface* img;
   TTF_Font* font;
   std::string text;
-  SDL_Rect rect;
   bool focus;
+  SDL_Rect rect;
 };
 #endif
