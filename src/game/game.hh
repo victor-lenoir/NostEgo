@@ -3,9 +3,6 @@
 
 # include <SDL/SDL.h>
 
-# define WIDTH 1366
-# define HEIGHT 768
-
 # include "../interface/interface.hh"
 
 struct Game
@@ -17,9 +14,14 @@ struct Game
 
   void process_exit ();
 
+  int w;
+  int h;
   bool done;
   SDL_Surface* screen;
   Interface interface;
 };
+
+extern int g_w;
+extern int g_h;
 
 #endif

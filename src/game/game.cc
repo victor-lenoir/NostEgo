@@ -1,16 +1,23 @@
 #include "game.hh"
 
+#define VIDEO_FLAGS SDL_FULLSCREEN | SDL_HWSURFACE | SDL_DOUBLEBUF
+
 Game::Game ()
 {
-  if (SDL_Init (SDL_INIT_VIDEO) < 0 )
-    done = true;
-  else if (!(screen = SDL_SetVideoMode (WIDTH, HEIGHT, 32, SDL_FULLSCREEN
-					| SDL_HWSURFACE | SDL_DOUBLEBUF)))
-    done = true;
-  else
-    done = false;
+   done = true;
+
+   if (SDL_Init (SDL_INIT_VIDEO) < 0)
+      return;
+
+   w = g_w;
+   h = g_h;
+
+   if (!(screen = SDL_SetVideoMode (w, h, 32, VIDEO_FLAGS)))
+      return;
 
   SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
+
+  done = false;
 }
 
 Game::~Game ()
