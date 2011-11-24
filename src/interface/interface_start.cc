@@ -21,34 +21,3 @@ InterfaceStart::~InterfaceStart ()
 {
    TTF_CloseFont (start_font);
 }
-
-void InterfaceStart::display (SDL_Surface* screen)
-{
-   for (size_t i = 0; i < rects.size(); ++i)
-   {
-      if (images[i])
-      {
-	 if (over[i])
-	    SDL_BlitSurface (images_over[i], NULL, screen, rects[i]);
-	 else
-	    SDL_BlitSurface (images[i], NULL, screen, rects[i]);
-      }
-   }
-}
-void InterfaceStart::process_mouse (int      x,
-				    int      y)
-{
-   for (size_t i = 0; i < rects.size(); ++i)
-   {
-      if (rects[i])
-      {
-         if ((x >= rects[i]->x) && (x <= rects[i]->x + rects[i]->w)
-             && (y >= rects[i]->y) && (y <= rects[i]->y + rects[i]->h))
-         {
-            over[i] = true;
-         }
-         else
-            over[i] = false;
-      }
-   }
-}
