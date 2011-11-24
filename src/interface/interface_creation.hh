@@ -11,5 +11,6 @@ public:
 
 private:
   TTF_Font* creation_font;
+  TTF_Font* input_font;
 };
 #endif

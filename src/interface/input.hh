@@ -1,7 +1,7 @@
 #ifndef INPUT_HH_
-# define INPUT_HH_
+# define INPUT_HH
 
-# include <SDL/SDL_draw.h>
+# include <algorithm>
 
 struct Input
 {
@@ -10,6 +10,7 @@ struct Input
     focus = false;
     text = "";
     img = 0;
+    font = 0;
   }
 
   ~Input()
@@ -50,29 +51,50 @@ struct Input
 
   void display (SDL_Surface* screen)
   {
-    if (focus)
-      Draw_FillRound(screen, rect.x - 2, rect.y - 2, rect.w + 4,
-		     rect.h + 4, 6, SDL_MapRGB(screen->format, 200, 0, 0));
-    Draw_FillRound(screen, rect.x, rect.y, rect.w,
-		   rect.h, 6, SDL_MapRGB(screen->format, 175, 175, 175));
+     int w = rect.w;
+     int h = rect.h;
+     rect.y += h;
+     rect.h = 1;
+
+    SDL_FillRect (screen, &rect, SDL_MapRGB(screen->format, 255, 255, 255));
+
+    rect.h = h;
+    rect.y -= h;
     if (img)
       {
-	int w = rect.w;
-	int h = rect.h;
-	SDL_BlitSurface (img, NULL, screen, &rect);
-	rect.w = w;
-	rect.h = h;
+	 w = rect.w;
+	 h = rect.h;
+	 SDL_BlitSurface (img, NULL, screen, &rect);
+	 rect.w = w;
+	 rect.h = h;
       }
   }
 
   void set_text (std::string str)
   {
-    SDL_Color black = {0, 0, 0, 0};
+    SDL_Color white = {255, 255, 255, 0};
+    int n = 0;
 
     text = str;
+
+    n = text.size ();
     if (img)
-      SDL_FreeSurface (img);
-    img = TTF_RenderText_Blended(font, text.c_str(), black);
+    {
+       SDL_FreeSurface (img);
+       img = 0;
+    }
+    while (n > 0)
+    {
+       if (img)
+       {
+	  SDL_FreeSurface (img);
+	  img = 0;
+       }
+       img = TTF_RenderText_Blended(font, text.substr(text.size() - n, n).c_str(), white);
+       if (img->w < rect.w)
+	  break;
+       --n;
+    }
   }
 
   SDL_Surface* img;

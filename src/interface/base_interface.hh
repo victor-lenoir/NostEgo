@@ -22,7 +22,7 @@ public:
    virtual void display (SDL_Surface* screen);
    virtual void process_mouse (int x, int y);
    virtual void process_mouse_click (int x, int y);
-  virtual void process_keyboard (SDLKey key);
+   virtual void process_keyboard (SDLKey key);
    SDL_Rect* add_image (const char* img, int x, int y, bool h_center);
 
    SDL_Rect* add_hypertexte (int x,
@@ -32,7 +32,7 @@ public:
 			     t_func handler,
 			     bool h_center);
 
-  SDL_Rect* add_input (int x, int y, int w, int h);
+   SDL_Rect* add_input (int x, int y, int w, int h, TTF_Font* font);
 
   std::vector<Image>	images;
   std::vector<Input>	inputs;

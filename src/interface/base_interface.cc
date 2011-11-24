@@ -41,7 +41,8 @@ void BaseInterface::process_mouse_click (int x, int y)
 SDL_Rect* BaseInterface::add_input (int x,
 				    int y,
 				    int w,
-				    int h)
+				    int h,
+				    TTF_Font* font)
 {
   Input e;
 
@@ -49,7 +50,7 @@ SDL_Rect* BaseInterface::add_input (int x,
   e.rect.y = y;
   e.rect.w = w;
   e.rect.h = h;
-  e.font = TTF_OpenFont("media/fonts/stonehenge.ttf", 30);
+  e.font = font;
 
   inputs.push_back (e);
   return &inputs.back ().rect;

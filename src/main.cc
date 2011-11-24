@@ -1,8 +1,8 @@
 #include "game/game.hh"
 #define BUFFTIME 30
 
-int g_w = 1366;
-int g_h = 768;
+int g_w = 1900;
+int g_h = 1200;
 
 Game* g;
 
