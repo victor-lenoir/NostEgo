@@ -4,11 +4,13 @@
 int g_w = 1920;
 int g_h = 1200;
 
+Game* g;
+
 int main ()
 {
   TTF_Init ();
 
-  Game* g = new Game;
+  g = new Game;
   Uint32 last = 0;
   Uint32 curr = 0;
 

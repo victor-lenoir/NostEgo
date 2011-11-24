@@ -1,9 +1,9 @@
 #include "interface.hh"
 #include "../game/game.hh"
 
+extern Game* g;
 Interface::Interface ()
 {
-   state = START;
 }
 
 Interface::~Interface ()
@@ -13,16 +13,28 @@ Interface::~Interface ()
 void Interface::process_mouse (int x,
 			       int y)
 {
-   switch (state)
+   switch (g->state)
    {
       case START:
 	 interface_start.process_mouse (x, y);
 	 break;
    }
 }
+
+void Interface::process_mouse_click (int x,
+                               int y)
+{
+   switch (g->state)
+   {
+      case START:
+         interface_start.process_mouse_click (x, y);
+         break;
+   }
+}
+
 void Interface::display (SDL_Surface* screen)
 {
-   switch (state)
+   switch (g->state)
    {
       case START:
 	 interface_start.display (screen);

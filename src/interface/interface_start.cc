@@ -1,5 +1,18 @@
 #include "interface_start.hh"
+#include "../game/game.hh"
 #include <iostream>
+
+extern Game* g;
+
+void quit ()
+{
+   g->done = true;
+}
+
+void create_new_player ()
+{
+   g->state = CREATION;
+}
 
 InterfaceStart::InterfaceStart()
 {
@@ -12,9 +25,9 @@ InterfaceStart::InterfaceStart()
 
    add_image ("media/images/interface/start.png", g_w / 2, 100, true);
 
-   y = add_hypertexte (g_w / 2, 350, start_font, "Create new player", 0, true)->h + 350;
+   y = add_hypertexte (g_w / 2, 350, start_font, "Create new player", &create_new_player, true)->h + 350;
    y = add_hypertexte (g_w / 2, y, start_font, "Load game", 0, true)->h + y;
-   y = add_hypertexte (g_w / 2, y, start_font, "Exit", 0, true)->h + y;
+   y = add_hypertexte (g_w / 2, y, start_font, "Exit", &quit, true)->h + y;
 }
 
 InterfaceStart::~InterfaceStart ()

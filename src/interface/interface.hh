@@ -10,16 +10,6 @@
 
 # include "interface_start.hh"
 
-# define MAX_IM	5
-
-enum
-{
-  START,
-  CREATION,
-  MAP,
-  FIGHT
-};
-
 class Interface
 {
 public:
@@ -27,10 +17,10 @@ public:
   ~Interface ();
   void display (SDL_Surface* screen);
   void process_mouse (int x, int y);
+  void process_mouse_click (int x, int y);
 
 private:
    InterfaceStart interface_start;
-   int state;
 };
 
 #endif

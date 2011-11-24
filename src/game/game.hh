@@ -5,6 +5,14 @@
 
 # include "../interface/interface.hh"
 
+enum
+{
+   START,
+   CREATION,
+   MAP,
+  FIGHT
+};
+
 struct Game
 {
   Game ();
@@ -12,6 +20,7 @@ struct Game
   void process ();
   void display ();
 
+  int state;
   int w;
   int h;
   bool done;

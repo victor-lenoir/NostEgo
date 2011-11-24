@@ -4,6 +4,7 @@
 
 Game::Game ()
 {
+   state = START;
    done = true;
 
    if (SDL_Init (SDL_INIT_VIDEO) < 0)
@@ -35,6 +36,9 @@ void Game::process ()
      {
 	case SDL_MOUSEMOTION:
 	   interface.process_mouse (event.motion.x, event.motion.y);
+	   break;
+	case SDL_MOUSEBUTTONDOWN:
+	   interface.process_mouse_click (event.motion.x, event.motion.y);
 	   break;
 	case SDL_KEYDOWN:
 	   if(event.key.keysym.sym == SDLK_ESCAPE)
