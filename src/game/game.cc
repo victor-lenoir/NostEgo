@@ -27,28 +27,26 @@ Game::~Game ()
 
 void Game::process ()
 {
-  process_exit ();
-  interface.process ();
-}
-
-void Game::process_exit ()
-{
   SDL_Event event;
 
-  if (SDL_PollEvent(&event))
-    {
-      switch (event.type)
-	{
+  while (SDL_PollEvent(&event))
+  {
+     switch (event.type)
+     {
+	case SDL_MOUSEMOTION:
+	   interface.process_mouse (event.motion.x, event.motion.y);
+	   break;
 	case SDL_KEYDOWN:
-	  if(event.key.keysym.sym == SDLK_ESCAPE)
-	    done = true;
-	  break;
-	}
-    }
+	   if(event.key.keysym.sym == SDLK_ESCAPE)
+	      done = true;
+	   break;
+     }
+  }
 }
 
 void Game::display ()
 {
+  SDL_FillRect (screen,NULL, 0x000000);
   interface.display (screen);
   SDL_Flip(screen);
 }

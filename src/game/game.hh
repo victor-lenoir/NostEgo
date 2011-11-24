@@ -12,8 +12,6 @@ struct Game
   void process ();
   void display ();
 
-  void process_exit ();
-
   int w;
   int h;
   bool done;

@@ -45,26 +45,6 @@ void Interface::process_mouse (int	x,
    }
 }
 
-void Interface::process_menu ()
-{
-   SDL_Event event;
-
-   if (SDL_PollEvent(&event))
-   {
-      switch (event.type)
-      {
-	 case SDL_MOUSEMOTION:
-	    process_mouse (event.motion.x, event.motion.y);
-	    break;
-      }
-   }
-}
-
-void Interface::process ()
-{
-   process_menu ();
-}
-
 void Interface::generate_menu (int y_,
 			       int offset,
 			       TTF_Font* font,

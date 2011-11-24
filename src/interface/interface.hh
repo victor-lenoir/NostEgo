@@ -23,7 +23,6 @@ class Interface
 public:
   Interface ();
   ~Interface ();
-  void process ();
   void display (SDL_Surface* screen);
   void display_start (SDL_Surface* screen);
   void set_state (int p_state);
@@ -32,8 +31,7 @@ public:
 		      TTF_Font* font,
 		      std::vector<std::pair <std::string, void*> >& slots);
   void free_images ();
-  void process_menu ();
-   void process_mouse (int x, int y);
+  void process_mouse (int x, int y);
 
 private:
   SDL_Surface*	images[MAX_IM];
