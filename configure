@@ -4,6 +4,7 @@ rm -f Makefile.inc
 
 rm -f `find . -name '*~'`
 rm -f `find . -name '*#'`
+rm -f `find src -name '.*'`
 
 echo "HEADERS="`find . -name '*.hh'` >> Makefile.inc
 echo "OBJS="`find . -name '*.cc'|sed 's/\.cc/\.o/g'` >> Makefile.inc
