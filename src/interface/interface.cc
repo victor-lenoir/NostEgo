@@ -13,11 +13,19 @@ Interface::~Interface ()
 void Interface::process_mouse (int x,
 			       int y)
 {
-   (void)x;
-   (void)y;
-   //interface_start.process_mouse (x, y);
+   switch (state)
+   {
+      case START:
+	 interface_start.process_mouse (x, y);
+	 break;
+   }
 }
 void Interface::display (SDL_Surface* screen)
 {
-   interface_start.display (screen);
+   switch (state)
+   {
+      case START:
+	 interface_start.display (screen);
+	 break;
+   }
 }
