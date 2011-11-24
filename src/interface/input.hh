@@ -21,6 +21,9 @@ struct Input
 
   void process_keyboard (SDLKey key)
   {
+     if (!focus)
+	return;
+
     if (key == SDLK_RETURN)
       focus = false;
 
@@ -56,7 +59,10 @@ struct Input
      rect.y += h;
      rect.h = 1;
 
-    SDL_FillRect (screen, &rect, SDL_MapRGB(screen->format, 255, 255, 255));
+     if (focus)
+	SDL_FillRect (screen, &rect, SDL_MapRGB(screen->format, 175, 0, 0));
+     else
+	SDL_FillRect (screen, &rect, SDL_MapRGB(screen->format, 255, 255, 255));
 
     rect.h = h;
     rect.y -= h;

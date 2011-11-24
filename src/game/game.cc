@@ -26,6 +26,17 @@ Game::~Game ()
   SDL_Quit ();
 }
 
+int Game::get_state ()
+{
+   return state;
+}
+
+void Game::set_state (int state_p)
+{
+   state = state_p;
+   interface.clean ();
+}
+
 void Game::process ()
 {
   SDL_Event event;

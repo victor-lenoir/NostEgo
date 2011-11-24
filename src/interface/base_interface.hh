@@ -23,6 +23,7 @@ public:
    virtual void process_mouse (int x, int y);
    virtual void process_mouse_click (int x, int y);
    virtual void process_keyboard (SDLKey key);
+   virtual void clean ();
    SDL_Rect* add_image (const char* img, int x, int y, bool h_center);
 
    SDL_Rect* add_hypertexte (int x,

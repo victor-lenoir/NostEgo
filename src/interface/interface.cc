@@ -12,7 +12,7 @@ Interface::~Interface ()
 
 void Interface::process_keyboard (SDLKey key)
 {
-  switch (g->state)
+   switch (g->get_state())
     {
     case START:
       interface_start.process_keyboard (key);
@@ -23,10 +23,16 @@ void Interface::process_keyboard (SDLKey key)
     }
 }
 
+void Interface::clean ()
+{
+   interface_start.clean ();
+   interface_creation.clean ();
+}
+
 void Interface::process_mouse (int x,
 			       int y)
 {
-   switch (g->state)
+   switch (g->get_state())
    {
       case START:
 	 interface_start.process_mouse (x, y);
@@ -40,7 +46,7 @@ void Interface::process_mouse (int x,
 void Interface::process_mouse_click (int x,
                                int y)
 {
-   switch (g->state)
+   switch (g->get_state())
    {
       case START:
          interface_start.process_mouse_click (x, y);
@@ -53,7 +59,7 @@ void Interface::process_mouse_click (int x,
 
 void Interface::display (SDL_Surface* screen)
 {
-   switch (g->state)
+   switch (g->get_state())
    {
       case START:
 	 interface_start.display (screen);

@@ -20,9 +20,10 @@ public:
   void process_mouse (int x, int y);
   void process_mouse_click (int x, int y);
   void process_keyboard (SDLKey key);
-private:
-   InterfaceStart interface_start;
-   InterfaceCreation interface_creation;
+  void clean ();
+
+  InterfaceStart interface_start;
+  InterfaceCreation interface_creation;
 };
 
 #endif

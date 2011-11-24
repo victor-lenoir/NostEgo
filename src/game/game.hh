@@ -19,13 +19,15 @@ struct Game
   ~Game ();
   void process ();
   void display ();
-
-  int state;
+  void set_state (int state_p);
+   int get_state ();
   int w;
   int h;
   bool done;
   SDL_Surface* screen;
   Interface interface;
+private:
+   int state;
 };
 
 extern int g_w;

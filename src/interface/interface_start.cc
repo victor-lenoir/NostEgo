@@ -11,7 +11,7 @@ void quit ()
 
 void create_new_player ()
 {
-   g->state = CREATION;
+   g->set_state (CREATION);
 }
 
 InterfaceStart::InterfaceStart()

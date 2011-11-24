@@ -30,6 +30,17 @@ void BaseInterface::process_mouse (int x, int y)
      images[i].process_mouse (x, y);
 }
 
+void BaseInterface::clean ()
+{
+   for (size_t i = 0; i < images.size(); ++i)
+      images[i].over = false;
+   for (size_t i = 0; i < inputs.size(); ++i)
+   {
+      inputs[i].focus = false;
+      inputs[i].text = "";
+   }
+}
+
 void BaseInterface::process_mouse_click (int x, int y)
 {
    for (size_t i = 0; i < images.size(); ++i)
