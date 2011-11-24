@@ -21,6 +21,7 @@ public:
 
 private:
    InterfaceStart interface_start;
+   InterfaceStart interface_creation;
 };
 
 #endif
