@@ -11,8 +11,8 @@ std::string int_to_string (int n)
 
 Game::Game ()
 {
-  xoff = 0;
-  yoff = 0;
+   xoff = -(MAP_BUFFER / 2 - 1) * WIDTH_MAP;
+   yoff = -(MAP_BUFFER / 2 - 1) * HEIGHT_MAP;
   world_map = "test";
   xmap = 0;
   ymap = 0;
@@ -41,10 +41,10 @@ void Game::load_maps ()
 {
   std::string tmp = "media/maps/" + world_map;
 
-  for (size_t y = 0; y < 3; ++y)
-    for (size_t x = 0; x < 3; ++x)
-      maps[x][y].load_map ((tmp + int_to_string (xmap + (x - 1)) + "-" +
-			    int_to_string (ymap + (y - 1))).c_str ());
+  for (size_t y = 0; y < MAP_BUFFER; ++y)
+    for (size_t x = 0; x < MAP_BUFFER; ++x)
+      maps[x][y].load_map ((tmp + int_to_string (xmap + (x - MAP_BUFFER / 2)) + "-" +
+			    int_to_string (ymap + (y - MAP_BUFFER / 2))).c_str ());
 }
 
 int Game::get_state ()
@@ -92,8 +92,8 @@ void Game::display ()
   tmp_rect.w = WIDTH_MAP;
   tmp_rect.h = HEIGHT_MAP;
 
-  for (size_t y = 0; y < 3; ++y)
-    for (size_t x = 0; x < 3; ++x)
+  for (size_t y = 0; y < MAP_BUFFER; ++y)
+    for (size_t x = 0; x < MAP_BUFFER; ++x)
       maps[x][y].display (screen,
 			  (x - 1) * WIDTH_MAP + xoff,
 			  (y - 1) * HEIGHT_MAP + yoff);

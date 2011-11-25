@@ -13,7 +13,7 @@ struct Option
   int video_flags;
   int screen_w;
   int screen_h;
-  int fps;
+  size_t fps;
 };
 
 extern Option* opt;

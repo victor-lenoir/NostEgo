@@ -7,6 +7,8 @@
 # include "../map/map.hh"
 # include "../character/character.hh"
 
+# define MAP_BUFFER 5
+
 enum
 {
    START,
@@ -27,7 +29,7 @@ struct Game
   bool done;
   SDL_Surface* screen;
   Interface interface;
-  Map maps[3][3];
+  Map maps[MAP_BUFFER][MAP_BUFFER];
 
   Character player;
   std::string world_map;
