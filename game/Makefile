@@ -18,6 +18,3 @@ include Makefile.inc
 
 nostego: ${OBJS}
 	${CC} ${CFLAGS} ${LINK} ${OBJS} -o nostego
-
-%.o: %.cc Makefile ${HEADERS}
-	${CC} -c ${CFLAGS} $< -o $@

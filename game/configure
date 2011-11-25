@@ -6,5 +6,18 @@ rm -f `find . -name '*~'`
 rm -f `find . -name '*#'`
 rm -f `find src -name '.*'`
 
-echo "HEADERS="`find . -name '*.hh'` >> Makefile.inc
+for file in `find . -name '*.cc'`;
+do
+    OBJ=`echo "$file"|sed 's/\.cc/\.o/g'`
+    echo -n "$OBJ: $file"  >> Makefile.inc
+    BASENAME=`basename "$file"`
+    DIR=`echo "$file"|sed "s/$BASENAME//"`
+    for deps in `grep 'include \"' "$file" 2>/dev/null|sed 's/#//g'|sed 's/include//g'|sed 's/\"//g'`; do
+	echo -n " $DIR$deps"  >> Makefile.inc
+    done
+    echo ""  >> Makefile.inc
+    echo -e "\t\${CC} -c \${CFLAGS} $file -o $OBJ" >> Makefile.inc
+    echo "" >> Makefile.inc
+done
+
 echo "OBJS="`find . -name '*.cc'|sed 's/\.cc/\.o/g'` >> Makefile.inc
