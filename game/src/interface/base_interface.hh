@@ -12,7 +12,7 @@
 # include "../draw/animation.hh"
 # include "../option/option.hh"
 
-template <class T> class Image;
+template <class T> struct Image;
 
 template <class T> class BaseInterface
 {

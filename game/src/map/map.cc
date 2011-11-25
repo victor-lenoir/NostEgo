@@ -75,8 +75,8 @@ void Map::load_map (const char* map_path)
     }
 }
 
-bool compare_element (Element* e1,
-		      Element* e2)
+static bool compare_element (Element* e1,
+			     Element* e2)
 {
   return (e1->animation.rect.y < e2->animation.rect.y);
 }

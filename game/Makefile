@@ -1,4 +1,7 @@
-CFLAGS=-W -Wall -Wextra -std=c++0x
+CFLAGS=-W -Wall -Wextra -Wfloat-equal -Wshadow -Wpointer-arith \
+-Wcast-qual -Wcast-align -Wmissing-declarations -Wunused -Winline -pedantic \
+-Wuninitialized -Winit-self
+
 LINK=-lSDL -lSDL_image -lSDL_ttf -lSDL_gfx
 CC=g++
 
