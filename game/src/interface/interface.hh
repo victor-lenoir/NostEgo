@@ -11,6 +11,7 @@
 
 # include "interface_start.hh"
 # include "interface_creation.hh"
+# include "interface_debug.hh"
 
 class Interface
 {
@@ -25,6 +26,7 @@ public:
 
   InterfaceStart interface_start;
   InterfaceCreation interface_creation;
+   InterfaceDebug interface_debug;
 };
 
 #endif

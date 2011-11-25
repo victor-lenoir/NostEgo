@@ -17,6 +17,8 @@ enum
    FIGHT
 };
 
+std::string int_to_string (int n);
+
 struct Game
 {
   Game ();

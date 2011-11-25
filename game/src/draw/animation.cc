@@ -36,7 +36,7 @@ void Animation::display (SDL_Surface* screen)
   if (curr_process - last_process > delay_process)
     {
       ++step;
-      if (playing && (step >= max_step))
+      if ((!once) && (step >= max_step))
 	step = 0;
       else if (step >= max_step)
 	{

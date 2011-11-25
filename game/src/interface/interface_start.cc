@@ -20,13 +20,13 @@ InterfaceStart::InterfaceStart()
    if (!start_font)
       std::cout << "TTF OpenFont = " << TTF_GetError() << std::endl;
 
-   add_image ("media/images/interface/start.png", WIDTH_MAP / 2, 100, true);
-   y = add_hypertexte (WIDTH_MAP / 2, 350, start_font, "Create new player",
+   add_image ("media/images/interface/start.png", opt->screen_w / 2, 100, true);
+   y = add_hypertexte (opt->screen_w / 2, 350, start_font, "Create new player",
 		       &InterfaceStart::create_new_player, this, true)->h +
      350;
-   y = add_hypertexte (WIDTH_MAP / 2, y, start_font, "Load game", 0, this, true)->h +
+   y = add_hypertexte (opt->screen_w / 2, y, start_font, "Load game", 0, this, true)->h +
      y;
-   y = add_hypertexte (WIDTH_MAP / 2, y, start_font, "Exit", &InterfaceStart::quit,
+   y = add_hypertexte (opt->screen_w / 2, y, start_font, "Exit", &InterfaceStart::quit,
 		       this,
 		       true)->h + y;
 }

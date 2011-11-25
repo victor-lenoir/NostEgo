@@ -11,8 +11,8 @@ std::string int_to_string (int n)
 
 Game::Game ()
 {
-  //xoff = -(MAP_BUFFER / 2 - 1) * WIDTH_MAP;
-  //yoff = -(MAP_BUFFER / 2 - 1) * HEIGHT_MAP;
+  xoff = 0;
+  yoff = 0;
   world_map = "test";
   xmap = 1;
   ymap = 1;
@@ -68,8 +68,6 @@ void Game::process ()
 
   while (SDL_PollEvent(&event))
     {
-      player.process_keyboard (keystate);
-      maps[1][1].process_keyboard (keystate);
       switch (event.type)
 	{
 	case SDL_MOUSEMOTION:
