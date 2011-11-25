@@ -39,7 +39,10 @@ void Map::load_map (const char* map_path)
   clean ();
   if (!input.good ())
     {
-      //std::cerr << "Invalid map file: " << map_path << std::endl;
+       background_str = "media/images/maps/background/grass.png";
+       background = IMG_Load (background_str.c_str ());
+       if (!background)
+	  std::cerr << "Invalid background file: " << background_str << std::endl;
       return;
     }
   input >> background_str;
