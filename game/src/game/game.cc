@@ -61,8 +61,11 @@ void Game::set_state (int state_p)
 void Game::process ()
 {
   SDL_Event event;
+  Uint8* keystate = SDL_GetKeyState(NULL);
 
-  player.process_keyboard (SDL_GetKeyState(NULL));
+  player.process_keyboard (keystate);
+  maps[MAP_BUFFER / 2][MAP_BUFFER / 2].process_keyboard (keystate);
+
   while (SDL_PollEvent(&event))
     {
       switch (event.type)

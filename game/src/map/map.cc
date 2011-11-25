@@ -7,6 +7,12 @@ Map::Map ()
   background = 0;
 }
 
+void Map::process_keyboard (Uint8* keystate)
+{
+   for (std::list<Element*>::iterator it = elements.begin();
+	it != elements.end (); ++it)
+      (*it)->process_keyboard_general (keystate);
+}
 void Map::clean ()
 {
   if (background)
