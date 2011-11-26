@@ -10,6 +10,8 @@ Element::Element (std::string element, int x, int y)
   std::string img_path = "media/images/maps/elements/";
   int enable_animation;
   std::ifstream input;
+  int nimage = 1;
+  int delay = 0;
 
   element_path += element;
   input.open (element_path.c_str());
@@ -27,5 +29,10 @@ Element::Element (std::string element, int x, int y)
       return;
     }
   input >> enable_animation;
-  animation.load (tmp, x, y, 1, 0);
+  if (enable_animation)
+    {
+      input >> nimage;
+      input >> delay;
+    }
+  animation.load (tmp, x, y, nimage, delay);
 }
