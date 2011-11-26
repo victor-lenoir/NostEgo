@@ -16,8 +16,9 @@ Game::Game ()
    if (!(screen = SDL_SetVideoMode (w, h, 32, VIDEO_FLAGS)))
       return;
 
-  SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
+  SDL_EnableKeyRepeat(1, SDL_DEFAULT_REPEAT_INTERVAL);
 
+  player.load ("healer.png", 8);
   done = false;
 }
 
@@ -53,6 +54,7 @@ void Game::process ()
 	   break;
 	case SDL_KEYDOWN:
 	   interface.process_keyboard (event.key.keysym.sym);
+	   player.process_keyboard (event.key.keysym.sym);
 	   if(event.key.keysym.sym == SDLK_ESCAPE)
 	      done = true;
 	   break;

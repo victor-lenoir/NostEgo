@@ -7,6 +7,7 @@ Animation::Animation ()
   delay_process = 20;
   step = 0;
   img = 0;
+  playing = true;
 }
 
 Animation::~Animation ()
@@ -22,6 +23,9 @@ void Animation::display (SDL_Surface* screen)
   mask.x = step * (img->w / max_step);
 
   SDL_BlitSurface (img, &mask, screen, &rect);
+  if (!playing)
+    return;
+  playing = false;
   if (!last_process)
     {
       last_process = SDL_GetTicks();

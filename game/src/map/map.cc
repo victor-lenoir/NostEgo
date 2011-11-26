@@ -55,11 +55,23 @@ bool compare_element (Element* e1,
 
 void Map::display (SDL_Surface* screen)
 {
+  bool play = false;
+
   if (g->get_state() != MAP)
     return;
 
   elements.sort (compare_element);
   for (std::list<Element*>::iterator it = elements.begin();
        it != elements.end (); ++it)
-    (*it)->animation.display (screen);
+    {
+      if ((!play) && (g->player.animation.rect.y <
+		      (*it)->animation.rect.y))
+	{
+	  g->player.display (screen);
+	  play = true;
+	}
+      (*it)->animation.display (screen);
+    }
+  if (!play)
+    g->player.display (screen);
 }

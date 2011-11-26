@@ -5,13 +5,14 @@
 
 # include "../interface/interface.hh"
 # include "../map/map.hh"
+# include "../character/character.hh"
 
 enum
 {
    START,
    CREATION,
    MAP,
-  FIGHT
+   FIGHT
 };
 
 struct Game
@@ -28,6 +29,7 @@ struct Game
   SDL_Surface* screen;
   Interface interface;
   Map map;
+  Character player;
 private:
    int state;
 };
