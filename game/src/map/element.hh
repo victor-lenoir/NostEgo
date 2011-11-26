@@ -16,6 +16,6 @@ public:
   Element (std::string element, int x, int y);
   ~Element ();
 
-  std::vector<Animation*> animations;
+  Animation animation;
 };
 #endif

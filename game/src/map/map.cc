@@ -12,8 +12,9 @@ Map::Map ()
 
 void Map::clean ()
 {
-  for (size_t i = 0; i < elements.size (); ++i)
-    delete elements[i];
+  for (std::list<Element*>::iterator it = elements.begin();
+       it != elements.end (); ++it)
+    delete (*it);
 }
 
 Map::~Map ()
@@ -46,13 +47,19 @@ void Map::load_map (const char* map_path)
     }
 }
 
+bool compare_element (Element* e1,
+		      Element* e2)
+{
+  return (e1->animation.rect.y < e2->animation.rect.y);
+}
+
 void Map::display (SDL_Surface* screen)
 {
   if (g->get_state() != MAP)
     return;
-  for (size_t i = 0; i < elements.size (); ++i)
-    {
-      elements[i]->animations[0]->display (screen);
-      elements[i]->animations[1]->display (screen);
-    }
+
+  elements.sort (compare_element);
+  for (std::list<Element*>::iterator it = elements.begin();
+       it != elements.end (); ++it)
+    (*it)->animation.display (screen);
 }

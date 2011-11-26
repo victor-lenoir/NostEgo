@@ -5,7 +5,7 @@
 # include <SDL/SDL_image.h>
 # include <iostream>
 # include <string>
-# include <vector>
+# include <list>
 
 # include "element.hh"
 
@@ -19,7 +19,7 @@ public:
   void display (SDL_Surface* screen);
 
   SDL_Surface* background;
-  std::vector<Element*> elements;
+  std::list<Element*> elements;
 };
 
 #endif
