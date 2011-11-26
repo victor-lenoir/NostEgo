@@ -9,7 +9,7 @@
 # include <iostream>
 # include "image.hh"
 # include "input.hh"
-# include "animation.hh"
+# include "../draw/animation.hh"
 
 extern int g_w;
 extern int g_h;

@@ -6,7 +6,7 @@
 # include <SDL/SDL_ttf.h>
 # include <SDL/SDL_image.h>
 # include <SDL/SDL_rotozoom.h>
-# include "animation.hh"
+# include "../draw/animation.hh"
 # include <iostream>
 
 struct Input

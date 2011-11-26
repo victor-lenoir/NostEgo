@@ -6,8 +6,10 @@ all: Makefile.inc nostego
 
 clean:
 	rm -f `find . -name '*.o'`
-	rm Makefile.inc
-	rm nostego
+	rm -f `find . -name '*.~'`
+	rm -f `find . -name '*.#'`
+	rm -f Makefile.inc
+	rm -f nostego
 
 Makefile.inc:
 	./configure

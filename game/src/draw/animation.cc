@@ -20,6 +20,7 @@ void Animation::display (SDL_Surface* screen)
   Uint32 curr_process;
 
   mask.x = step * (img->w / max_step);
+
   SDL_BlitSurface (img, &mask, screen, &rect);
   if (!last_process)
     {

@@ -63,6 +63,7 @@ void Game::process ()
 void Game::display ()
 {
   SDL_FillRect (screen,NULL, 0x000000);
+  map.display (screen);
   interface.display (screen);
   SDL_Flip(screen);
 }

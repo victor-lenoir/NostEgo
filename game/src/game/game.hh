@@ -4,6 +4,7 @@
 # include <SDL/SDL.h>
 
 # include "../interface/interface.hh"
+# include "../map/map.hh"
 
 enum
 {
@@ -26,6 +27,7 @@ struct Game
   bool done;
   SDL_Surface* screen;
   Interface interface;
+  Map map;
 private:
    int state;
 };
