@@ -37,7 +37,12 @@ void Map::load_map (const char* map_path)
     }
   input >> background_str;
   if (background_str != "none")
-    background = IMG_Load (background_str.c_str ());
+    {
+      background_str = "media/images/maps/background/" + background_str;
+      background = IMG_Load (background_str.c_str ());
+      if (!background)
+	std::cerr << "Invalid background file: " << background_str << std::endl;
+    }
   while (!input.eof())
     {
       input >> element;
@@ -60,6 +65,22 @@ void Map::display (SDL_Surface* screen)
   if (g->get_state() != MAP)
     return;
 
+  if (background)
+    {
+      // TO OPTIMIZE: create a big background
+
+      SDL_Rect tmp_rect;
+
+      for (tmp_rect.y = 0; tmp_rect.y < g_h;
+	   tmp_rect.y += background->h)
+      for (tmp_rect.x = 0; tmp_rect.x < g_w;
+	   tmp_rect.x += background->w)
+	{
+
+	  SDL_BlitSurface (background, NULL, screen,
+			   &tmp_rect);
+	}
+    }
   elements.sort (compare_element);
   for (std::list<Element*>::iterator it = elements.begin();
        it != elements.end (); ++it)
