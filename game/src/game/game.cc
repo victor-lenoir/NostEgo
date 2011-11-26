@@ -16,7 +16,7 @@ Game::Game ()
    if (!(screen = SDL_SetVideoMode (w, h, 32, VIDEO_FLAGS)))
       return;
 
-  SDL_EnableKeyRepeat(1, SDL_DEFAULT_REPEAT_INTERVAL);
+  SDL_EnableKeyRepeat(100, SDL_DEFAULT_REPEAT_INTERVAL);
 
   player.load ("healer.png", 8);
   done = false;

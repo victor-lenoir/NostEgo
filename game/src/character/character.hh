@@ -9,6 +9,7 @@
 class Character
 {
 public:
+  void moved ();
   void move_up ();
   void move_down ();
   void move_left ();
