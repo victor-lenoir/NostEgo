@@ -43,9 +43,13 @@ void Character::move (float x,
   deltax *= x;
   deltay *= y;
 
+  deltax *= 4;
+  deltay *= 4;
   dir = dir_p;
-  animation.rect.x += (int)deltax;
-  animation.rect.y += (int)deltay;
+  //animation.rect.x += (int)deltax;
+  //animation.rect.y += (int)deltay;
+  g->xoff -= (int)deltax;
+  g->yoff -= (int)deltay;
 
   animation.stepping = true;
   animation.mask.y = dir * (animation.img->h / 8);

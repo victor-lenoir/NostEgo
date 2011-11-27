@@ -33,6 +33,8 @@ struct Game
   std::string world_map;
   int xmap;
   int ymap;
+  int xoff;
+  int yoff;
 private:
    int state;
 };

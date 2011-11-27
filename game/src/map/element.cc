@@ -8,11 +8,14 @@ void Element::display (SDL_Surface* screen,
 		       int offsetx,
 		       int offsety)
 {
+  int backupx = animation.rect.x;
+  int backupy = animation.rect.y;
+
   animation.rect.x += offsetx;
   animation.rect.y += offsety;
   animation.display (screen);
-  animation.rect.x -= offsetx;
-  animation.rect.y -= offsety;
+  animation.rect.x = backupx;
+  animation.rect.y = backupy;
 }
 
 Element::Element (std::string element, int x, int y)

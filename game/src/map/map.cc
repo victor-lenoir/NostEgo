@@ -73,13 +73,13 @@ void Map::display_background (SDL_Surface* screen,
     {
       SDL_Rect tmp_rect;
 
-      for (tmp_rect.y = offsety; tmp_rect.y < offsety + HEIGHT_MAP;
-           tmp_rect.y += background->h)
-	for (tmp_rect.x = offsetx; tmp_rect.x < offsetx + WIDTH_MAP;
-	     tmp_rect.x += background->w)
+      for (int defy = offsety; defy < offsety + HEIGHT_MAP;
+           defy += background->h)
+	for (int defx = offsetx; defx < offsetx + WIDTH_MAP;
+	     defx += background->w)
 	  {
-	    if ((tmp_rect.x >= 0) && (tmp_rect.x < g_w)
-		&& (tmp_rect.y >= 0) && (tmp_rect.y < g_h))
+	    tmp_rect.x = defx;
+	    tmp_rect.y = defy;
 	      SDL_BlitSurface (background, 0, screen,
 			     &tmp_rect);
 	  }

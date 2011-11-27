@@ -2,8 +2,8 @@
 #include <iostream>
 #include <sstream>
 
-#define VIDEO_FLAGS SDL_FULLSCREEN | SDL_HWSURFACE | SDL_DOUBLEBUF
-
+//#define VIDEO_FLAGS SDL_FULLSCREEN | SDL_HWSURFACE | SDL_DOUBLEBUF
+#define VIDEO_FLAGS SDL_HWSURFACE | SDL_DOUBLEBUF
 std::string int_to_string (int n)
 {
   std::ostringstream oss;
@@ -13,6 +13,8 @@ std::string int_to_string (int n)
 
 Game::Game ()
 {
+  xoff = 0;
+  yoff = 0;
   world_map = "test";
   xmap = 0;
   ymap = 0;
@@ -99,8 +101,8 @@ void Game::display ()
   for (size_t y = 0; y < 3; ++y)
     for (size_t x = 0; x < 3; ++x)
       maps[x][y].display (screen,
-			  (x - 1) * WIDTH_MAP,
-			  (y - 1) * HEIGHT_MAP);
+			  (x - 1) * WIDTH_MAP + xoff,
+			  (y - 1) * HEIGHT_MAP + yoff);
 
   interface.display (screen);
   SDL_Flip(screen);
