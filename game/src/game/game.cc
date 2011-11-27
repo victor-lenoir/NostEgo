@@ -61,8 +61,8 @@ void Game::set_state (int state_p)
 void Game::process ()
 {
   SDL_Event event;
-  Uint8 *keystate;
 
+  player.process_keyboard (SDL_GetKeyState(NULL));
   while (SDL_PollEvent(&event))
     {
       switch (event.type)
@@ -73,13 +73,7 @@ void Game::process ()
 	case SDL_MOUSEBUTTONDOWN:
 	  interface.process_mouse_click (event.motion.x, event.motion.y);
 	  break;
-	case SDL_KEYUP:
-	  keystate = SDL_GetKeyState(NULL);
-	  player.process_keyboard (keystate);
-	  break;
 	case SDL_KEYDOWN:
-	  keystate = SDL_GetKeyState(NULL);
-	  player.process_keyboard (keystate);
 	  interface.process_keyboard (event.key.keysym.sym);
 	  if(event.key.keysym.sym == SDLK_ESCAPE)
 	    done = true;
