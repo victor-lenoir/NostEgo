@@ -2,8 +2,6 @@
 #include <iostream>
 #include <sstream>
 
-#define VIDEO_FLAGS SDL_FULLSCREEN | SDL_HWSURFACE | SDL_DOUBLEBUF
-//#define VIDEO_FLAGS SDL_HWSURFACE | SDL_DOUBLEBUF
 std::string int_to_string (int n)
 {
   std::ostringstream oss;
@@ -21,7 +19,9 @@ Game::Game ()
   state = START;
   done = true;
 
-  if (!(screen = SDL_SetVideoMode (g_w, g_h, 32, VIDEO_FLAGS)))
+  if (!(screen = SDL_SetVideoMode (opt->screen_w, opt->screen_h,
+				   32,
+				   opt->video_flags)))
     return;
 
   SDL_EnableKeyRepeat(100, SDL_DEFAULT_REPEAT_INTERVAL);

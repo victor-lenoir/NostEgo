@@ -17,7 +17,6 @@ enum
     UP_RIGHT
   };
 
-extern Game* g;
 void Character::display (SDL_Surface* screen)
 {
   animation.display (screen);
@@ -50,14 +49,14 @@ void Character::move (float x,
 
   if ((int)deltax > 0)
     {
-      if ((int)animation.rect.x > 3 * g_w / 4)
+      if ((int)animation.rect.x > 3 * opt->screen_w / 4)
 	g->xoff -= (int)deltax;
       else
 	animation.rect.x += (int)deltax;
     }
   else
     {
-      if ((int)animation.rect.x < g_w / 4)
+      if ((int)animation.rect.x < opt->screen_w / 4)
 	g->xoff -= (int)deltax;
       else
 	animation.rect.x += (int)deltax;
@@ -65,14 +64,14 @@ void Character::move (float x,
 
   if ((int)deltay > 0)
     {
-      if ((int)animation.rect.y > 3 * g_h / 4)
+      if ((int)animation.rect.y > 3 * opt->screen_h / 4)
         g->yoff -= (int)deltay;
       else
         animation.rect.y += (int)deltay;
     }
   else
     {
-      if ((int)animation.rect.y < g_h / 4)
+      if ((int)animation.rect.y < opt->screen_h / 4)
         g->yoff -= (int)deltay;
       else
         animation.rect.y += (int)deltay;

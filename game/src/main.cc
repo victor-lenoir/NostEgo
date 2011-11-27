@@ -1,21 +1,11 @@
 #include "game/game.hh"
-#define BUFFTIME 30
-
-int g_w;
-int g_h;
 
 Game* g;
+Option* opt;
 
 int main ()
 {
-  TTF_Init ();
-
-  if (SDL_Init (SDL_INIT_VIDEO) < 0)
-    return 42;
-
-  g_w = SDL_GetVideoInfo()->current_w;
-  g_h = SDL_GetVideoInfo()->current_h;
-
+  opt = new Option;
   g = new Game;
   Uint32 last = 0;
   Uint32 curr = 0;
@@ -23,14 +13,14 @@ int main ()
   while (!g->done)
     {
       curr = SDL_GetTicks ();
-      if (curr - last > BUFFTIME)
+      if (curr - last > (1000 / opt->fps))
       {
 	 g->process ();
 	 g->display ();
 	 last = curr;
       }
       else
-	 SDL_Delay (BUFFTIME - (curr - last));
+	SDL_Delay ((1000 / opt->fps) - (curr - last));
     }
   delete g;
   TTF_Quit ();

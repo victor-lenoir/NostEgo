@@ -1,7 +1,6 @@
 #include "interface.hh"
 #include "../game/game.hh"
 
-extern Game* g;
 Interface::Interface ()
 {
 }

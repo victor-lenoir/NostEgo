@@ -2,8 +2,6 @@
 #include "../game/game.hh"
 #include <iostream>
 
-extern Game* g;
-
 void InterfaceCreation::previous ()
 {
    g->set_state (START);
@@ -24,16 +22,16 @@ InterfaceCreation::InterfaceCreation()
    if (!creation_font)
       std::cout << "TTF OpenFont = " << TTF_GetError() << std::endl;
 
-   add_image ("media/images/interface/start.png", g_w / 2, 100, true);
+   add_image ("media/images/interface/start.png", WIDTH_MAP / 2, 100, true);
    y = 350;
    input_font = TTF_OpenFont("media/fonts/stonehenge.ttf", 30);
-   add_input (g_w / 2 - 50, y + 20, 300, 40, input_font);
+   add_input (WIDTH_MAP / 2 - 50, y + 20, 300, 40, input_font);
 
-   y = add_hypertexte (g_w / 2 - 200, y, creation_font, "Name:", 0, this,
+   y = add_hypertexte (WIDTH_MAP / 2 - 160, y, creation_font, "Name:", 0, this,
 		       false)->h + y + 30;
-   y = add_hypertexte (g_w / 2, y, creation_font, "Confirm",
+   y = add_hypertexte (WIDTH_MAP / 2, y, creation_font, "Confirm",
 		       &InterfaceCreation::confirm, this, true)->h + y;
-   y = add_hypertexte (g_w / 2, y, creation_font, "Back",
+   y = add_hypertexte (WIDTH_MAP / 2, y, creation_font, "Back",
 		       &InterfaceCreation::previous, this, true)->h + y;
 }
 

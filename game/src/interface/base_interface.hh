@@ -10,9 +10,7 @@
 # include "image.hh"
 # include "input.hh"
 # include "../draw/animation.hh"
-
-extern int g_w;
-extern int g_h;
+# include "../option/option.hh"
 
 template <class T> class Image;
 
@@ -83,6 +81,8 @@ public:
 
     SDL_Surface* tmp = IMG_Load (img);
 
+    x = (x * opt->screen_w) / WIDTH_MAP;
+    y = (y * opt->screen_h) / HEIGHT_MAP;
     if (tmp)
       {
 	ne->img = tmp;
@@ -115,6 +115,8 @@ public:
     SDL_Color white = {255, 255, 255, 0};
     SDL_Color red = {255, 0, 0, 0};
 
+    x = (x * opt->screen_w) / WIDTH_MAP;
+    y = (y * opt->screen_h) / HEIGHT_MAP;
     ne->img = TTF_RenderText_Blended(font, text, white);
     ne->img_over = TTF_RenderText_Blended(font, text, red);
     ne->rect.x = x;
@@ -133,6 +135,8 @@ public:
   {
     Input* e = new Input;
 
+    x = (x * opt->screen_w) / WIDTH_MAP;
+    y = (y * opt->screen_h) / HEIGHT_MAP;
     e->rect.x = x;
     e->rect.y = y;
     e->rect.w = w;
@@ -151,6 +155,8 @@ public:
   {
     Animation* a = new Animation;
 
+    x = (x * opt->screen_w) / WIDTH_MAP;
+    y = (y * opt->screen_h) / HEIGHT_MAP;
     a->load (p_img, x, y, p_max_step, p_delay_process);
     animations.push_back (a);
     return &animations.back ()->rect;

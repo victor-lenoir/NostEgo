@@ -39,7 +39,6 @@ private:
    int state;
 };
 
-extern int g_w;
-extern int g_h;
+extern Game* g;
 
 #endif

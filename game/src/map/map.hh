@@ -8,8 +8,6 @@
 # include <list>
 
 # include "element.hh"
-# define WIDTH_MAP 1024
-# define HEIGHT_MAP 768
 
 class Map
 {

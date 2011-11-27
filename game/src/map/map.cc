@@ -2,8 +2,6 @@
 #include <fstream>
 #include "../game/game.hh"
 
-extern Game* g;
-
 Map::Map ()
 {
   background = 0;
