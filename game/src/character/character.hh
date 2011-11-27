@@ -9,17 +9,17 @@
 class Character
 {
 public:
-  void moved ();
-  void move_up ();
-  void move_down ();
-  void move_left ();
-  void move_right ();
-  void process_keyboard (SDLKey key);
+  void move (float x, float y, int dir_p);
+  void process_keyboard (Uint8 *keystate);
   void display (SDL_Surface* screen);
   Animation animation;
   int dir;
   std::string name;
+  void stand ();
   void load (const char* img, int nimage);
+private:
+  Uint32 last;
+  Uint32 curr;
 };
 
 #endif

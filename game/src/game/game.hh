@@ -22,9 +22,7 @@ struct Game
   void process ();
   void display ();
   void set_state (int state_p);
-   int get_state ();
-  int w;
-  int h;
+  int get_state ();
   bool done;
   SDL_Surface* screen;
   Interface interface;

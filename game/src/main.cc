@@ -1,14 +1,20 @@
 #include "game/game.hh"
 #define BUFFTIME 30
 
-int g_w = 1024;
-int g_h = 600;
+int g_w;
+int g_h;
 
 Game* g;
 
 int main ()
 {
   TTF_Init ();
+
+  if (SDL_Init (SDL_INIT_VIDEO) < 0)
+    return 42;
+
+  g_w = SDL_GetVideoInfo()->current_w;
+  g_h = SDL_GetVideoInfo()->current_h;
 
   g = new Game;
   Uint32 last = 0;
