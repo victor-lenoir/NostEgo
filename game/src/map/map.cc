@@ -18,7 +18,10 @@ void Map::clean ()
     }
   for (std::list<Element*>::iterator it = elements.begin();
        it != elements.end (); ++it)
-    delete (*it);
+    {
+      delete (*it);
+    }
+  elements.clear ();
 }
 
 Map::~Map ()
@@ -38,7 +41,7 @@ void Map::load_map (const char* map_path)
   clean ();
   if (!input.good ())
     {
-      std::cerr << "Invalid map file: " << map_path << std::endl;
+      //std::cerr << "Invalid map file: " << map_path << std::endl;
       return;
     }
   input >> background_str;

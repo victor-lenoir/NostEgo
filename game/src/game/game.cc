@@ -2,8 +2,8 @@
 #include <iostream>
 #include <sstream>
 
-//#define VIDEO_FLAGS SDL_FULLSCREEN | SDL_HWSURFACE | SDL_DOUBLEBUF
-#define VIDEO_FLAGS SDL_HWSURFACE | SDL_DOUBLEBUF
+#define VIDEO_FLAGS SDL_FULLSCREEN | SDL_HWSURFACE | SDL_DOUBLEBUF
+//#define VIDEO_FLAGS SDL_HWSURFACE | SDL_DOUBLEBUF
 std::string int_to_string (int n)
 {
   std::ostringstream oss;

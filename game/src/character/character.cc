@@ -1,6 +1,7 @@
 #include "character.hh"
 #include "../game/game.hh"
 #include <iostream>
+#include "../map/map.hh"
 
 #define SQRT2 sqrt(2) / 2.0
 
@@ -46,10 +47,62 @@ void Character::move (float x,
   deltax *= 4;
   deltay *= 4;
   dir = dir_p;
-  //animation.rect.x += (int)deltax;
-  //animation.rect.y += (int)deltay;
-  g->xoff -= (int)deltax;
-  g->yoff -= (int)deltay;
+
+  if ((int)deltax > 0)
+    {
+      if ((int)animation.rect.x > 3 * g_w / 4)
+	g->xoff -= (int)deltax;
+      else
+	animation.rect.x += (int)deltax;
+    }
+  else
+    {
+      if ((int)animation.rect.x < g_w / 4)
+	g->xoff -= (int)deltax;
+      else
+	animation.rect.x += (int)deltax;
+    }
+
+  if ((int)deltay > 0)
+    {
+      if ((int)animation.rect.y > 3 * g_h / 4)
+        g->yoff -= (int)deltay;
+      else
+        animation.rect.y += (int)deltay;
+    }
+  else
+    {
+      if ((int)animation.rect.y < g_h / 4)
+        g->yoff -= (int)deltay;
+      else
+        animation.rect.y += (int)deltay;
+    }
+
+  if (g->xoff < -(WIDTH_MAP / 2))
+    {
+      g->xoff += WIDTH_MAP;
+      ++g->xmap;
+      g->load_maps ();
+    }
+  if (g->xoff > WIDTH_MAP / 2)
+    {
+      g->xoff -= WIDTH_MAP;
+      --g->xmap;
+      g->load_maps ();
+    }
+
+  if (g->yoff < -(HEIGHT_MAP / 2))
+    {
+      g->yoff += HEIGHT_MAP;
+      ++g->ymap;
+      g->load_maps ();
+    }
+  if (g->yoff > (HEIGHT_MAP / 2))
+    {
+      g->yoff -= HEIGHT_MAP;
+      --g->ymap;
+      g->load_maps ();
+    }
 
   animation.stepping = true;
   animation.mask.y = dir * (animation.img->h / 8);
@@ -97,7 +150,7 @@ void Character::load (const char* img, int nimage)
   dir = 0;
   last = 0;
   e += img;
-  animation.load (IMG_Load (e.c_str ()), g_w / 2, g_h / 2,
+  animation.load (IMG_Load (e.c_str ()), WIDTH_MAP / 2, HEIGHT_MAP / 2,
 		  nimage, 50);
   animation.mask.h /= 8;
   animation.playing = false;
