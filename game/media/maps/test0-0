@@ -1,4 +1,8 @@
 grass.png
 tree 0 0
-tree 20 20
+tree 30 30
+tree 900 20
 fireball 100 20
+fireball 200 20
+fireball 300 20
+fireball 400 20

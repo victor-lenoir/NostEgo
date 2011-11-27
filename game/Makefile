@@ -1,4 +1,4 @@
-CFLAGS=-W -Wall -Wextra -Werror -std=c++0x
+CFLAGS=-W -Wall -Wextra -std=c++0x
 LINK=-lSDL -lSDL_image -lSDL_ttf -lSDL_gfx
 CC=g++
 

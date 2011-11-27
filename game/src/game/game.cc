@@ -1,25 +1,48 @@
 #include "game.hh"
 #include <iostream>
+#include <sstream>
 
 #define VIDEO_FLAGS SDL_FULLSCREEN | SDL_HWSURFACE | SDL_DOUBLEBUF
 
+std::string int_to_string (int n)
+{
+  std::ostringstream oss;
+  oss << n;
+  return oss.str();
+}
+
 Game::Game ()
 {
-   state = START;
-   done = true;
+  world_map = "test";
+  xmap = 0;
+  ymap = 0;
+  state = START;
+  done = true;
 
-   if (!(screen = SDL_SetVideoMode (g_w, g_h, 32, VIDEO_FLAGS)))
-      return;
+  if (!(screen = SDL_SetVideoMode (g_w, g_h, 32, VIDEO_FLAGS)))
+    return;
 
-   SDL_EnableKeyRepeat(100, SDL_DEFAULT_REPEAT_INTERVAL);
+  SDL_EnableKeyRepeat(100, SDL_DEFAULT_REPEAT_INTERVAL);
 
   player.load ("healer.png", 8);
   done = false;
+
+  load_maps ();
 }
 
 Game::~Game ()
 {
   SDL_Quit ();
+}
+
+void Game::load_maps ()
+{
+  std::string tmp = "media/maps/" + world_map;
+
+  for (size_t y = 0; y < 3; ++y)
+    for (size_t x = 0; x < 3; ++x)
+      maps[x][y].load_map ((tmp + int_to_string (xmap + (x - 1)) + "-" +
+			    int_to_string (ymap + (y - 1))).c_str ());
 }
 
 int Game::get_state ()
@@ -65,8 +88,20 @@ void Game::process ()
 
 void Game::display ()
 {
+  SDL_Rect tmp_rect;
+
   SDL_FillRect (screen,NULL, 0x000000);
-  map.display (screen);
+
+  tmp_rect.x = tmp_rect.y = 0;
+  tmp_rect.w = WIDTH_MAP;
+  tmp_rect.h = HEIGHT_MAP;
+
+  for (size_t y = 0; y < 3; ++y)
+    for (size_t x = 0; x < 3; ++x)
+      maps[x][y].display (screen,
+			  (x - 1) * WIDTH_MAP,
+			  (y - 1) * HEIGHT_MAP);
+
   interface.display (screen);
   SDL_Flip(screen);
 }

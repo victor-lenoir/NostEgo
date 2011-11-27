@@ -19,6 +19,7 @@ struct Game
 {
   Game ();
   ~Game ();
+  void load_maps ();
   void process ();
   void display ();
   void set_state (int state_p);
@@ -26,8 +27,12 @@ struct Game
   bool done;
   SDL_Surface* screen;
   Interface interface;
-  Map map;
+  Map maps[3][3];
+
   Character player;
+  std::string world_map;
+  int xmap;
+  int ymap;
 private:
    int state;
 };

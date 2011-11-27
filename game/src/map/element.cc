@@ -4,6 +4,17 @@ Element::~Element ()
 {
 }
 
+void Element::display (SDL_Surface* screen,
+		       int offsetx,
+		       int offsety)
+{
+  animation.rect.x += offsetx;
+  animation.rect.y += offsety;
+  animation.display (screen);
+  animation.rect.x -= offsetx;
+  animation.rect.y -= offsety;
+}
+
 Element::Element (std::string element, int x, int y)
 {
   std::string element_path = "media/maps/elements/";

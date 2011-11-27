@@ -8,6 +8,8 @@
 # include <list>
 
 # include "element.hh"
+# define WIDTH_MAP 1024
+# define HEIGHT_MAP 768
 
 class Map
 {
@@ -16,8 +18,10 @@ public:
   ~Map();
   void clean ();
   void load_map (const char* map_path);
-  void display (SDL_Surface* screen);
-
+  void display (SDL_Surface* screen, int offsetx, int offsety);
+  void display_background (SDL_Surface* screen,
+			   int offsetx,
+			   int offsety);
   SDL_Surface* background;
   std::list<Element*> elements;
 };

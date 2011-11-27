@@ -15,7 +15,9 @@ class Element
 public:
   Element (std::string element, int x, int y);
   ~Element ();
-
+  void display (SDL_Surface* screen,
+		int offsetx,
+		int offsety);
   Animation animation;
 };
 #endif

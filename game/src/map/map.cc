@@ -7,11 +7,15 @@ extern Game* g;
 Map::Map ()
 {
   background = 0;
-  load_map ("media/maps/test0-0");
 }
 
 void Map::clean ()
 {
+  if (background)
+    {
+      SDL_FreeSurface (background);
+      background = 0;
+    }
   for (std::list<Element*>::iterator it = elements.begin();
        it != elements.end (); ++it)
     delete (*it);
@@ -21,6 +25,8 @@ Map::~Map ()
 {
   clean ();
 }
+
+
 void Map::load_map (const char* map_path)
 {
   std::ifstream input (map_path);
@@ -58,29 +64,38 @@ bool compare_element (Element* e1,
   return (e1->animation.rect.y < e2->animation.rect.y);
 }
 
-void Map::display (SDL_Surface* screen)
+// TODO: Optimize
+void Map::display_background (SDL_Surface* screen,
+			      int offsetx,
+			      int offsety)
+{
+  if (background)
+    {
+      SDL_Rect tmp_rect;
+
+      for (tmp_rect.y = offsety; tmp_rect.y < offsety + HEIGHT_MAP;
+           tmp_rect.y += background->h)
+	for (tmp_rect.x = offsetx; tmp_rect.x < offsetx + WIDTH_MAP;
+	     tmp_rect.x += background->w)
+	  {
+	    if ((tmp_rect.x >= 0) && (tmp_rect.x < g_w)
+		&& (tmp_rect.y >= 0) && (tmp_rect.y < g_h))
+	      SDL_BlitSurface (background, 0, screen,
+			     &tmp_rect);
+	  }
+    }
+}
+
+void Map::display (SDL_Surface* screen,
+		   int offsetx,
+		   int offsety)
 {
   bool play = false;
 
   if (g->get_state() != MAP)
     return;
 
-  if (background)
-    {
-      // TO OPTIMIZE: create a big background
-
-      SDL_Rect tmp_rect;
-
-      for (tmp_rect.y = 0; tmp_rect.y < g_h;
-	   tmp_rect.y += background->h)
-      for (tmp_rect.x = 0; tmp_rect.x < g_w;
-	   tmp_rect.x += background->w)
-	{
-
-	  SDL_BlitSurface (background, NULL, screen,
-			   &tmp_rect);
-	}
-    }
+  display_background (screen, offsetx, offsety);
   elements.sort (compare_element);
   for (std::list<Element*>::iterator it = elements.begin();
        it != elements.end (); ++it)
@@ -91,7 +106,7 @@ void Map::display (SDL_Surface* screen)
 	  g->player.display (screen);
 	  play = true;
 	}
-      (*it)->animation.display (screen);
+      (*it)->display (screen, offsetx, offsety);
     }
   if (!play)
     g->player.display (screen);
