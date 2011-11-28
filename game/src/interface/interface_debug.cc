@@ -22,6 +22,12 @@ void InterfaceDebug::display (SDL_Surface* screen)
    todisplay = "YMAP = " + int_to_string (g->ymap);
    y = add_hypertexte (opt->screen_w / 2, y, debug_font, todisplay.c_str (), 0, this, true)->h + y;
 
+   todisplay = "XOFF = " + int_to_string (g->xoff);
+   y = add_hypertexte (opt->screen_w / 2, y, debug_font, todisplay.c_str (), 0, this, true)->h + y;
+
+   todisplay = "YOFF = " + int_to_string (g->yoff);
+   y = add_hypertexte (opt->screen_w / 2, y, debug_font, todisplay.c_str (), 0, this, true)->h + y;
+
    BaseInterface<InterfaceDebug>::display (screen);
 }
 

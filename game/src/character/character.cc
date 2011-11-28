@@ -77,26 +77,25 @@ void Character::move (float x,
         animation.rect.y += (int)deltay;
     }
 
-  if (g->xoff < -(WIDTH_MAP / 2))
+  if (animation.rect.x - g->xoff > WIDTH_MAP)
     {
       g->xoff += WIDTH_MAP;
       ++g->xmap;
       g->load_maps ();
     }
-  if (g->xoff > WIDTH_MAP / 2)
+  if (animation.rect.x - g->xoff < 0)
     {
       g->xoff -= WIDTH_MAP;
       --g->xmap;
       g->load_maps ();
     }
-
-  if (g->yoff < -(HEIGHT_MAP / 2))
+  if (animation.rect.y - g->yoff > HEIGHT_MAP)
     {
       g->yoff += HEIGHT_MAP;
       ++g->ymap;
       g->load_maps ();
     }
-  if (g->yoff > (HEIGHT_MAP / 2))
+  if (animation.rect.y - g->yoff < 0)
     {
       g->yoff -= HEIGHT_MAP;
       --g->ymap;
