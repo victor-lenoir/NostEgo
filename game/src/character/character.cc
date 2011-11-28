@@ -43,8 +43,8 @@ void Character::move (float x,
   deltax *= x;
   deltay *= y;
 
-  deltax *= 10;
-  deltay *= 10;
+  deltax *= 3;
+  deltay *= 3;
   dir = dir_p;
 
   if ((int)deltax > 0)

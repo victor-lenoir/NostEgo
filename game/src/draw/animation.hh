@@ -16,6 +16,7 @@ struct Animation
 
   bool stepping;
   bool playing;
+  bool once;
   Uint32 delay_process;
   Uint32 last_process;
   int step;

@@ -11,11 +11,11 @@ std::string int_to_string (int n)
 
 Game::Game ()
 {
-   xoff = -(MAP_BUFFER / 2 - 1) * WIDTH_MAP;
-   yoff = -(MAP_BUFFER / 2 - 1) * HEIGHT_MAP;
+  //xoff = -(MAP_BUFFER / 2 - 1) * WIDTH_MAP;
+  //yoff = -(MAP_BUFFER / 2 - 1) * HEIGHT_MAP;
   world_map = "test";
-  xmap = 0;
-  ymap = 0;
+  xmap = 1;
+  ymap = 1;
   state = START;
   done = true;
 
@@ -64,10 +64,12 @@ void Game::process ()
   Uint8* keystate = SDL_GetKeyState(NULL);
 
   player.process_keyboard (keystate);
-  maps[MAP_BUFFER / 2][MAP_BUFFER / 2].process_keyboard (keystate);
+  maps[1][1].process_keyboard (keystate);
 
   while (SDL_PollEvent(&event))
     {
+      player.process_keyboard (keystate);
+      maps[1][1].process_keyboard (keystate);
       switch (event.type)
 	{
 	case SDL_MOUSEMOTION:
