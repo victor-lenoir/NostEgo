@@ -13,6 +13,6 @@ Chest::Chest (int x, int y, std::ifstream& input, std::string hash)
 
 void Chest::process_keyboard_bottom (Uint8* key)
 {
-  if (key[SDLK_UP])
+  if (key[SDLK_SPACE])
     animation.once = true;
 }

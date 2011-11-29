@@ -5,6 +5,16 @@ Element::~Element ()
 {
 }
 
+void Element::process_keyboard_general (Uint8* key)
+{
+  process_keyboard (key);
+  if ((g->player->animation.rect.x - g->xoff + g->player->animation.rect.w / 2 >= animation.rect.x) &&
+      (g->player->animation.rect.x - g->xoff + g->player->animation.rect.w / 2 <= animation.rect.x + animation.rect.w) &&
+      (g->player->animation.rect.y - g->yoff >= animation.rect.y) &&
+      (g->player->animation.rect.y - g->yoff <= animation.rect.y + animation.rect.h + 10))
+    process_keyboard_bottom (key);
+}
+
 void Element::display (SDL_Surface* screen,
 		       int offsetx,
 		       int offsety)

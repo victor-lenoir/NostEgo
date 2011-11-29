@@ -4,11 +4,12 @@
 # include <string>
 # include <iostream>
 # include <fstream>
-# include "../draw/animation.hh"
 
 # include <vector>
 # include <SDL/SDL.h>
 # include <SDL/SDL_image.h>
+
+# include "../draw/animation.hh"
 
 class Element
 {
@@ -16,14 +17,8 @@ public:
   Element (std::string element, int x, int y);
   ~Element ();
 
-   void set_global (std::string hash);
-   void process_keyboard_general (Uint8* key)
-   {
-      process_keyboard (key);
-      // if player bottom the element then
-      process_keyboard_bottom (key);
-   }
-
+  void set_global (std::string hash);
+  void process_keyboard_general (Uint8* key);
   virtual void process_keyboard (Uint8* key) {(void)key;}
   virtual void process_keyboard_bottom (Uint8* key) {(void)key;}
   void display (SDL_Surface* screen,

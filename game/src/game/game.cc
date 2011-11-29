@@ -76,7 +76,8 @@ void Game::load_maps ()
 
   for (size_t y = 0; y < MAP_BUFFER; ++y)
     for (size_t x = 0; x < MAP_BUFFER; ++x)
-      maps[x][y]->load_map ((tmp + int_to_string (xmap + (x - MAP_BUFFER / 2)) + "-" +
+      maps[x][y]->load_map ((tmp + int_to_string (xmap + (x - MAP_BUFFER / 2))
+			     + "-" +
 			    int_to_string (ymap + (y - MAP_BUFFER / 2))).c_str ());
 }
 
