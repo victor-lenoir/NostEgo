@@ -7,6 +7,7 @@ int main ()
 {
   opt = new Option;
   g = new Game;
+  g->init_game ();
   Uint32 last = 0;
   Uint32 curr = 0;
 
@@ -15,8 +16,11 @@ int main ()
       curr = SDL_GetTicks ();
       if (curr - last > (1000 / opt->fps))
       {
-	 g->process ();
-	 g->display ();
+	if (g->init)
+	  {
+	    g->process ();
+	    g->display ();
+	  }
 	 last = curr;
       }
       else

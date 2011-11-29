@@ -6,6 +6,20 @@
 # include <SDL/SDL_image.h>
 # include <SDL/SDL.h>
 
+# define SQRT2 sqrt(2) / 2.0
+
+enum
+  {
+    DOWN,
+    LEFT,
+    RIGHT,
+    UP,
+    DOWN_LEFT,
+    DOWN_RIGHT,
+    UP_LEFT,
+    UP_RIGHT
+  };
+
 class Character
 {
 public:
@@ -18,6 +32,8 @@ public:
   void stand ();
   void load (const char* img, int nimage);
 private:
+  void move_player (int deltax, int deltay);
+  void refresh_map ();
   Uint32 last;
   Uint32 curr;
 };

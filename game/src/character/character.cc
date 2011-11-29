@@ -3,80 +3,13 @@
 #include <iostream>
 #include "../map/map.hh"
 
-#define SQRT2 sqrt(2) / 2.0
-
-enum
-  {
-    DOWN,
-    LEFT,
-    RIGHT,
-    UP,
-    DOWN_LEFT,
-    DOWN_RIGHT,
-    UP_LEFT,
-    UP_RIGHT
-  };
-
 void Character::display (SDL_Surface* screen)
 {
   animation.display (screen);
 }
 
-void Character::move (float x,
-		      float y,
-		      int dir_p)
+void Character::refresh_map ()
 {
-  float deltax = 4.0;
-  float deltay = 4.0;
-  curr = SDL_GetTicks ();
-
-  if (last > 0)
-    {
-      deltax = (curr - last) / 5.0;
-      deltay = (curr - last) / 5.0;
-      if (deltax > 4.0)
-	deltax = 4.0;
-      if (deltay > 4.0)
-	deltay = 4.0;
-    }
-
-  deltax *= x;
-  deltay *= y;
-
-  deltax *= 3;
-  deltay *= 3;
-  dir = dir_p;
-
-  if ((int)deltax > 0)
-    {
-      if ((int)animation.rect.x > 3 * opt->screen_w / 4)
-	g->xoff -= (int)deltax;
-      else
-	animation.rect.x += (int)deltax;
-    }
-  else
-    {
-      if ((int)animation.rect.x < opt->screen_w / 4)
-	g->xoff -= (int)deltax;
-      else
-	animation.rect.x += (int)deltax;
-    }
-
-  if ((int)deltay > 0)
-    {
-      if ((int)animation.rect.y > 3 * opt->screen_h / 4)
-        g->yoff -= (int)deltay;
-      else
-        animation.rect.y += (int)deltay;
-    }
-  else
-    {
-      if ((int)animation.rect.y < opt->screen_h / 4)
-        g->yoff -= (int)deltay;
-      else
-        animation.rect.y += (int)deltay;
-    }
-
   if (animation.rect.x - g->xoff > WIDTH_MAP)
     {
       g->xoff += WIDTH_MAP;
@@ -101,7 +34,71 @@ void Character::move (float x,
       --g->ymap;
       g->load_maps ();
     }
+}
 
+void Character::move_player (int deltax,
+			     int deltay)
+{
+  if ((int)deltax > 0)
+    {
+      if ((int)animation.rect.x > 3 * opt->screen_w / 4)
+        g->xoff -= (int)deltax;
+      else
+        animation.rect.x += (int)deltax;
+    }
+  else
+    {
+      if ((int)animation.rect.x < opt->screen_w / 4)
+        g->xoff -= (int)deltax;
+      else
+        animation.rect.x += (int)deltax;
+    }
+
+  if ((int)deltay > 0)
+    {
+      if ((int)animation.rect.y > 3 * opt->screen_h / 4)
+        g->yoff -= (int)deltay;
+      else
+        animation.rect.y += (int)deltay;
+    }
+  else
+    {
+      if ((int)animation.rect.y < opt->screen_h / 4)
+        g->yoff -= (int)deltay;
+      else
+        animation.rect.y += (int)deltay;
+    }
+}
+
+void Character::move (float x,
+		      float y,
+		      int dir_p)
+{
+  float deltax = 4.0;
+  float deltay = 4.0;
+
+  curr = SDL_GetTicks ();
+
+  if (last > 0)
+    {
+      deltax = (curr - last) / 5.0;
+      deltay = (curr - last) / 5.0;
+      if (deltax > 4.0)
+	deltax = 4.0;
+      if (deltay > 4.0)
+	deltay = 4.0;
+    }
+
+  deltax *= x;
+  deltay *= y;
+
+  deltax *= 3;
+  deltay *= 3;
+
+  dir = dir_p;
+
+  move_player (deltax, deltay);
+  refresh_map ();
   animation.stepping = true;
   animation.mask.y = dir * (animation.img->h / 8);
   last = curr;

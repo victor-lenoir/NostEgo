@@ -1,4 +1,5 @@
 #include "element.hh"
+#include "../game/game.hh"
 
 Element::~Element ()
 {
@@ -18,6 +19,12 @@ void Element::display (SDL_Surface* screen,
   animation.rect.y = backupy;
 }
 
+void Element::set_global (std::string hash)
+{
+  global = true;
+  g->global_elements.insert (std::pair<std::string, Element*>(hash, this));
+}
+
 Element::Element (std::string element, int x, int y)
 {
   std::string element_path = "media/maps/elements/";
@@ -27,6 +34,7 @@ Element::Element (std::string element, int x, int y)
   int nimage = 1;
   int delay = 0;
 
+  global = false;
   element_path += element;
   input.open (element_path.c_str());
   if (!input.good())

@@ -5,11 +5,12 @@
 # include <string>
 # include <iostream>
 # include <SDL/SDL.h>
+# include <fstream>
 
 class Chest : public Element
 {
 public:
-  Chest (int x, int y, std::string object);
+  Chest (int x, int y, std::ifstream& input, std::string hash);
   virtual void process_keyboard_bottom (Uint8* key);
 };
 

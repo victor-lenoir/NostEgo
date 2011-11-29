@@ -16,6 +16,7 @@ public:
   Element (std::string element, int x, int y);
   ~Element ();
 
+   void set_global (std::string hash);
    void process_keyboard_general (Uint8* key)
    {
       process_keyboard (key);
@@ -29,5 +30,6 @@ public:
 		int offsetx,
 		int offsety);
   Animation animation;
+  bool global;
 };
 #endif

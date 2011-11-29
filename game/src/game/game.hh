@@ -2,10 +2,12 @@
 # define GAME_HH_
 
 # include <SDL/SDL.h>
+# include <map>
 
 # include "../interface/interface.hh"
 # include "../map/map.hh"
 # include "../character/character.hh"
+# include "../map/element.hh"
 
 # define MAP_BUFFER 5
 
@@ -23,6 +25,7 @@ struct Game
 {
   Game ();
   ~Game ();
+  void init_game ();
   void load_maps ();
   void process ();
   void display ();
@@ -30,17 +33,19 @@ struct Game
   int get_state ();
   bool done;
   SDL_Surface* screen;
-  Interface interface;
-  Map maps[MAP_BUFFER][MAP_BUFFER];
+  Interface* interface;
+  Map* maps[MAP_BUFFER][MAP_BUFFER];
 
-  Character player;
+  Character* player;
   std::string world_map;
   int xmap;
   int ymap;
   int xoff;
   int yoff;
+  bool init;
+  std::map<std::string, Element*> global_elements;
 private:
-   int state;
+  int state;
 };
 
 extern Game* g;

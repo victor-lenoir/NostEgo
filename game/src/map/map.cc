@@ -24,7 +24,8 @@ void Map::clean ()
   for (std::list<Element*>::iterator it = elements.begin();
        it != elements.end (); ++it)
     {
-      delete (*it);
+      if (!(*it)->global)
+	delete (*it);
     }
   elements.clear ();
 }
@@ -62,16 +63,28 @@ void Map::load_map (const char* map_path)
     }
   while (!input.eof())
     {
+      std::string hash = map_path;
       input >> element;
       input >> x;
       input >> y;
-      if (element == "chest")
-	{
-	  input >> element;
-	  elements.push_back (new Chest (x, y, element));
+      hash += int_to_string(x) + "#" + int_to_string(y) + "#" + element;
+      std::map<std::string, Element*>::iterator it;
+
+      if ((it = g->global_elements.find (hash)) != g->global_elements.end ())
+      {
+	  char buffer[1024];
+
+	  input.getline (buffer, 1024);
+	  elements.push_back (it->second);
 	}
       else
-      elements.push_back (new Element (element, x, y));
+	{
+	  if (element == "chest")
+	    elements.push_back (new Chest (x, y, input, hash));
+	  else
+	    elements.push_back (new Element (element, x, y));
+	}
+
     }
 }
 
@@ -117,14 +130,14 @@ void Map::display (SDL_Surface* screen,
   for (std::list<Element*>::iterator it = elements.begin();
        it != elements.end (); ++it)
     {
-      if ((!play) && (g->player.animation.rect.y <
+      if ((!play) && (g->player->animation.rect.y <
 		      (*it)->animation.rect.y))
 	{
-	  g->player.display (screen);
+	  g->player->display (screen);
 	  play = true;
 	}
       (*it)->display (screen, offsetx, offsety);
     }
   if (!play)
-    g->player.display (screen);
+    g->player->display (screen);
 }
