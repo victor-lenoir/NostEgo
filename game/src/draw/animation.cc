@@ -1,4 +1,5 @@
 #include "animation.hh"
+#include "../option/option.hh"
 #include <iostream>
 
 Animation::Animation ()
@@ -23,6 +24,10 @@ void Animation::display (SDL_Surface* screen)
   Uint32 curr_process;
 
   mask.x = step * (img->w / max_step);
+  if ((rect.x + img->w > 0)
+      && (rect.x < opt->screen_w) &&
+      (rect.y + img->h > 0)
+      && (rect.y < opt->screen_h))
   SDL_BlitSurface (img, &mask, screen, &rect);
   if ((!playing) && (!stepping) && (!once))
     return;

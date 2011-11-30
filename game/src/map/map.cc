@@ -110,7 +110,11 @@ void Map::display_background (SDL_Surface* screen,
 	  {
 	    tmp_rect.x = defx;
 	    tmp_rect.y = defy;
-	      SDL_BlitSurface (background, 0, screen,
+	    if ((tmp_rect.x + background->w > 0)
+		&& (tmp_rect.x < opt->screen_w) &&
+		(tmp_rect.y + background->h > 0)
+                && (tmp_rect.y < opt->screen_h))
+	    SDL_BlitSurface (background, 0, screen,
 			     &tmp_rect);
 	  }
     }
@@ -118,19 +122,16 @@ void Map::display_background (SDL_Surface* screen,
 
 void Map::display (SDL_Surface* screen,
 		   int offsetx,
-		   int offsety)
+		   int offsety,
+		   bool play_)
 {
-  bool play = false;
+  bool play = play_;
 
-  if (g->get_state() != MAP)
-    return;
-
-  display_background (screen, offsetx, offsety);
   elements.sort (compare_element);
   for (std::list<Element*>::iterator it = elements.begin();
        it != elements.end (); ++it)
     {
-      if ((!play) && (g->player->animation.rect.y <
+      if ((!play) && (g->player->animation.rect.y - g->yoff <
 		      (*it)->animation.rect.y))
 	{
 	  g->player->display (screen);

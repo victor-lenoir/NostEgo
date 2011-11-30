@@ -116,27 +116,30 @@ void Character::process_keyboard (Uint8 *keystate)
   if (g->get_state() != MAP)
     return;
 
-  if (keystate[SDLK_UP] && canup && keystate[SDLK_RIGHT])
+  if (keystate[SDLK_UP] && canup && keystate[SDLK_RIGHT] && canright)
     move (SQRT2, -SQRT2, UP_RIGHT);
-  else if (keystate[SDLK_DOWN] && keystate[SDLK_RIGHT])
+  else if (keystate[SDLK_DOWN] && candown && keystate[SDLK_RIGHT] && canright)
     move (SQRT2, SQRT2, DOWN_RIGHT);
-  else if (keystate[SDLK_UP] && canup && keystate[SDLK_LEFT])
+  else if (keystate[SDLK_UP] && canup && keystate[SDLK_LEFT] && canleft)
     move (-SQRT2, -SQRT2, UP_LEFT);
-  else if (keystate[SDLK_DOWN] && keystate[SDLK_LEFT])
+  else if (keystate[SDLK_DOWN] && candown && keystate[SDLK_LEFT] && canleft)
     move (-SQRT2, SQRT2, DOWN_LEFT);
   else if (keystate[SDLK_UP] && canup)
     move (0, -1, UP);
-  else if (keystate[SDLK_DOWN])
+  else if (keystate[SDLK_DOWN] && candown)
     move (0, 1, DOWN);
-  else if (keystate[SDLK_RIGHT])
+  else if (keystate[SDLK_RIGHT] && canright)
     move (1, 0, RIGHT);
-  else if (keystate[SDLK_LEFT])
+  else if (keystate[SDLK_LEFT] && canleft)
     move (-1, 0, LEFT);
   else
     {
       last = 0;
       stand ();
     }
+  canright = true;
+  canleft = true;
+  candown = true;
   canup = true;
 }
 

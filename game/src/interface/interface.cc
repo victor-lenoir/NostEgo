@@ -67,7 +67,7 @@ void Interface::display (SDL_Surface* screen)
          interface_creation.display (screen);
          break;
       case MAP:
-	 interface_debug.display (screen);
+	interface_debug.display (screen);
 	 break;
    }
 }

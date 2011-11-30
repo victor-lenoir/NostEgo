@@ -21,6 +21,9 @@ public:
   void process_keyboard_general (Uint8* key);
   virtual void process_keyboard (Uint8* key) {(void)key;}
   virtual void process_keyboard_bottom (Uint8* key) {(void)key;}
+  virtual void process_keyboard_top (Uint8* key) {(void)key;}
+  virtual void process_keyboard_left (Uint8* key) {(void)key;}
+  virtual void process_keyboard_right (Uint8* key) {(void)key;}
   void display (SDL_Surface* screen,
 		int offsetx,
 		int offsety);

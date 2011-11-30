@@ -36,8 +36,8 @@ Game::Game ()
   xoff = 0;
   yoff = 0;
   world_map = "test";
-  xmap = 1;
-  ymap = 1;
+  xmap = 0;
+  ymap = 0;
   state = START;
   done = true;
 
@@ -98,7 +98,7 @@ void Game::process ()
   Uint8* keystate = SDL_GetKeyState(NULL);
 
   player->process_keyboard (keystate);
-  maps[1][1]->process_keyboard (keystate);
+  maps[MAP_BUFFER / 2][MAP_BUFFER / 2]->process_keyboard (keystate);
 
   while (SDL_PollEvent(&event))
     {
@@ -129,12 +129,26 @@ void Game::display ()
   tmp_rect.w = WIDTH_MAP;
   tmp_rect.h = HEIGHT_MAP;
 
-  for (size_t y = 0; y < MAP_BUFFER; ++y)
-    for (size_t x = 0; x < MAP_BUFFER; ++x)
-      maps[x][y]->display (screen,
-			  (x - 1) * WIDTH_MAP + xoff,
-			  (y - 1) * HEIGHT_MAP + yoff);
 
+  if (g->get_state() == MAP)
+    {
+      for (int y = MAP_BUFFER - 1; y >= 0; --y)
+	for (size_t x = 0; x < MAP_BUFFER; ++x)
+	  {
+	    maps[x][y]->display_background (screen,
+					    (x - MAP_BUFFER / 2) * WIDTH_MAP + xoff,
+					    (y - MAP_BUFFER / 2) * HEIGHT_MAP + yoff);
+	  }
+
+    for (int y = MAP_BUFFER - 1; y >= 0; --y)
+      for (size_t x = 0; x < MAP_BUFFER; ++x)
+	{
+	  maps[x][y]->display (screen,
+			       (x - MAP_BUFFER / 2) * WIDTH_MAP + xoff,
+			       (y - MAP_BUFFER / 2) * HEIGHT_MAP + yoff,
+			       (x != MAP_BUFFER / 2) || (y != MAP_BUFFER / 2));
+	}
+    }
   interface->display (screen);
   SDL_Flip(screen);
 }

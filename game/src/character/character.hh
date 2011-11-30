@@ -33,6 +33,9 @@ public:
   void load (const char* img, int nimage);
 
   bool canup;
+  bool candown;
+  bool canright;
+  bool canleft;
 private:
   void move_player (int deltax, int deltay);
   void refresh_map ();
