@@ -7,7 +7,7 @@ Option::Option ()
   TTF_Init ();
   screen_w = SDL_GetVideoInfo()->current_w;
   screen_h = SDL_GetVideoInfo()->current_h;
-  fps = 50;
-  //video_flags |= SDL_FULLSCREEN | SDL_HWSURFACE | SDL_DOUBLEBUF;
-  video_flags |= SDL_HWSURFACE | SDL_DOUBLEBUF;
+  fps = 100;
+  video_flags |= SDL_FULLSCREEN | SDL_SWSURFACE |
+    SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_RESIZABLE;
 }

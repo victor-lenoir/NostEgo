@@ -31,6 +31,8 @@ public:
   std::string name;
   void stand ();
   void load (const char* img, int nimage);
+
+  bool canup;
 private:
   void move_player (int deltax, int deltay);
   void refresh_map ();

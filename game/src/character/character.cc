@@ -92,8 +92,8 @@ void Character::move (float x,
   deltax *= x;
   deltay *= y;
 
-  deltax *= 3;
-  deltay *= 3;
+  deltax *= 4;
+  deltay *= 4;
 
   dir = dir_p;
 
@@ -116,15 +116,15 @@ void Character::process_keyboard (Uint8 *keystate)
   if (g->get_state() != MAP)
     return;
 
-  if (keystate[SDLK_UP] && keystate[SDLK_RIGHT])
+  if (keystate[SDLK_UP] && canup && keystate[SDLK_RIGHT])
     move (SQRT2, -SQRT2, UP_RIGHT);
   else if (keystate[SDLK_DOWN] && keystate[SDLK_RIGHT])
     move (SQRT2, SQRT2, DOWN_RIGHT);
-  else if (keystate[SDLK_UP] && keystate[SDLK_LEFT])
+  else if (keystate[SDLK_UP] && canup && keystate[SDLK_LEFT])
     move (-SQRT2, -SQRT2, UP_LEFT);
   else if (keystate[SDLK_DOWN] && keystate[SDLK_LEFT])
     move (-SQRT2, SQRT2, DOWN_LEFT);
-  else if (keystate[SDLK_UP])
+  else if (keystate[SDLK_UP] && canup)
     move (0, -1, UP);
   else if (keystate[SDLK_DOWN])
     move (0, 1, DOWN);
@@ -137,11 +137,14 @@ void Character::process_keyboard (Uint8 *keystate)
       last = 0;
       stand ();
     }
+  canup = true;
 }
 
 void Character::load (const char* img, int nimage)
 {
   std::string e = "media/images/characters/";
+
+  canup = true;
   dir = 0;
   last = 0;
   e += img;
