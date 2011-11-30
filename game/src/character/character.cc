@@ -8,6 +8,11 @@ void Character::display (SDL_Surface* screen)
   animation.display (screen);
 }
 
+int Character::get_speed ()
+{
+  return 16;
+}
+
 void Character::refresh_map ()
 {
   if (animation.rect.x - g->xoff > WIDTH_MAP)
@@ -74,26 +79,11 @@ void Character::move (float x,
 		      float y,
 		      int dir_p)
 {
-  float deltax = 4.0;
-  float deltay = 4.0;
-
-  curr = SDL_GetTicks ();
-
-  if (last > 0)
-    {
-      deltax = (curr - last) / 5.0;
-      deltay = (curr - last) / 5.0;
-      if (deltax > 4.0)
-	deltax = 4.0;
-      if (deltay > 4.0)
-	deltay = 4.0;
-    }
+  float deltax = get_speed ();
+  float deltay = get_speed ();
 
   deltax *= x;
   deltay *= y;
-
-  deltax *= 4;
-  deltay *= 4;
 
   dir = dir_p;
 
@@ -101,7 +91,6 @@ void Character::move (float x,
   refresh_map ();
   animation.stepping = true;
   animation.mask.y = dir * (animation.img->h / 8);
-  last = curr;
 }
 
 void Character::stand ()
@@ -134,7 +123,6 @@ void Character::process_keyboard (Uint8 *keystate)
     move (-1, 0, LEFT);
   else
     {
-      last = 0;
       stand ();
     }
   canright = true;
@@ -149,7 +137,6 @@ void Character::load (const char* img, int nimage)
 
   canup = true;
   dir = 0;
-  last = 0;
   e += img;
   animation.load (IMG_Load (e.c_str ()), WIDTH_MAP / 2, HEIGHT_MAP / 2,
 		  nimage, 50);

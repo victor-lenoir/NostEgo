@@ -7,33 +7,43 @@ Element::~Element ()
 
 void Element::process_keyboard_general (Uint8* key)
 {
-   process_keyboard (key);
+  process_keyboard (key);
 
-   if ((g->player->animation.rect.x - g->xoff + g->player->animation.rect.w >= animation.rect.x) &&
-       (g->player->animation.rect.x - g->xoff <= animation.rect.x + animation.rect.w) &&
-       (g->player->animation.rect.y - g->yoff + g->player->animation.rect.h / 2 >= animation.rect.y) &&
-       (g->player->animation.rect.y - g->yoff + g->player->animation.rect.h / 2 <= animation.rect.y + animation.rect.h))
-   {
+  if ((g->player->animation.rect.x - g->xoff + g->player->animation.rect.w >= animation.rect.x) &&
+      (g->player->animation.rect.x - g->xoff <= animation.rect.x + animation.rect.w) &&
+      (g->player->animation.rect.y - g->yoff - g->player->get_speed () + g->player->animation.rect.h / 2 >= animation.rect.y) &&
+      (g->player->animation.rect.y - g->yoff - g->player->get_speed () + g->player->animation.rect.h / 2 <= animation.rect.y + animation.rect.h))
+    {
       g->player->canup = false;
       process_keyboard_bottom (key);
-   }
-   if ((g->player->animation.rect.x - g->xoff + g->player->animation.rect.w >= animation.rect.x) &&
-       (g->player->animation.rect.x - g->xoff <= animation.rect.x + animation.rect.w) &&
-       (g->player->animation.rect.y - g->yoff + g->player->animation.rect.h / 2 >= animation.rect.y) &&
-       (g->player->animation.rect.y - g->yoff + g->player->animation.rect.h / 2 <= animation.rect.y + animation.rect.h))
-   {
+    }
+  if ((g->player->animation.rect.x - g->xoff + g->player->animation.rect.w >= animation.rect.x) &&
+      (g->player->animation.rect.x - g->xoff <= animation.rect.x + animation.rect.w) &&
+      (g->player->animation.rect.y - g->yoff + g->player->get_speed () + g->player->animation.rect.h  >= animation.rect.y) &&
+      (g->player->animation.rect.y - g->yoff + g->player->get_speed () + g->player->animation.rect.h <= animation.rect.y + animation.rect.h))
+    {
       g->player->candown = false;
       process_keyboard_top (key);
     }
 
-  if ((g->player->animation.rect.x - g->xoff + g->player->animation.rect.w >= animation.rect.x) &&
-      (g->player->animation.rect.x - g->xoff <= animation.rect.x + animation.rect.w) &&
-      (g->player->animation.rect.y - g->yoff + g->player->animation.rect.h / 2 >= animation.rect.y) &&
-      (g->player->animation.rect.y - g->yoff + g->player->animation.rect.h / 2 <= animation.rect.y + animation.rect.h))
+  if ((g->player->animation.rect.x - g->xoff + g->player->get_speed () + g->player->animation.rect.w >= animation.rect.x) &&
+      (g->player->animation.rect.x - g->xoff + g->player->get_speed () <= animation.rect.x + animation.rect.w) &&
+      (g->player->animation.rect.y - g->yoff + g->player->animation.rect.h / 1.5 >= animation.rect.y) &&
+      (g->player->animation.rect.y - g->yoff + g->player->animation.rect.h / 1.5 <= animation.rect.y + animation.rect.h))
     {
       g->player->canright = false;
       process_keyboard_left (key);
     }
+
+  if ((g->player->animation.rect.x - g->xoff - g->player->get_speed () + g->player->animation.rect.w >= animation.rect.x) &&
+      (g->player->animation.rect.x - g->xoff - g->player->get_speed () <= animation.rect.x + animation.rect.w) &&
+      (g->player->animation.rect.y - g->yoff + g->player->animation.rect.h / 1.5 >= animation.rect.y) &&
+      (g->player->animation.rect.y - g->yoff + g->player->animation.rect.h / 1.5 <= animation.rect.y + animation.rect.h))
+    {
+      g->player->canleft = false;
+      process_keyboard_right (key);
+    }
+
 }
 
 void Element::display (SDL_Surface* screen,

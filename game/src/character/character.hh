@@ -31,7 +31,7 @@ public:
   std::string name;
   void stand ();
   void load (const char* img, int nimage);
-
+  int get_speed ();
   bool canup;
   bool candown;
   bool canright;
@@ -39,8 +39,6 @@ public:
 private:
   void move_player (int deltax, int deltay);
   void refresh_map ();
-  Uint32 last;
-  Uint32 curr;
 };
 
 #endif
