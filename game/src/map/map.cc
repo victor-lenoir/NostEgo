@@ -132,7 +132,8 @@ void Map::display (SDL_Surface* screen,
        it != elements.end (); ++it)
     {
       if ((!play) && (g->player->animation.rect.y - g->yoff <
-		      (*it)->animation.rect.y))
+		      (*it)->animation.rect.y) && (g->player->animation.rect.y + g->player->animation.rect.h -  g->yoff <
+						   (*it)->animation.rect.y + (*it)->animation.rect.h))
 	{
 	  g->player->display (screen);
 	  play = true;
