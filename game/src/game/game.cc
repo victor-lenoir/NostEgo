@@ -149,6 +149,7 @@ void Game::display ()
 			       (x != MAP_BUFFER / 2) || (y != MAP_BUFFER / 2));
 	}
     }
+
   interface->display (screen);
   SDL_Flip(screen);
 }

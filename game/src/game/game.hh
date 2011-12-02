@@ -9,7 +9,7 @@
 # include "../character/character.hh"
 # include "../map/element.hh"
 
-# define MAP_BUFFER 3
+# define MAP_BUFFER 5
 
 enum
 {

@@ -38,6 +38,7 @@ Map::~Map ()
 
 void Map::load_map (const char* map_path)
 {
+  SDL_Surface* tmp = 0;
   std::ifstream input (map_path);
   std::string background_str;
   std::string element;
@@ -51,16 +52,31 @@ void Map::load_map (const char* map_path)
        background = IMG_Load (background_str.c_str ());
        if (!background)
 	  std::cerr << "Invalid background file: " << background_str << std::endl;
-      return;
     }
-  input >> background_str;
-  if (background_str != "none")
-    {
-      background_str = "media/images/maps/background/" + background_str;
-      background = IMG_Load (background_str.c_str ());
-      if (!background)
-	std::cerr << "Invalid background file: " << background_str << std::endl;
-    }
+  else
+  {
+     input >> background_str;
+     if (background_str != "none")
+     {
+	background_str = "media/images/maps/background/" + background_str;
+	background = IMG_Load (background_str.c_str ());
+	if (!background)
+	   std::cerr << "Invalid background file: " << background_str << std::endl;
+     }
+  }
+
+  tmp = SDL_CreateRGBSurface (SDL_SWSURFACE, WIDTH_MAP, HEIGHT_MAP, 32,0,0,0,0);
+
+  SDL_Rect toblit;
+
+  for (toblit.y = 0; toblit.y < HEIGHT_MAP; toblit.y += background->h)
+     for (toblit.x = 0; toblit.x < WIDTH_MAP; toblit.x += background->w)
+	SDL_BlitSurface (background, 0, tmp, &toblit);
+  SDL_FreeSurface (background);
+  background = tmp;
+  if (!input.good ())
+     return;
+
   while (!input.eof())
     {
       std::string hash = map_path;
@@ -94,29 +110,19 @@ static bool compare_element (Element* e1,
   return (e1->animation.rect.y < e2->animation.rect.y);
 }
 
-// TODO: Optimize
 void Map::display_background (SDL_Surface* screen,
 			      int offsetx,
 			      int offsety)
 {
-  if (background)
+   if (background)
     {
+
       SDL_Rect tmp_rect;
 
-      for (int defy = offsety; defy < offsety + HEIGHT_MAP;
-           defy += background->h)
-	for (int defx = offsetx; defx < offsetx + WIDTH_MAP;
-	     defx += background->w)
-	  {
-	    tmp_rect.x = defx;
-	    tmp_rect.y = defy;
-	    if ((tmp_rect.x + background->w > 0)
-		&& (tmp_rect.x < opt->screen_w) &&
-		(tmp_rect.y + background->h > 0)
-                && (tmp_rect.y < opt->screen_h))
-	    SDL_BlitSurface (background, 0, screen,
-			     &tmp_rect);
-	  }
+      tmp_rect.x = offsetx;
+      tmp_rect.y = offsety;
+      SDL_BlitSurface (background, 0, screen,
+		       &tmp_rect);
     }
 }
 

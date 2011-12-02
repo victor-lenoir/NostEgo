@@ -18,6 +18,7 @@ int main ()
       {
 	if (g->init)
 	  {
+	    opt->curr_fps = 1000 / (curr - last);
 	    g->process ();
 	    g->display ();
 	  }
@@ -27,6 +28,7 @@ int main ()
 	SDL_Delay ((1000 / opt->fps) - (curr - last));
     }
   delete g;
+  delete opt;
   TTF_Quit ();
 
   return 0;

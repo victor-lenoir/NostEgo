@@ -8,6 +8,6 @@ Option::Option ()
   screen_w = SDL_GetVideoInfo()->current_w;
   screen_h = SDL_GetVideoInfo()->current_h;
   fps = 50;
-  video_flags |= SDL_SWSURFACE |
+  video_flags |= SDL_SWSURFACE | SDL_FULLSCREEN |
     SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_RESIZABLE;
 }

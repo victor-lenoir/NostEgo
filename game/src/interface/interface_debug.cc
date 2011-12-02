@@ -28,6 +28,9 @@ void InterfaceDebug::display (SDL_Surface* screen)
    todisplay = "YOFF = " + int_to_string (g->yoff);
    y = add_hypertexte (opt->screen_w / 2, y, debug_font, todisplay.c_str (), 0, this, true)->h + y;
 
+   todisplay = "FPS = " + int_to_string (opt->curr_fps);
+   y = add_hypertexte (opt->screen_w / 2, y, debug_font, todisplay.c_str (), 0, this, true)->h + y;
+
    BaseInterface<InterfaceDebug>::display (screen);
 }
 
