@@ -75,11 +75,12 @@ public:
       }
 
   }
-  SDL_Rect* add_image (const char* img, int x, int y, bool h_center)
+
+  SDL_Rect* add_image (std::string img_path, int x, int y, bool h_center)
   {
     Image<T>* ne = new Image<T>;
 
-    SDL_Surface* tmp = IMG_Load (img);
+    SDL_Surface* tmp = IMG_Load (img_path.c_str ());
 
     if (tmp)
       {
@@ -96,7 +97,7 @@ public:
       }
     else
       {
-	std::cerr << "Failed to load " << img << std::endl;
+	std::cerr << "Failed to load " << img_path << std::endl;
 	return 0;
       }
   }

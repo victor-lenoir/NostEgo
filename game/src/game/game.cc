@@ -97,8 +97,11 @@ void Game::process ()
   SDL_Event event;
   Uint8* keystate = SDL_GetKeyState(NULL);
 
-  player->process_keyboard (keystate);
-  maps[MAP_BUFFER / 2][MAP_BUFFER / 2]->process_keyboard (keystate);
+  if (state == MAP)
+  {
+     player->process_keyboard (keystate);
+     maps[MAP_BUFFER / 2][MAP_BUFFER / 2]->process_keyboard (keystate);
+  }
 
   while (SDL_PollEvent(&event))
     {

@@ -37,6 +37,9 @@ public:
   bool canright;
   bool canleft;
 private:
+  bool speed_init;
+  Uint32 last;
+  size_t speed;
   void move_player (int deltax, int deltay);
   void refresh_map ();
 };
