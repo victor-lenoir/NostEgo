@@ -1,6 +1,8 @@
-#include "game.hh"
 #include <iostream>
 #include <sstream>
+
+#include "game.hh"
+#include "../option/option.hh"
 
 std::string int_to_string (int n)
 {
@@ -13,13 +15,15 @@ void Game::init_game ()
 {
   if (!init)
     {
-      player = new Character;
-      interface = new Interface;
+       //player = new Character;
+       //interface = new Interface;
+      /*
       for (size_t x = 0; x < MAP_BUFFER; ++x)
 	for (size_t y = 0; y < MAP_BUFFER; ++y)
 	  maps[x][y] = new Map;
       player->load ("healer.png", 8);
       load_maps ();
+      */
       init = true;
     }
 }
@@ -27,12 +31,13 @@ void Game::init_game ()
 Game::Game ()
 {
   init = false;
-  player = 0;
-  interface = 0;
+  //player = 0;
+  //interface = 0;
+  /*
   for (size_t x = 0; x < MAP_BUFFER; ++x)
     for (size_t y = 0; y < MAP_BUFFER; ++y)
       maps[x][y] = 0;
-
+  */
   xoff = 0;
   yoff = 0;
   world_map = "test";
@@ -40,18 +45,19 @@ Game::Game ()
   ymap = 0;
   state = START;
   done = true;
-
+  /*
   if (!(screen = SDL_SetVideoMode (opt->screen_w, opt->screen_h,
 				   32,
 				   opt->video_flags)))
     return;
-
-  SDL_EnableKeyRepeat(100, SDL_DEFAULT_REPEAT_INTERVAL);
+  */
+  app = new sf::RenderWindow(sf::VideoMode(800, 600), "Nost ego");
   done = false;
 }
 
 Game::~Game ()
 {
+   /*
   std::map<std::string, Element*>::iterator it;
 
   if (player)
@@ -68,8 +74,9 @@ Game::~Game ()
        it++)
     delete it->second;
   SDL_Quit ();
+   */
 }
-
+/*
 void Game::load_maps ()
 {
   std::string tmp = "media/maps/" + world_map;
@@ -80,7 +87,7 @@ void Game::load_maps ()
 			     + "-" +
 			    int_to_string (ymap + (y - MAP_BUFFER / 2))).c_str ());
 }
-
+*/
 int Game::get_state ()
 {
    return state;
@@ -89,12 +96,13 @@ int Game::get_state ()
 void Game::set_state (int state_p)
 {
    state = state_p;
-   interface->clean ();
+   //interface->clean ();
 }
 
 void Game::process ()
 {
-  SDL_Event event;
+   //SDL_Event event;
+  /*
   Uint8* keystate = SDL_GetKeyState(NULL);
 
   if (state == MAP)
@@ -120,19 +128,14 @@ void Game::process ()
 	  break;
 	}
     }
+  */
 }
 
 void Game::display ()
 {
-  SDL_Rect tmp_rect;
+   //SDL_FillRect (screen,NULL, 0x000000);
 
-  SDL_FillRect (screen,NULL, 0x000000);
-
-  tmp_rect.x = tmp_rect.y = 0;
-  tmp_rect.w = WIDTH_MAP;
-  tmp_rect.h = HEIGHT_MAP;
-
-
+  /*
   if (g->get_state() == MAP)
     {
       for (int y = MAP_BUFFER - 1; y >= 0; --y)
@@ -152,7 +155,7 @@ void Game::display ()
 			       (x != MAP_BUFFER / 2) || (y != MAP_BUFFER / 2));
 	}
     }
-
-  interface->display (screen);
-  SDL_Flip(screen);
+  */
+  //interface->display (screen);
+  //SDL_Flip(screen);
 }

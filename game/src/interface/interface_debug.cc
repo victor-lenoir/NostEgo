@@ -10,12 +10,13 @@ void InterfaceDebug::display (SDL_Surface* screen)
    for (size_t i = 0; i < images.size(); ++i)
       delete images[i];
    images.clear ();
+   /*
    todisplay = "X = " + int_to_string (g->player->animation.rect.x);
    y = add_hypertexte (opt->screen_w / 2, y, debug_font, todisplay.c_str (), 0, this, true)->h + y;
 
    todisplay = "Y = " + int_to_string (g->player->animation.rect.y);
    y = add_hypertexte (opt->screen_w / 2, y, debug_font, todisplay.c_str (), 0, this, true)->h + y;
-
+   */
    todisplay = "XMAP = " + int_to_string (g->xmap);
    y = add_hypertexte (opt->screen_w / 2, y, debug_font, todisplay.c_str (), 0, this, true)->h + y;
 
