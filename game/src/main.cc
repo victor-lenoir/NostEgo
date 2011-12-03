@@ -19,28 +19,21 @@ int main ()
      sf::Event Event;
      while (g->app->GetEvent(Event))
      {
-	// Close window : exit
 	if (Event.Type == sf::Event::Closed)
 	   g->app->Close();
      }
+
      if (clock.GetElapsedTime() * 1000 > (1000 / opt->fps))
      {
 	g->app->Clear();
 	opt->curr_fps = clock.GetElapsedTime();
-	// Draw the sprite
-	//g->app->Draw(Sprite);
-
-	// Draw the string
-	//g->app->Draw(Text);
-
-	// Update the window
+	g->process ();
+	g->display ();
 	g->app->Display();
 	clock.Reset ();
      }
-     /*
-     else
-	sleep;
-     */
+     //else
+     //sf::Sleep((1000 / opt->fps) - clock.GetElapsedTime() * 1000);
   }
 
   delete g;

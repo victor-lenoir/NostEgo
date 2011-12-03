@@ -11,6 +11,7 @@ Interface::~Interface ()
 
 void Interface::process_keyboard (SDLKey key)
 {
+   /*
    switch (g->get_state())
     {
     case START:
@@ -20,17 +21,21 @@ void Interface::process_keyboard (SDLKey key)
       interface_creation.process_keyboard (key);
       break;
     }
+   */
 }
 
 void Interface::clean ()
 {
+   /*
    interface_start.clean ();
    interface_creation.clean ();
+   */
 }
 
 void Interface::process_mouse (int x,
 			       int y)
 {
+   /*
    switch (g->get_state())
    {
       case START:
@@ -40,11 +45,13 @@ void Interface::process_mouse (int x,
 	 interface_creation.process_mouse (x, y);
 	 break;
    }
+   */
 }
 
 void Interface::process_mouse_click (int x,
-                               int y)
+				     int y)
 {
+   /*
    switch (g->get_state())
    {
       case START:
@@ -54,10 +61,13 @@ void Interface::process_mouse_click (int x,
 	 interface_creation.process_mouse_click (x, y);
 	 break;
    }
+   */
 }
 
-void Interface::display (SDL_Surface* screen)
+void Interface::display ()
 {
+   interface_start.display ();
+   /*
    switch (g->get_state())
    {
       case START:
@@ -70,4 +80,5 @@ void Interface::display (SDL_Surface* screen)
 	interface_debug.display (screen);
 	 break;
    }
+   */
 }

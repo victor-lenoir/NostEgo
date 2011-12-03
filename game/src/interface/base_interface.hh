@@ -8,9 +8,10 @@
 # include <string>
 # include <iostream>
 # include "image.hh"
-# include "input.hh"
-# include "../draw/animation.hh"
+//# include "input.hh"
 # include "../option/option.hh"
+
+#include <SFML/Graphics.hpp>
 
 template <class T> struct Image;
 
@@ -22,45 +23,56 @@ public:
 
   ~BaseInterface ()
   {
+     /*
     for (size_t i = 0; i < images.size(); ++i)
       delete images[i];
     for (size_t i = 0; i < inputs.size(); ++i)
       delete inputs[i];
     for (size_t i = 0; i < animations.size(); ++i)
       delete animations[i];
+     */
   }
 
-  virtual void display (SDL_Surface* screen)
+  virtual void display ()
   {
+     /*
     for (size_t i = 0; i < images.size(); ++i)
       images[i]->display (screen);
     for (size_t i = 0; i < inputs.size(); ++i)
       inputs[i]->display (screen);
     for (size_t i = 0; i < animations.size(); ++i)
       animations[i]->display (screen);
+     */
   }
 
   virtual void process_mouse (int x, int y)
   {
+     /*
     for (size_t i = 0; i < images.size(); ++i)
       images[i]->process_mouse (x, y);
+     */
   }
 
   virtual void process_mouse_click (int x, int y)
   {
+     /*
     for (size_t i = 0; i < images.size(); ++i)
       images[i]->process_mouse_click (x, y);
     for (size_t i = 0; i < inputs.size(); ++i)
       inputs[i]->process_mouse_click (x, y);
+     */
   }
 
   virtual void process_keyboard (SDLKey key)
   {
+     /*
     for (size_t i = 0; i < inputs.size(); ++i)
       inputs[i]->process_keyboard (key);
+     */
   }
   virtual void clean ()
   {
+     /*
     for (size_t i = 0; i < images.size(); ++i)
       images[i]->over = false;
     for (size_t i = 0; i < inputs.size(); ++i)
@@ -73,9 +85,9 @@ public:
 	inputs[i]->focus = false;
 	inputs[i]->text = "";
       }
-
+     */
   }
-
+   /*
   SDL_Rect* add_image (std::string img_path, int x, int y, bool h_center)
   {
     Image<T>* ne = new Image<T>;
@@ -101,7 +113,20 @@ public:
 	return 0;
       }
   }
+   */
 
+   sf::FloatRect add_hypertexte (int x,
+				 int y,
+				 sf::Font font,
+				 const char* text,
+				 InterfaceHandler handler,
+				 T* owner_handler,
+				 bool h_center)
+   {
+
+   }
+
+   /*
   SDL_Rect* add_hypertexte (int x,
 			    int y,
 			    TTF_Font* font,
@@ -127,7 +152,8 @@ public:
     images.push_back (ne);
     return &images.back()->rect;
   }
-
+   */
+   /*
   SDL_Rect* add_input (int x, int y, int w, int h, TTF_Font* font)
   {
     Input* e = new Input;
@@ -154,9 +180,10 @@ public:
     animations.push_back (a);
     return &animations.back ()->rect;
   }
-
-  std::vector<Animation*> animations;
-  std::vector<Image<T>*> images;
-  std::vector<Input*>	 inputs;
+   */
+   std::vector<sf::String*> texts;
+  //std::vector<Animation*> animations;
+  //std::vector<Image<T>*> images;
+  //std::vector<Input*>	 inputs;
 };
 #endif

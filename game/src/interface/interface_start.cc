@@ -4,7 +4,7 @@
 
 void InterfaceStart::quit ()
 {
-   g->done = true;
+   g->app->Close();
 }
 
 void InterfaceStart::create_new_player ()
@@ -14,6 +14,7 @@ void InterfaceStart::create_new_player ()
 
 InterfaceStart::InterfaceStart()
 {
+   /*
   int y = 0;
 
    start_font = TTF_OpenFont("media/fonts/stonehenge.ttf", 55);
@@ -29,9 +30,9 @@ InterfaceStart::InterfaceStart()
    y = add_hypertexte (opt->screen_w / 2, y, start_font, "Exit", &InterfaceStart::quit,
 		       this,
 		       true)->h + y;
+   */
 }
 
 InterfaceStart::~InterfaceStart ()
 {
-   TTF_CloseFont (start_font);
 }

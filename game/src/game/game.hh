@@ -4,7 +4,7 @@
 # include <SFML/Graphics.hpp>
 # include <map>
 # include <string>
-//# include "../interface/interface.hh"
+# include "../interface/interface.hh"
 //# include "../map/map.hh"
 //# include "../character/character.hh"
 //# include "../map/element.hh"
@@ -32,7 +32,7 @@ struct Game
   void set_state (int state_p);
   int get_state ();
   bool done;
-   //Interface* interface;
+  Interface* interface;
   //Map* maps[MAP_BUFFER][MAP_BUFFER];
 
   //Character* player;

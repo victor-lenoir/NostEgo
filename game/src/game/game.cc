@@ -16,7 +16,7 @@ void Game::init_game ()
   if (!init)
     {
        //player = new Character;
-       //interface = new Interface;
+      interface = new Interface;
       /*
       for (size_t x = 0; x < MAP_BUFFER; ++x)
 	for (size_t y = 0; y < MAP_BUFFER; ++y)
@@ -32,7 +32,7 @@ Game::Game ()
 {
   init = false;
   //player = 0;
-  //interface = 0;
+  interface = 0;
   /*
   for (size_t x = 0; x < MAP_BUFFER; ++x)
     for (size_t y = 0; y < MAP_BUFFER; ++y)
@@ -45,13 +45,9 @@ Game::Game ()
   ymap = 0;
   state = START;
   done = true;
-  /*
-  if (!(screen = SDL_SetVideoMode (opt->screen_w, opt->screen_h,
-				   32,
-				   opt->video_flags)))
-    return;
-  */
-  app = new sf::RenderWindow(sf::VideoMode(800, 600), "Nost ego");
+  sf::VideoMode vm = sf::VideoMode::GetDesktopMode();
+
+  app = new sf::RenderWindow(vm, "Nost ego");
   done = false;
 }
 
@@ -62,8 +58,10 @@ Game::~Game ()
 
   if (player)
     delete player;
-  if (interface)
-    delete interface;
+   */
+   //if (interface)
+   // delete interface;
+  /*
   for (size_t x = 0; x < MAP_BUFFER; ++x)
     for (size_t y = 0; y < MAP_BUFFER; ++y)
       if (maps[x][y])
@@ -96,7 +94,7 @@ int Game::get_state ()
 void Game::set_state (int state_p)
 {
    state = state_p;
-   //interface->clean ();
+   interface->clean ();
 }
 
 void Game::process ()
@@ -156,6 +154,6 @@ void Game::display ()
 	}
     }
   */
-  //interface->display (screen);
+  interface->display ();
   //SDL_Flip(screen);
 }
