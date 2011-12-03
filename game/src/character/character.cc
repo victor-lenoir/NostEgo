@@ -98,6 +98,7 @@ void Character::stand ()
   animation.step = 0;
   animation.stepping = false;
   animation.playing = false;
+  animation.mask.y = dir * (animation.img->h / 8);
 }
 
 void Character::process_keyboard (Uint8 *keystate)
@@ -123,6 +124,22 @@ void Character::process_keyboard (Uint8 *keystate)
     move (-1, 0, LEFT);
   else
     {
+       if (keystate[SDLK_UP] && keystate[SDLK_RIGHT])
+	  dir = UP_RIGHT;
+       else if (keystate[SDLK_DOWN] && keystate[SDLK_RIGHT])
+	  dir = DOWN_RIGHT;
+       else if (keystate[SDLK_UP] && keystate[SDLK_LEFT])
+	  dir = UP_LEFT;
+       else if (keystate[SDLK_DOWN] && keystate[SDLK_LEFT])
+	  dir = DOWN_LEFT;
+       else if (keystate[SDLK_UP])
+	  dir = UP;
+       else if (keystate[SDLK_DOWN])
+	  dir = DOWN;
+       else if (keystate[SDLK_RIGHT])
+	  dir = RIGHT;
+       else if (keystate[SDLK_LEFT])
+	  dir = LEFT;
       stand ();
     }
   canright = true;
