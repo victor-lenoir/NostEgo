@@ -1,5 +1,5 @@
 #include "interface.hh"
-#include "../game/game.hh"
+//#include "../game/game.hh"
 
 Interface::Interface ()
 {

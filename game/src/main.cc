@@ -5,31 +5,35 @@
 
 Game* g;
 Option* opt;
+sf::RenderWindow* app;
 
 int main ()
 {
   sf::Clock clock;
+  sf::VideoMode vm = sf::VideoMode::GetDesktopMode();
+  app = new sf::RenderWindow(vm, "Nost ego");
   opt = new Option;
   g = new Game;
   g->init_game ();
 
   clock.Reset ();
-  while (g->app->IsOpened())
+
+  while (app->IsOpened())
   {
      sf::Event Event;
-     while (g->app->GetEvent(Event))
+     while (app->GetEvent(Event))
      {
 	if (Event.Type == sf::Event::Closed)
-	   g->app->Close();
+	   app->Close();
      }
 
      if (clock.GetElapsedTime() * 1000 > (1000 / opt->fps))
      {
-	g->app->Clear();
+	app->Clear();
 	opt->curr_fps = clock.GetElapsedTime();
 	g->process ();
 	g->display ();
-	g->app->Display();
+	app->Display();
 	clock.Reset ();
      }
      //else

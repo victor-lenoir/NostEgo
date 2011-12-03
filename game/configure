@@ -16,7 +16,7 @@ do
 	echo -n " $DIR$deps"  >> Makefile.inc
     done
     echo ""  >> Makefile.inc
-    echo -e "\t\${CC} -c \${CFLAGS} $file -o $OBJ" >> Makefile.inc
+    echo -e "\t\${CC} -c $file \${CFLAGS} \${IFLAGS} -o $OBJ" >> Makefile.inc
     echo "" >> Makefile.inc
 done
 

@@ -44,10 +44,6 @@ Game::Game ()
   xmap = 0;
   ymap = 0;
   state = START;
-  done = true;
-  sf::VideoMode vm = sf::VideoMode::GetDesktopMode();
-
-  app = new sf::RenderWindow(vm, "Nost ego");
   done = false;
 }
 

@@ -7,8 +7,8 @@
 # include <vector>
 
 # include "interface_start.hh"
-# include "interface_creation.hh"
-# include "interface_debug.hh"
+//# include "interface_creation.hh"
+//# include "interface_debug.hh"
 
 # include <SDL/SDL.h>
 

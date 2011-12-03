@@ -1,26 +1,17 @@
 #ifndef BASE_INTERFACE_HH_
 # define BASE_INTERFACE_HH_
 
-# include <SDL/SDL_image.h>
-# include <SDL/SDL_ttf.h>
-# include <SDL/SDL.h>
 # include <vector>
 # include <string>
 # include <iostream>
-# include "image.hh"
-//# include "input.hh"
 # include "../option/option.hh"
+# include <SFML/Graphics.hpp>
 
-#include <SFML/Graphics.hpp>
-
-template <class T> struct Image;
-
-template <class T> class BaseInterface
+template <class T>
+class BaseInterface
 {
 public:
-  typedef void (T::*InterfaceHandler)();
-public:
-
+   typedef void (T::*InterfaceHandler)();
   ~BaseInterface ()
   {
      /*
@@ -33,43 +24,8 @@ public:
      */
   }
 
-  virtual void display ()
-  {
-     /*
-    for (size_t i = 0; i < images.size(); ++i)
-      images[i]->display (screen);
-    for (size_t i = 0; i < inputs.size(); ++i)
-      inputs[i]->display (screen);
-    for (size_t i = 0; i < animations.size(); ++i)
-      animations[i]->display (screen);
-     */
-  }
+  void display ();
 
-  virtual void process_mouse (int x, int y)
-  {
-     /*
-    for (size_t i = 0; i < images.size(); ++i)
-      images[i]->process_mouse (x, y);
-     */
-  }
-
-  virtual void process_mouse_click (int x, int y)
-  {
-     /*
-    for (size_t i = 0; i < images.size(); ++i)
-      images[i]->process_mouse_click (x, y);
-    for (size_t i = 0; i < inputs.size(); ++i)
-      inputs[i]->process_mouse_click (x, y);
-     */
-  }
-
-  virtual void process_keyboard (SDLKey key)
-  {
-     /*
-    for (size_t i = 0; i < inputs.size(); ++i)
-      inputs[i]->process_keyboard (key);
-     */
-  }
   virtual void clean ()
   {
      /*
@@ -87,103 +43,29 @@ public:
       }
      */
   }
-   /*
-  SDL_Rect* add_image (std::string img_path, int x, int y, bool h_center)
-  {
-    Image<T>* ne = new Image<T>;
-
-    SDL_Surface* tmp = IMG_Load (img_path.c_str ());
-
-    if (tmp)
-      {
-	ne->img = tmp;
-	ne->rect.x = x;
-	if (h_center)
-	  ne->rect.x -= ne->img->w / 2;
-	ne->rect.y = y;
-	ne->rect.w = ne->img->w;
-	ne->rect.h = ne->img->h;
-	images.push_back (ne);
-
-	return &images.back()->rect;
-      }
-    else
-      {
-	std::cerr << "Failed to load " << img_path << std::endl;
-	return 0;
-      }
-  }
-   */
 
    sf::FloatRect add_hypertexte (int x,
 				 int y,
-				 sf::Font font,
+				 sf::Font* font,
 				 const char* text,
 				 InterfaceHandler handler,
 				 T* owner_handler,
 				 bool h_center)
    {
+      sf::String* tmp = new sf::String(text, *font, 50);
 
+      tmp->SetX (x);
+      tmp->SetY (y);
+      texts.push_back (std::pair<sf::String*,InterfaceHandler>(tmp, handler));
+      return tmp->GetRect();
    }
 
-   /*
-  SDL_Rect* add_hypertexte (int x,
-			    int y,
-			    TTF_Font* font,
-			    const char* text,
-			    InterfaceHandler handler,
-			    T* owner_handler,
-			    bool h_center)
-  {
-    Image<T>* ne = new Image<T>;
-    SDL_Color white = {255, 255, 255, 0};
-    SDL_Color red = {255, 0, 0, 0};
-
-    ne->img = TTF_RenderText_Blended(font, text, white);
-    ne->img_over = TTF_RenderText_Blended(font, text, red);
-    ne->rect.x = x;
-    if (h_center)
-      ne->rect.x -= ne->img->w / 2;
-    ne->rect.y = y;
-    ne->rect.w = ne->img->w;
-    ne->rect.h = ne->img->h;
-    ne->handler = handler;
-    ne->owner_handler = owner_handler;
-    images.push_back (ne);
-    return &images.back()->rect;
-  }
-   */
-   /*
-  SDL_Rect* add_input (int x, int y, int w, int h, TTF_Font* font)
-  {
-    Input* e = new Input;
-
-    e->rect.x = x;
-    e->rect.y = y;
-    e->rect.w = w;
-    e->rect.h = h;
-    e->font = font;
-
-    inputs.push_back (e);
-    return &inputs.back ()->rect;
-  }
-
-  SDL_Rect* add_animation (SDL_Surface* p_img,
-			   int x,
-			   int y,
-			   int p_max_step,
-			   int p_delay_process)
-  {
-    Animation* a = new Animation;
-
-    a->load (p_img, x, y, p_max_step, p_delay_process);
-    animations.push_back (a);
-    return &animations.back ()->rect;
-  }
-   */
-   std::vector<sf::String*> texts;
+   std::vector<std::pair<sf::String*,InterfaceHandler> > texts;
   //std::vector<Animation*> animations;
   //std::vector<Image<T>*> images;
   //std::vector<Input*>	 inputs;
 };
+
+#include "base_interface.hxx"
+
 #endif

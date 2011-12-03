@@ -1,7 +1,7 @@
 CFLAGS=-W -Wall -Wextra -Wfloat-equal -Wshadow -Wpointer-arith \
 -Wcast-qual -Wcast-align -Wmissing-declarations -Wunused -Winline -pedantic \
 -Wuninitialized -Winit-self
-
+IFLAGS=-I src/
 LINK=-lsfml-graphics
 CC=g++
 
@@ -11,7 +11,7 @@ clean:
 	rm -f `find . -name '*.o'`
 	rm -f `find . -name '*~'`
 	rm -f `find . -name '*#'`
-	rm -f Makefile.inc
+	#rm -f Makefile.inc
 	rm -f nostego
 
 Makefile.inc:

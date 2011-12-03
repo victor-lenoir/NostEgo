@@ -42,7 +42,6 @@ struct Game
   int xoff;
   int yoff;
   bool init;
-  sf::RenderWindow* app;
    //std::map<std::string, Element*> global_elements;
 private:
   int state;

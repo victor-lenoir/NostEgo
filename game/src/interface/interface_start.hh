@@ -10,7 +10,5 @@ public:
    ~InterfaceStart ();
   void quit ();
   void create_new_player ();
-private:
-   TTF_Font* start_font;
 };
 #endif

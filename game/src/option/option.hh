@@ -1,8 +1,7 @@
 #ifndef OPTION_HH_
 # define OPTION_HH_
 
-# include <SDL/SDL.h>
-# include <SDL/SDL_ttf.h>
+# include <SFML/Graphics.hpp>
 
 # define WIDTH_MAP 1024
 # define HEIGHT_MAP 768
@@ -18,5 +17,6 @@ struct Option
 };
 
 extern Option* opt;
+extern sf::RenderWindow* app;
 
 #endif
