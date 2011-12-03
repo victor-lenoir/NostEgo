@@ -99,8 +99,8 @@ void Game::process ()
 
   if (state == MAP)
   {
-     player->process_keyboard (keystate);
      maps[MAP_BUFFER / 2][MAP_BUFFER / 2]->process_keyboard (keystate);
+     player->process_keyboard (keystate);
   }
 
   while (SDL_PollEvent(&event))

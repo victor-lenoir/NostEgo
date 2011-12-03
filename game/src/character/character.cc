@@ -10,17 +10,7 @@ void Character::display (SDL_Surface* screen)
 
 int Character::get_speed ()
 {
-   Uint32 curr = SDL_GetTicks ();
-
-  if ((!speed_init) && (last))
-  {
-     speed_init = true;
-     speed = (curr - last) / 3;
-     last = curr;
-  }
-  else if (!speed_init)
-     last = curr;
-  return speed;
+   return ((16 * 20) / (1 + opt->curr_fps));
 }
 
 void Character::refresh_map ()
@@ -99,7 +89,6 @@ void Character::move (float x,
 
   move_player (deltax, deltay);
   refresh_map ();
-  speed_init = false;
   animation.stepping = true;
   animation.mask.y = dir * (animation.img->h / 8);
 }
@@ -134,7 +123,6 @@ void Character::process_keyboard (Uint8 *keystate)
     move (-1, 0, LEFT);
   else
     {
-      last = 0;
       stand ();
     }
   canright = true;
@@ -147,10 +135,6 @@ void Character::load (const char* img, int nimage)
 {
   std::string e = "media/images/characters/";
 
-  speed = 0;
-  speed_init = false;
-  last = 0;
-  canup = true;
   dir = 0;
   e += img;
   animation.load (IMG_Load (e.c_str ()), WIDTH_MAP / 2, HEIGHT_MAP / 2,
