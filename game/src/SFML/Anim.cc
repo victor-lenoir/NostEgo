@@ -91,7 +91,7 @@ void Anim::update()
 {
    if(isPlaying())
    {
-      if(delay())
+      if(delay() > 0.0)
       {
 	 unsigned int frameCount = (unsigned int)(m_time.GetElapsedTime()/delay());
 	 if(!isLoop() && frameCount>getSize())

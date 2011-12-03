@@ -18,9 +18,6 @@ public:
   Interface ();
   ~Interface ();
   void display ();
-  void process_mouse (int x, int y);
-  void process_mouse_click (int x, int y);
-  void process_keyboard (SDLKey key);
   void clean ();
 
   InterfaceStart interface_start;

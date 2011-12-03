@@ -18,7 +18,7 @@ InterfaceStart::InterfaceStart()
    sf::Font* stone = new sf::Font;
    if (!stone->LoadFromFile("media/fonts/stonehenge.ttf"))
       std::cerr << "Failed to load media/fonts/stonehenge.ttf" << std::endl;
-   add_hypertexte (opt->screen_w / 2, y, stone, "Create new player", 0, this, true);
+   add_hypertexte (opt->screen_w / 2, y, stone, "Create new player", 0);
 
    /*
   int y = 0;

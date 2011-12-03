@@ -1,7 +1,8 @@
 #include <SFML/Layer.hh>
 #include <iostream>
 
-Layer::Layer(const sf::Vector2f& Position, const sf::Vector2f& Scale, float Rotation, const sf::Color& Col) : Drawable(Position,Scale,Rotation,Col)
+Layer::Layer(const sf::Vector2f& Position, const sf::Vector2f& Scale_p, float Rotation, const sf::Color& Col)
+  : Drawable(Position,Scale_p,Rotation,Col)
 {
 }
 
