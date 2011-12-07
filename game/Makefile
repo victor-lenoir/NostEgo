@@ -1,4 +1,4 @@
-CFLAGS=-W -Wall -Wextra -Wfloat-equal -Wshadow -Wpointer-arith \
+CFLAGS=-W -Wall -Wextra -Werror -Wfloat-equal -Wshadow -Wpointer-arith \
 -Wcast-qual -Wcast-align -Wmissing-declarations -Wunused -Winline -pedantic \
 -Wuninitialized -Winit-self
 IFLAGS=-I src/

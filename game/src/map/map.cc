@@ -5,6 +5,7 @@
 
 Map::Map ()
 {
+  img = 0;
   background = 0;
 }
 
@@ -16,6 +17,11 @@ void Map::process_keyboard ()
 }
 void Map::clean ()
 {
+  if (img)
+    {
+      delete img;
+      img = 0;
+    }
   if (background)
     {
       delete background;
@@ -43,8 +49,8 @@ void Map::load_map (const char* map_path)
   std::string element;
   int x;
   int y;
-  sf::Image* img;
   sf::Image* tmp;
+
   clean ();
   if (!input.good ())
     background_str = "media/images/maps/background/grass.png";
@@ -59,9 +65,9 @@ void Map::load_map (const char* map_path)
   tmp->SetSmooth(true);
   img = new sf::Image;
   img->Create (WIDTH_MAP, HEIGHT_MAP);
-  for (size_t y = 0; y < HEIGHT_MAP; y += tmp->GetHeight ())
-    for (size_t x = 0; x < WIDTH_MAP; x += tmp->GetWidth ())
-      img->Copy (*tmp, x, y);
+  for (size_t j = 0; j < HEIGHT_MAP; j += tmp->GetHeight ())
+    for (size_t i = 0; i < WIDTH_MAP; i += tmp->GetWidth ())
+      img->Copy (*tmp, i, j);
   img->SetSmooth(true);
   delete tmp;
   background = new sf::Sprite (*img);

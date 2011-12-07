@@ -20,6 +20,4 @@ void Chest::process_keyboard_bottom ()
     animation->play ();
     open = true;
   }
-
-
 }

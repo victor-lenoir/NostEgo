@@ -3,6 +3,8 @@
 
 Element::~Element ()
 {
+  delete animation;
+  animation = 0;
 }
 
 void Element::process_keyboard_general ()

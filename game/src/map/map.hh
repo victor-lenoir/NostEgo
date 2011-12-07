@@ -19,6 +19,7 @@ public:
   void display_background (int offsetx,
 			   int offsety);
   sf::Sprite* background;
+  sf::Image* img;
   std::list<Element*> elements;
 };
 

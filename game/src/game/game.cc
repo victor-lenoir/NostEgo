@@ -44,8 +44,17 @@ Game::Game ()
 
 Game::~Game ()
 {
+  init = false;
   delete interface;
   delete player;
+  for (size_t x = 0; x < MAP_BUFFER; ++x)
+    for (size_t y = 0; y < MAP_BUFFER; ++y)
+      delete maps[x][y];
+  for (std::map<std::string, Element*>::iterator it = global_elements.begin();
+       it != global_elements.end (); ++it)
+    {
+        delete (it->second);
+    }
 }
 
 void Game::load_maps ()
