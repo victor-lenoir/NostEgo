@@ -17,13 +17,10 @@ void Game::init_game ()
     {
       player = new Character;
       interface = new Interface;
-      /*
       for (size_t x = 0; x < MAP_BUFFER; ++x)
 	for (size_t y = 0; y < MAP_BUFFER; ++y)
 	  maps[x][y] = new Map;
-      player->load ("healer.png", 8);
       load_maps ();
-      */
       init = true;
     }
 }
@@ -33,11 +30,9 @@ Game::Game ()
   init = false;
   player = 0;
   interface = 0;
-  /*
   for (size_t x = 0; x < MAP_BUFFER; ++x)
     for (size_t y = 0; y < MAP_BUFFER; ++y)
       maps[x][y] = 0;
-  */
   xoff = 0;
   yoff = 0;
   world_map = "test";
@@ -52,7 +47,7 @@ Game::~Game ()
   delete interface;
   delete player;
 }
-/*
+
 void Game::load_maps ()
 {
   std::string tmp = "media/maps/" + world_map;
@@ -63,7 +58,7 @@ void Game::load_maps ()
 			     + "-" +
 			    int_to_string (ymap + (y - MAP_BUFFER / 2))).c_str ());
 }
-*/
+
 int Game::get_state ()
 {
    return state;
@@ -81,7 +76,6 @@ void Game::process ()
 
   if (state == MAP)
     player->process_keyboard ();
-
   while (app->GetEvent(Event))
     {
       switch (Event.Type)
@@ -108,19 +102,25 @@ void Game::process ()
 void Game::display ()
 {
   if (g->get_state() == MAP)
-    player->display ();
-
-  /*
-  if (g->get_state() == MAP)
     {
+
+      maps[2][2]->display_background ((2 - MAP_BUFFER / 2) *
+				      WIDTH_MAP + xoff,
+				      (2 - MAP_BUFFER / 2) *
+				      HEIGHT_MAP + yoff);
+
+      /*
       for (int y = MAP_BUFFER - 1; y >= 0; --y)
 	for (size_t x = 0; x < MAP_BUFFER; ++x)
 	  {
-	    maps[x][y]->display_background (screen,
-					    (x - MAP_BUFFER / 2) * WIDTH_MAP + xoff,
-					    (y - MAP_BUFFER / 2) * HEIGHT_MAP + yoff);
+	    maps[x][y]->display_background ((x - MAP_BUFFER / 2) *
+					    WIDTH_MAP + xoff,
+					    (y - MAP_BUFFER / 2) *
+					    HEIGHT_MAP + yoff);
 	  }
-
+      */
+      player->display ();
+      /*
     for (int y = MAP_BUFFER - 1; y >= 0; --y)
       for (size_t x = 0; x < MAP_BUFFER; ++x)
 	{
@@ -131,5 +131,6 @@ void Game::display ()
 	}
     }
   */
+    }
   interface->display ();
 }

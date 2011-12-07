@@ -70,7 +70,7 @@ void Character::move_player (int deltax,
   else
     {
       if ((int)animation->GetPosition().y < opt->screen_h / 4)
-        g->yoff -= (int)deltax;
+        g->yoff -= (int)deltay;
       else
         animation->Move (0, (int)deltay);
     }

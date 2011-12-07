@@ -20,15 +20,15 @@ int main ()
 
   while (app->IsOpened())
   {
-     if (clock.GetElapsedTime() * 1000 > (1000 / opt->fps))
-     {
-	app->Clear();
-	opt->curr_fps = 1000 / (clock.GetElapsedTime() * 1000);
-	g->process ();
-	g->display ();
-	app->Display();
-	clock.Reset ();
-     }
+    //if (clock.GetElapsedTime() * 1000 > (1000 / opt->fps))
+    {
+      app->Clear();
+      opt->curr_fps = 1.f / clock.GetElapsedTime();
+      clock.Reset ();
+      g->process ();
+      g->display ();
+      app->Display();
+    }
      //else
      //sf::Sleep((1000 / opt->fps) - clock.GetElapsedTime() * 1000);
   }

@@ -11,7 +11,7 @@ clean:
 	rm -f `find . -name '*.o'`
 	rm -f `find . -name '*~'`
 	rm -f `find . -name '*#'`
-	#rm -f Makefile.inc
+	rm -f Makefile.inc
 	rm -f nostego
 
 Makefile.inc:

@@ -5,14 +5,14 @@ Chest::Chest (int x, int y, std::ifstream& input, std::string hash)
 {
   std::string object;
 
-  animation.playing = false;
+  animation->pause ();
   input >> object;
   set_global(hash);
   std::cout << "Creating chest containing = " << object << std::endl;
 }
 
-void Chest::process_keyboard_bottom (Uint8* key)
+void Chest::process_keyboard_bottom ()
 {
-  if (key[SDLK_SPACE])
-    animation.once = true;
+  //if (key[SDLK_SPACE])
+  animation->play ();
 }

@@ -1,8 +1,6 @@
 #ifndef MAP_HH_
 # define MAP_HH_
 
-# include <SDL/SDL.h>
-# include <SDL/SDL_image.h>
 # include <iostream>
 # include <string>
 # include <list>
@@ -15,13 +13,12 @@ public:
   Map ();
   ~Map();
   void clean ();
-  void process_keyboard (Uint8* keystate);
+  void process_keyboard ();
   void load_map (const char* map_path);
-  void display (SDL_Surface* screen, int offsetx, int offsety, bool play_);
-  void display_background (SDL_Surface* screen,
-			   int offsetx,
+  //void display (int offsetx, int offsety, bool play_);
+  void display_background (int offsetx,
 			   int offsety);
-  SDL_Surface* background;
+  sf::Sprite* background;
   std::list<Element*> elements;
 };
 

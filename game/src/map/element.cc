@@ -5,10 +5,10 @@ Element::~Element ()
 {
 }
 
-void Element::process_keyboard_general (Uint8* key)
+void Element::process_keyboard_general ()
 {
-  process_keyboard (key);
-
+  process_keyboard ();
+  /*
   if ((g->player->animation.rect.x - g->xoff + g->player->animation.rect.w >= animation.rect.x) &&
       (g->player->animation.rect.x - g->xoff <= animation.rect.x + animation.rect.w) &&
       (g->player->animation.rect.y - g->yoff - g->player->get_speed () + g->player->animation.rect.h / 2 >= animation.rect.y) &&
@@ -43,13 +43,13 @@ void Element::process_keyboard_general (Uint8* key)
       g->player->canleft = false;
       process_keyboard_right (key);
     }
-
+  */
 }
 
-void Element::display (SDL_Surface* screen,
-		       int offsetx,
+void Element::display (int offsetx,
 		       int offsety)
 {
+  /*
   int backupx = animation.rect.x;
   int backupy = animation.rect.y;
 
@@ -58,6 +58,7 @@ void Element::display (SDL_Surface* screen,
   animation.display (screen);
   animation.rect.x = backupx;
   animation.rect.y = backupy;
+  */
 }
 
 void Element::set_global (std::string hash)
@@ -68,6 +69,7 @@ void Element::set_global (std::string hash)
 
 Element::Element (std::string element, int x, int y)
 {
+  /*
   std::string element_path = "media/maps/elements/";
   std::string img_path = "media/images/maps/elements/";
   int enable_animation;
@@ -98,4 +100,5 @@ Element::Element (std::string element, int x, int y)
       input >> delay;
     }
   animation.load (tmp, x, y, nimage, delay);
+  */
 }

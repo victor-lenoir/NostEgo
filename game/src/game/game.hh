@@ -5,9 +5,9 @@
 # include <map>
 # include <string>
 # include "../interface/interface.hh"
-//# include "../map/map.hh"
+# include "../map/map.hh"
 # include "../character/character.hh"
-//# include "../map/element.hh"
+# include "../map/element.hh"
 
 # define MAP_BUFFER 5
 
@@ -26,14 +26,14 @@ struct Game
   Game ();
   ~Game ();
   void init_game ();
-  //void load_maps ();
+  void load_maps ();
   void process ();
   void display ();
   void set_state (int state_p);
   int get_state ();
   bool done;
   Interface* interface;
-  //Map* maps[MAP_BUFFER][MAP_BUFFER];
+  Map* maps[MAP_BUFFER][MAP_BUFFER];
 
   Character* player;
   std::string world_map;
@@ -42,7 +42,7 @@ struct Game
   int xoff;
   int yoff;
   bool init;
-   //std::map<std::string, Element*> global_elements;
+  std::map<std::string, Element*> global_elements;
 private:
   int state;
 };
