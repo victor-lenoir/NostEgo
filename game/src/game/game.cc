@@ -15,7 +15,7 @@ void Game::init_game ()
 {
   if (!init)
     {
-       //player = new Character;
+      player = new Character;
       interface = new Interface;
       /*
       for (size_t x = 0; x < MAP_BUFFER; ++x)
@@ -31,7 +31,7 @@ void Game::init_game ()
 Game::Game ()
 {
   init = false;
-  //player = 0;
+  player = 0;
   interface = 0;
   /*
   for (size_t x = 0; x < MAP_BUFFER; ++x)
@@ -77,6 +77,10 @@ void Game::set_state (int state_p)
 void Game::process ()
 {
   sf::Event Event;
+
+  if (state == MAP)
+    player->process_keyboard ();
+
   while (app->GetEvent(Event))
     {
       switch (Event.Type)
@@ -91,46 +95,19 @@ void Game::process ()
 	  interface->process_mouse_click (Event.MouseButton.X, Event.MouseButton.Y);
 	  break;
 	case sf::Event::KeyPressed:
-	  app->Close();
+	  if (Event.Key.Code == sf::Key::Escape)
+	    app->Close();
 	  break;
 	default:
 	  break;
 	}
     }
-
-   //SDL_Event event;
-  /*
-  Uint8* keystate = SDL_GetKeyState(NULL);
-
-  if (state == MAP)
-  {
-     maps[MAP_BUFFER / 2][MAP_BUFFER / 2]->process_keyboard (keystate);
-     player->process_keyboard (keystate);
-  }
-
-  while (SDL_PollEvent(&event))
-    {
-      switch (event.type)
-	{
-	case SDL_MOUSEMOTION:
-	  interface->process_mouse (event.motion.x, event.motion.y);
-	  break;
-	case SDL_MOUSEBUTTONDOWN:
-	  interface->process_mouse_click (event.motion.x, event.motion.y);
-	  break;
-	case SDL_KEYDOWN:
-	  interface->process_keyboard (event.key.keysym.sym);
-	  if(event.key.keysym.sym == SDLK_ESCAPE)
-	    done = true;
-	  break;
-	}
-    }
-  */
 }
 
 void Game::display ()
 {
-   //SDL_FillRect (screen,NULL, 0x000000);
+  if (g->get_state() == MAP)
+    player->display ();
 
   /*
   if (g->get_state() == MAP)
@@ -154,5 +131,4 @@ void Game::display ()
     }
   */
   interface->display ();
-  //SDL_Flip(screen);
 }

@@ -6,7 +6,7 @@
 # include <string>
 # include "../interface/interface.hh"
 //# include "../map/map.hh"
-//# include "../character/character.hh"
+# include "../character/character.hh"
 //# include "../map/element.hh"
 
 # define MAP_BUFFER 5
@@ -35,7 +35,7 @@ struct Game
   Interface* interface;
   //Map* maps[MAP_BUFFER][MAP_BUFFER];
 
-  //Character* player;
+  Character* player;
   std::string world_map;
   int xmap;
   int ymap;

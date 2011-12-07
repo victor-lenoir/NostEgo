@@ -1,10 +1,8 @@
 #ifndef CHARACTER_HH_
 # define CHARACTER_HH_
 
-# include "../draw/animation.hh"
 # include <string>
-# include <SDL/SDL_image.h>
-# include <SDL/SDL.h>
+# include <SFML/ImgAnim.hh>
 
 # define SQRT2 sqrt(2) / 2.0
 
@@ -23,23 +21,20 @@ enum
 class Character
 {
 public:
+  Character ();
   void move (float x, float y, int dir_p);
-  void process_keyboard (Uint8 *keystate);
-  void display (SDL_Surface* screen);
-  Animation animation;
+  void process_keyboard ();
+  void display ();
+  ImgAnim* animation;
   int dir;
   std::string name;
   void stand ();
-  void load (const char* img, int nimage);
   int get_speed ();
   bool canup;
   bool candown;
   bool canright;
   bool canleft;
 private:
-  bool speed_init;
-  Uint32 last;
-  size_t speed;
   void move_player (int deltax, int deltay);
   void refresh_map ();
 };

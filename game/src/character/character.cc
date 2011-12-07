@@ -1,20 +1,21 @@
 #include "character.hh"
 #include "../game/game.hh"
 #include <iostream>
-#include "../map/map.hh"
 
-void Character::display (SDL_Surface* screen)
+void Character::display ()
 {
-  animation.display (screen);
+  app->Draw (*animation);
 }
 
 int Character::get_speed ()
 {
-   return ((16 * 20) / (1 + opt->curr_fps));
+  return 10;
+  //return ((16 * 20) / (1 + opt->curr_fps));
 }
 
 void Character::refresh_map ()
 {
+  /*
   if (animation.rect.x - g->xoff > WIDTH_MAP)
     {
       g->xoff += WIDTH_MAP;
@@ -39,39 +40,39 @@ void Character::refresh_map ()
       --g->ymap;
       g->load_maps ();
     }
+*/
 }
-
 void Character::move_player (int deltax,
 			     int deltay)
 {
   if ((int)deltax > 0)
     {
-      if ((int)animation.rect.x > 3 * opt->screen_w / 4)
+      if ((int)animation->GetPosition().x > 3 * opt->screen_w / 4)
         g->xoff -= (int)deltax;
       else
-        animation.rect.x += (int)deltax;
+        animation->Move ((int)deltax, 0);
     }
   else
     {
-      if ((int)animation.rect.x < opt->screen_w / 4)
+      if ((int)animation->GetPosition().x < opt->screen_w / 4)
         g->xoff -= (int)deltax;
       else
-        animation.rect.x += (int)deltax;
+	animation->Move ((int)deltax, 0);
     }
 
   if ((int)deltay > 0)
     {
-      if ((int)animation.rect.y > 3 * opt->screen_h / 4)
+      if ((int)animation->GetPosition().y > 3 * opt->screen_h / 4)
         g->yoff -= (int)deltay;
       else
-        animation.rect.y += (int)deltay;
+        animation->Move (0, (int)deltay);
     }
   else
     {
-      if ((int)animation.rect.y < opt->screen_h / 4)
-        g->yoff -= (int)deltay;
+      if ((int)animation->GetPosition().y < opt->screen_h / 4)
+        g->yoff -= (int)deltax;
       else
-        animation.rect.y += (int)deltay;
+        animation->Move (0, (int)deltay);
     }
 }
 
@@ -87,60 +88,62 @@ void Character::move (float x,
 
   dir = dir_p;
 
+  animation->setAnimRow(dir);
+  animation->play ();
   move_player (deltax, deltay);
   refresh_map ();
-  animation.stepping = true;
-  animation.mask.y = dir * (animation.img->h / 8);
 }
 
 void Character::stand ()
 {
-  animation.step = 0;
-  animation.stepping = false;
-  animation.playing = false;
-  animation.mask.y = dir * (animation.img->h / 8);
+  animation->setAnimRow(dir);
+  animation->setFrame (0);
 }
 
-void Character::process_keyboard (Uint8 *keystate)
-{
-  if (g->get_state() != MAP)
-    return;
 
-  if (keystate[SDLK_UP] && canup && keystate[SDLK_RIGHT] && canright)
+void Character::process_keyboard ()
+{
+  bool up = app->GetInput().IsKeyDown (sf::Key::Up);
+  bool down =app->GetInput().IsKeyDown (sf::Key::Down);
+  bool left =app->GetInput().IsKeyDown (sf::Key::Left);
+  bool right =app->GetInput().IsKeyDown (sf::Key::Right);
+
+  if (up && canup && right && canright)
     move (SQRT2, -SQRT2, UP_RIGHT);
-  else if (keystate[SDLK_DOWN] && candown && keystate[SDLK_RIGHT] && canright)
+  else if (down && candown && right && canright)
     move (SQRT2, SQRT2, DOWN_RIGHT);
-  else if (keystate[SDLK_UP] && canup && keystate[SDLK_LEFT] && canleft)
+  else if (up && canup && left && canleft)
     move (-SQRT2, -SQRT2, UP_LEFT);
-  else if (keystate[SDLK_DOWN] && candown && keystate[SDLK_LEFT] && canleft)
+  else if (down && candown && left && canleft)
     move (-SQRT2, SQRT2, DOWN_LEFT);
-  else if (keystate[SDLK_UP] && canup)
+  else if (up && canup)
     move (0, -1, UP);
-  else if (keystate[SDLK_DOWN] && candown)
+  else if (down && candown)
     move (0, 1, DOWN);
-  else if (keystate[SDLK_RIGHT] && canright)
+  else if (right && canright)
     move (1, 0, RIGHT);
-  else if (keystate[SDLK_LEFT] && canleft)
+  else if (left && canleft)
     move (-1, 0, LEFT);
   else
     {
-       if (keystate[SDLK_UP] && keystate[SDLK_RIGHT])
+      animation->stop ();
+       if (up && right)
 	  dir = UP_RIGHT;
-       else if (keystate[SDLK_DOWN] && keystate[SDLK_RIGHT])
+       else if (down && right)
 	  dir = DOWN_RIGHT;
-       else if (keystate[SDLK_UP] && keystate[SDLK_LEFT])
+       else if (up && left)
 	  dir = UP_LEFT;
-       else if (keystate[SDLK_DOWN] && keystate[SDLK_LEFT])
+       else if (down && left)
 	  dir = DOWN_LEFT;
-       else if (keystate[SDLK_UP])
+       else if (up)
 	  dir = UP;
-       else if (keystate[SDLK_DOWN])
+       else if (down)
 	  dir = DOWN;
-       else if (keystate[SDLK_RIGHT])
+       else if (right)
 	  dir = RIGHT;
-       else if (keystate[SDLK_LEFT])
+       else if (left)
 	  dir = LEFT;
-      stand ();
+       stand ();
     }
   canright = true;
   canleft = true;
@@ -148,15 +151,15 @@ void Character::process_keyboard (Uint8 *keystate)
   canup = true;
 }
 
-void Character::load (const char* img, int nimage)
-{
-  std::string e = "media/images/characters/";
 
-  dir = 0;
-  e += img;
-  animation.load (IMG_Load (e.c_str ()), WIDTH_MAP / 2, HEIGHT_MAP / 2,
-		  nimage, 50);
-  animation.mask.h /= 8;
-  animation.playing = false;
-  animation.mask.y = dir * (animation.img->h / 8);
-}
+ Character::Character ()
+ {
+   sf::Image* img = new sf::Image;
+   dir = DOWN;
+   img->LoadFromFile("media/images/characters/healer.png");
+   img->SetSmooth(true);
+   animation = new ImgAnim (img, 8, 8);
+   animation->SetX (WIDTH_MAP / 2);
+   animation->SetY (HEIGHT_MAP / 2);
+   animation->pause ();
+ }
