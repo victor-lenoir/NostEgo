@@ -9,34 +9,22 @@ void InterfaceCreation::previous ()
 
 void InterfaceCreation::confirm ()
 {
-   std::string name = inputs[0]->text;
-
    g->set_state (MAP);
 }
 
 InterfaceCreation::InterfaceCreation()
 {
-  int y = 0;
-
-   creation_font = TTF_OpenFont("media/fonts/stonehenge.ttf", 55);
-   if (!creation_font)
-      std::cout << "TTF OpenFont = " << TTF_GetError() << std::endl;
-
-   add_image ("media/images/interface/start.png", opt->screen_w / 2, 100, true);
-   y = 350;
-   input_font = TTF_OpenFont("media/fonts/stonehenge.ttf", 30);
-   add_input (opt->screen_w / 2, y + 20, 300, 40, input_font);
-
-   y = add_hypertexte (opt->screen_w / 2 - 150, y, creation_font, "Name:", 0, this,
-		       false)->h + y + 30;
-   y = add_hypertexte (opt->screen_w / 2, y, creation_font, "Confirm",
-		       &InterfaceCreation::confirm, this, true)->h + y;
-   y = add_hypertexte (opt->screen_w / 2, y, creation_font, "Back",
-		       &InterfaceCreation::previous, this, true)->h + y;
+  int y = 100;
+  stone = new sf::Font;
+  if (!stone->LoadFromFile("media/fonts/stonehenge.ttf"))
+    std::cerr << "Failed to load media/fonts/stonehenge.ttf" << std::endl;
+  y += add_animation (opt->screen_w / 2, y, 1, 1, "media/images/interface/start.png", this, 0, true).GetHeight ();
+  y += 100;
+  y += add_hypertexte (opt->screen_w / 2, y, stone, "Confirm", this, &InterfaceCreation::confirm, true).GetHeight ();
+  y += add_hypertexte (opt->screen_w / 2, y, stone, "Back", this, &InterfaceCreation::previous, true).GetHeight ();
 }
 
 InterfaceCreation::~InterfaceCreation ()
 {
-  TTF_CloseFont (creation_font);
-  TTF_CloseFont (input_font);
+  delete stone;
 }

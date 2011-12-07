@@ -11,7 +11,7 @@ int main ()
 {
   sf::Clock clock;
   sf::VideoMode vm = sf::VideoMode::GetDesktopMode();
-  app = new sf::RenderWindow(vm, "Nost ego");
+  app = new sf::RenderWindow(vm, "Nost ego", sf::Style::Fullscreen);
   opt = new Option;
   g = new Game;
   g->init_game ();
@@ -20,13 +20,6 @@ int main ()
 
   while (app->IsOpened())
   {
-     sf::Event Event;
-     while (app->GetEvent(Event))
-     {
-	if (Event.Type == sf::Event::Closed)
-	   app->Close();
-     }
-
      if (clock.GetElapsedTime() * 1000 > (1000 / opt->fps))
      {
 	app->Clear();

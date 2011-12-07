@@ -1,5 +1,5 @@
 #include "interface.hh"
-//#include "../game/game.hh"
+#include "../game/game.hh"
 
 Interface::Interface ()
 {
@@ -9,29 +9,50 @@ Interface::~Interface ()
 {
 }
 
+void Interface::process_mouse_click (int x,
+				     int y)
+{
+  switch (g->get_state())
+    {
+    case START:
+      interface_start.process_mouse_click (x, y);
+      break;
+    case CREATION:
+      interface_creation.process_mouse_click (x, y);
+      break;
+    }
+}
+
+void Interface::process_mouse_move (int x,
+				    int y)
+{
+  switch (g->get_state())
+    {
+    case START:
+      interface_start.process_mouse_move (x, y);
+      break;
+    case CREATION:
+      interface_creation.process_mouse_move (x, y);
+      break;
+    }
+}
+
 void Interface::clean ()
 {
-   /*
-   interface_start.clean ();
-   interface_creation.clean ();
-   */
 }
 
 void Interface::display ()
 {
-   interface_start.display ();
-   /*
    switch (g->get_state())
    {
       case START:
-	 interface_start.display (screen);
+	 interface_start.display ();
 	 break;
       case CREATION:
-         interface_creation.display (screen);
+         interface_creation.display ();
          break;
       case MAP:
-	interface_debug.display (screen);
+	//interface_debug.display (screen);
 	 break;
    }
-   */
 }

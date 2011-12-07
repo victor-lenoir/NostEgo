@@ -1,18 +1,22 @@
 #include <SFML/ImgAnim.hh>
 
-ImgAnim::ImgAnim(const sf::Image &Img, const unsigned int &nbFrame, const unsigned int &line,
+ImgAnim::ImgAnim(sf::Image* Img, const unsigned int &nbFrame, const unsigned int &line,
 		 const sf::Vector2f &Position, const sf::Vector2f &Scale_p,float Rotation, const sf::Color &Col)
-   : sf::Sprite(Img,Position,Scale_p,Rotation,Col)
+   : sf::Sprite(*Img,Position,Scale_p,Rotation,Col)
 {
    m_animRow=0;
+   Img_ = Img;
    //Le constructeur par défaut prend en compte qu'il n'y a aucun offset
-   SetSubRect(sf::IntRect(0,0,Img.GetWidth()/nbFrame,Img.GetHeight()/line));
+   SetSubRect(sf::IntRect(0,0,Img->GetWidth()/nbFrame,Img->GetHeight()/line));
    m_xOffset=0;
    m_yOffset=0;
    m_size=nbFrame;
 }
 
-
+ImgAnim::~ImgAnim ()
+{
+  delete Img_;
+}
 void ImgAnim::setAnimRow(const unsigned int &row)
 {
    m_animRow=row;

@@ -10,5 +10,7 @@ public:
    ~InterfaceStart ();
   void quit ();
   void create_new_player ();
+private:
+  sf::Font* stone;
 };
 #endif

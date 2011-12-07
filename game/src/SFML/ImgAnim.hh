@@ -19,7 +19,7 @@ public:
     *\param line Nombre de ligne d'animation
     *\param leReste Voir la documentation de sf::Sprite
     */
-   ImgAnim(const sf::Image &Img, const unsigned int &nbFrame, const unsigned int &line=1,
+   ImgAnim(sf::Image* Img, const unsigned int &nbFrame, const unsigned int &line=1,
 	   const sf::Vector2f &Position=sf::Vector2f(0, 0),
 	   const sf::Vector2f &Scale=sf::Vector2f(1, 1), float Rotation=0.f,
 	   const sf::Color &Col=sf::Color(255, 255, 255, 255));
@@ -51,7 +51,7 @@ public:
 
    //!Définis le nombre de frame dans l'animation
    void setSize(const unsigned int &size);
-
+  ~ImgAnim ();
    //!Retourne le nombre de frame
    virtual unsigned int getSize() const;
 protected:
@@ -59,6 +59,7 @@ protected:
 
 private:
    //!Représente le nombre de frame dans l'animation
+  sf::Image* Img_;
    unsigned int m_size;
    //!Ligne d'animation courante
    unsigned int m_animRow;

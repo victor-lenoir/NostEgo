@@ -49,26 +49,7 @@ Game::Game ()
 
 Game::~Game ()
 {
-   /*
-  std::map<std::string, Element*>::iterator it;
-
-  if (player)
-    delete player;
-   */
-   //if (interface)
-   // delete interface;
-  /*
-  for (size_t x = 0; x < MAP_BUFFER; ++x)
-    for (size_t y = 0; y < MAP_BUFFER; ++y)
-      if (maps[x][y])
-	delete maps[x][y];
-
-  for (it = global_elements.begin();
-       it != global_elements.end();
-       it++)
-    delete it->second;
-  SDL_Quit ();
-   */
+  delete interface;
 }
 /*
 void Game::load_maps ()
@@ -95,6 +76,28 @@ void Game::set_state (int state_p)
 
 void Game::process ()
 {
+  sf::Event Event;
+  while (app->GetEvent(Event))
+    {
+      switch (Event.Type)
+	{
+	case sf::Event::Closed:
+	  app->Close();
+	  break;
+	case sf::Event::MouseMoved:
+	  interface->process_mouse_move (Event.MouseMove.X, Event.MouseMove.Y);
+	  break;
+	case sf::Event::MouseButtonPressed:
+	  interface->process_mouse_click (Event.MouseButton.X, Event.MouseButton.Y);
+	  break;
+	case sf::Event::KeyPressed:
+	  app->Close();
+	  break;
+	default:
+	  break;
+	}
+    }
+
    //SDL_Event event;
   /*
   Uint8* keystate = SDL_GetKeyState(NULL);

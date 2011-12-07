@@ -11,8 +11,7 @@ public:
   void previous ();
   void confirm ();
 private:
-  TTF_Font* creation_font;
-  TTF_Font* input_font;
+  sf::Font* stone;
 };
 
 #endif
