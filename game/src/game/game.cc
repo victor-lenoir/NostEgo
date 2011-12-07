@@ -56,14 +56,14 @@ Game::~Game ()
         delete (it->second);
     }
 }
-void Game::reload_maps (int i, int j)
+void Game::reload_maps (int o, int p)
 {
     size_t x = 0;
     size_t y = 0;
     std::string tmp = "media/maps/" + world_map;
     Map* backup[MAP_BUFFER];
 
-    if (i == 1)
+    if (o == 1)
     {
         for (size_t k = 0; k < MAP_BUFFER; ++k)
             backup[k] = maps[0][k];
@@ -80,7 +80,7 @@ void Game::reload_maps (int i, int j)
 			    int_to_string (ymap + (y - MAP_BUFFER / 2))).c_str ());
         }
     }
-    else if (i == -1)
+    else if (o == -1)
     {
         for (size_t k = 0; k < MAP_BUFFER; ++k)
             backup[k] = maps[MAP_BUFFER - 1][k];
@@ -97,7 +97,7 @@ void Game::reload_maps (int i, int j)
 			    int_to_string (ymap + (y - MAP_BUFFER / 2))).c_str ());
         }
     }
-    else  if (j == 1)
+    else  if (p == 1)
     {
         for (size_t k = 0; k < MAP_BUFFER; ++k)
             backup[k] = maps[k][0];
@@ -114,7 +114,7 @@ void Game::reload_maps (int i, int j)
 			    int_to_string (ymap + (y - MAP_BUFFER / 2))).c_str ());
         }
     }
-    else  if (j == -1)
+    else  if (p == -1)
     {
         for (size_t k = 0; k < MAP_BUFFER; ++k)
             backup[k] = maps[k][MAP_BUFFER - 1];
