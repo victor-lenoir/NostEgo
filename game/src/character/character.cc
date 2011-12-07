@@ -152,14 +152,19 @@ void Character::process_keyboard ()
 }
 
 
- Character::Character ()
- {
-   sf::Image* img = new sf::Image;
-   dir = DOWN;
-   img->LoadFromFile("media/images/characters/healer.png");
-   img->SetSmooth(true);
-   animation = new ImgAnim (img, 8, 8);
-   animation->SetX (WIDTH_MAP / 2);
-   animation->SetY (HEIGHT_MAP / 2);
-   animation->pause ();
- }
+Character::Character ()
+{
+  sf::Image* img = new sf::Image;
+  dir = DOWN;
+  img->LoadFromFile("media/images/characters/healer.png");
+  img->SetSmooth(true);
+  animation = new ImgAnim (img, 8, 8);
+  animation->SetX (WIDTH_MAP / 2);
+  animation->SetY (HEIGHT_MAP / 2);
+  animation->pause ();
+}
+
+Character::~Character ()
+{
+  delete animation;
+}

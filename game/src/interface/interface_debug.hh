@@ -8,8 +8,8 @@ class InterfaceDebug : public BaseInterface<InterfaceDebug>
 public:
    InterfaceDebug ();
    ~InterfaceDebug ();
-   void display (SDL_Surface* screen);
+  virtual void display ();
 private:
-   TTF_Font* debug_font;
+  sf::Font* stone;
 };
 #endif

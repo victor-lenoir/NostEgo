@@ -50,6 +50,7 @@ Game::Game ()
 Game::~Game ()
 {
   delete interface;
+  delete player;
 }
 /*
 void Game::load_maps ()

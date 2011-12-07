@@ -52,7 +52,7 @@ void Interface::display ()
          interface_creation.display ();
          break;
       case MAP:
-	//interface_debug.display (screen);
+	interface_debug.display ();
 	 break;
    }
 }

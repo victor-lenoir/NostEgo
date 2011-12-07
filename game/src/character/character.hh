@@ -22,6 +22,7 @@ class Character
 {
 public:
   Character ();
+  ~Character ();
   void move (float x, float y, int dir_p);
   void process_keyboard ();
   void display ();

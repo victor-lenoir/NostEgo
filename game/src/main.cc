@@ -23,7 +23,7 @@ int main ()
      if (clock.GetElapsedTime() * 1000 > (1000 / opt->fps))
      {
 	app->Clear();
-	opt->curr_fps = clock.GetElapsedTime();
+	opt->curr_fps = 1000 / (clock.GetElapsedTime() * 1000);
 	g->process ();
 	g->display ();
 	app->Display();

@@ -8,7 +8,7 @@
 
 # include "interface_start.hh"
 # include "interface_creation.hh"
-//# include "interface_debug.hh"
+# include "interface_debug.hh"
 
 class Interface
 {
@@ -21,7 +21,7 @@ public:
   void process_mouse_click (int x, int y);
   InterfaceStart interface_start;
   InterfaceCreation interface_creation;
-   //InterfaceDebug interface_debug;
+  InterfaceDebug interface_debug;
 };
 
 #endif
