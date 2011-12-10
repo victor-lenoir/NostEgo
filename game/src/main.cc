@@ -6,11 +6,14 @@
 Game* g;
 Option* opt;
 sf::RenderWindow* app;
+MemoryManager<sf::Image>* img_mng;
 
 int main ()
 {
   sf::Clock clock;
   sf::VideoMode vm = sf::VideoMode::GetDesktopMode();
+
+  img_mng = new MemoryManager<sf::Image>;
   app = new sf::RenderWindow(vm, "Nost ego", sf::Style::Fullscreen);
   opt = new Option;
   g = new Game;
@@ -35,6 +38,7 @@ int main ()
 
   delete g;
   delete opt;
+  delete img_mng;
 
   return 0;
 }

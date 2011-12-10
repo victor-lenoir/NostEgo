@@ -68,7 +68,7 @@ Element::Element (std::string element, int x, int y)
   std::ifstream input;
   int nimage = 1;
   float delay = 1.0;
-  sf::Image* img = new sf::Image;
+  sf::Image* img;
 
   global = false;
   element_path += element;
@@ -86,8 +86,11 @@ Element::Element (std::string element, int x, int y)
       input >> nimage;
       input >> delay;
     }
-   img->LoadFromFile(img_path.c_str ());
-   img->SetSmooth(true);
+  if (!img_mng->get (img_path.c_str (), img))
+    {
+      img->LoadFromFile(img_path.c_str ());
+      img->SetSmooth(true);
+    }
    animation = new ImgAnim (delay, img, nimage, 1);
    animation->SetX (x);
    animation->SetY (y);

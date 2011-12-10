@@ -19,7 +19,7 @@ void Map::clean ()
 {
   if (img)
     {
-      delete img;
+      img_mng->free (img);
       img = 0;
     }
   if (background)
@@ -49,7 +49,7 @@ void Map::load_map (const char* map_path)
   std::string element;
   int x;
   int y;
-  sf::Image* tmp;
+  std::string hash_background;
 
   clean ();
   if (!input.good ())
@@ -60,16 +60,21 @@ void Map::load_map (const char* map_path)
       background_str = "media/images/maps/background/" + background_str;
     }
 
-  tmp = new sf::Image;
-  tmp->LoadFromFile(background_str.c_str ());
-  tmp->SetSmooth(true);
-  img = new sf::Image;
-  img->Create (WIDTH_MAP, HEIGHT_MAP);
-  for (size_t j = 0; j < HEIGHT_MAP; j += tmp->GetHeight ())
-    for (size_t i = 0; i < WIDTH_MAP; i += tmp->GetWidth ())
-      img->Copy (*tmp, i, j);
-  img->SetSmooth(true);
-  delete tmp;
+  hash_background = "background_" + background_str;
+
+  if (!img_mng->get(hash_background.c_str (), img))
+    {
+      sf::Image tmp;
+
+      tmp.LoadFromFile(background_str.c_str ());
+      tmp.SetSmooth(true);
+      img->Create (WIDTH_MAP, HEIGHT_MAP);
+      for (size_t j = 0; j < HEIGHT_MAP; j += tmp.GetHeight ())
+	for (size_t i = 0; i < WIDTH_MAP; i += tmp.GetWidth ())
+	  img->Copy (tmp, i, j);
+      img->SetSmooth(true);
+    }
+
   background = new sf::Sprite (*img);
   if (!background)
     std::cerr << "Invalid background file: " << background_str << std::endl;

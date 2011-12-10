@@ -1,4 +1,5 @@
 #include <SFML/ImgAnim.hh>
+# include <option/option.hh>
 
 ImgAnim::ImgAnim(float delay_p, sf::Image* Img, const unsigned int &nbFrame, const unsigned int &line,
 		 const sf::Vector2f &Position, const sf::Vector2f &Scale_p,float Rotation, const sf::Color &Col)
@@ -15,7 +16,7 @@ ImgAnim::ImgAnim(float delay_p, sf::Image* Img, const unsigned int &nbFrame, con
 
 ImgAnim::~ImgAnim ()
 {
-  delete Img_;
+  img_mng->free (Img_);
 }
 void ImgAnim::setAnimRow(const unsigned int &row)
 {

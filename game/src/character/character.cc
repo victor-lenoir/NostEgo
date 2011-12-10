@@ -151,10 +151,13 @@ void Character::process_keyboard ()
 
 Character::Character ()
 {
-  sf::Image* img = new sf::Image;
+  sf::Image* img;
   dir = DOWN;
-  img->LoadFromFile("media/images/characters/healer.png");
-  img->SetSmooth(true);
+  if (!img_mng->get ("media/images/characters/healer.png", img))
+    {
+      img->LoadFromFile("media/images/characters/healer.png");
+      img->SetSmooth(true);
+    }
   animation = new ImgAnim (0.05, img, 8, 8);
   animation->SetX (WIDTH_MAP / 2);
   animation->SetY (HEIGHT_MAP / 2);
