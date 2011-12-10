@@ -60,7 +60,7 @@ void Element::set_global (std::string hash)
   g->global_elements.insert (std::pair<std::string, Element*>(hash, this));
 }
 
-Element::Element (std::string element, int x, int y)
+Element::Element (std::string element, int x, int y, int nanim)
 {
   std::string element_path = "media/maps/elements/";
   std::string img_path = "media/images/maps/elements/";
@@ -91,7 +91,7 @@ Element::Element (std::string element, int x, int y)
       img->LoadFromFile(img_path.c_str ());
       img->SetSmooth(true);
     }
-   animation = new ImgAnim (delay, img, nimage, 1);
+   animation = new ImgAnim (delay, img, nimage, nanim);
    animation->SetX (x);
    animation->SetY (y);
 }

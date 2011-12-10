@@ -12,7 +12,7 @@
 class Element
 {
 public:
-  Element (std::string element, int x, int y);
+  Element (std::string element, int x, int y, int nanim);
   ~Element ();
 
   void set_global (std::string hash);

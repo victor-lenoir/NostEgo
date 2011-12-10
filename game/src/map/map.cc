@@ -2,6 +2,7 @@
 #include <fstream>
 #include "../game/game.hh"
 #include "chest.hh"
+#include "monster.hh"
 
 Map::Map ()
 {
@@ -102,8 +103,10 @@ void Map::load_map (const char* map_path)
         {
           if (element == "chest")
             elements.push_back (new Chest (x, y, input, hash));
+          else if (element[0] == '_')
+            elements.push_back (new Monster (x, y, input, hash, element));
           else
-            elements.push_back (new Element (element, x, y));
+            elements.push_back (new Element (element, x, y, 1));
         }
     }
 }

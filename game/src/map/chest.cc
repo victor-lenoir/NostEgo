@@ -2,7 +2,7 @@
 #include "../option/option.hh"
 
 Chest::Chest (int x, int y, std::ifstream& input, std::string hash)
-  : Element ("chest", x, y)
+  : Element ("chest", x, y, 1)
 {
   std::string object;
 
