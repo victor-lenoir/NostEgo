@@ -20,6 +20,7 @@ public:
   virtual void process_mouse_click (int x, int y);
   sf::IntRect add_animation (int x,
 			       int y,
+			       float delay_p,
 			       int nanimation,
 			       int nframe,
 			       const char* img_path,

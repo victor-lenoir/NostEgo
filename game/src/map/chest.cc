@@ -1,4 +1,5 @@
 #include "chest.hh"
+#include "../option/option.hh"
 
 Chest::Chest (int x, int y, std::ifstream& input, std::string hash)
   : Element ("chest", x, y)
@@ -6,13 +7,19 @@ Chest::Chest (int x, int y, std::ifstream& input, std::string hash)
   std::string object;
 
   animation->pause ();
+  animation->once = true;
   input >> object;
   set_global(hash);
-  std::cout << "Creating chest containing = " << object << std::endl;
+  open = false;
 }
 
 void Chest::process_keyboard_bottom ()
 {
-  //if (key[SDLK_SPACE])
-  animation->play ();
+  if ((!open) && (app->GetInput().IsKeyDown (sf::Key::Space)))
+  {
+    animation->play ();
+    open = true;
+  }
+
+
 }

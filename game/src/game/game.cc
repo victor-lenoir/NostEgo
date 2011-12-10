@@ -75,7 +75,11 @@ void Game::process ()
   sf::Event Event;
 
   if (state == MAP)
+  {
+    maps[MAP_BUFFER / 2][MAP_BUFFER / 2]->process_keyboard ();
     player->process_keyboard ();
+  }
+
   while (app->GetEvent(Event))
     {
       switch (Event.Type)
@@ -103,13 +107,6 @@ void Game::display ()
 {
   if (g->get_state() == MAP)
     {
-
-      maps[2][2]->display_background ((2 - MAP_BUFFER / 2) *
-				      WIDTH_MAP + xoff,
-				      (2 - MAP_BUFFER / 2) *
-				      HEIGHT_MAP + yoff);
-
-      /*
       for (int y = MAP_BUFFER - 1; y >= 0; --y)
 	for (size_t x = 0; x < MAP_BUFFER; ++x)
 	  {
@@ -118,19 +115,13 @@ void Game::display ()
 					    (y - MAP_BUFFER / 2) *
 					    HEIGHT_MAP + yoff);
 	  }
-      */
-      player->display ();
-      /*
     for (int y = MAP_BUFFER - 1; y >= 0; --y)
       for (size_t x = 0; x < MAP_BUFFER; ++x)
 	{
-	  maps[x][y]->display (screen,
-			       (x - MAP_BUFFER / 2) * WIDTH_MAP + xoff,
+	  maps[x][y]->display ((x - MAP_BUFFER / 2) * WIDTH_MAP + xoff,
 			       (y - MAP_BUFFER / 2) * HEIGHT_MAP + yoff,
 			       (x != MAP_BUFFER / 2) || (y != MAP_BUFFER / 2));
 	}
-    }
-  */
     }
   interface->display ();
 }

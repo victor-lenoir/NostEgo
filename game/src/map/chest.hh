@@ -12,6 +12,7 @@ class Chest : public Element
 public:
   Chest (int x, int y, std::ifstream& input, std::string hash);
   virtual void process_keyboard_bottom ();
+  bool open;
 };
 
 #endif

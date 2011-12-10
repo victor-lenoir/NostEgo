@@ -15,7 +15,7 @@ public:
   void clean ();
   void process_keyboard ();
   void load_map (const char* map_path);
-  //void display (int offsetx, int offsety, bool play_);
+  void display (int offsetx, int offsety, bool play_);
   void display_background (int offsetx,
 			   int offsety);
   sf::Sprite* background;

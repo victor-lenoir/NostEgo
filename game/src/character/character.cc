@@ -9,8 +9,7 @@ void Character::display ()
 
 int Character::get_speed ()
 {
-  return 10;
-  //return ((16 * 20) / (1 + opt->curr_fps));
+  return (400 / (1 + opt->curr_fps));
 }
 
 void Character::refresh_map ()
@@ -158,7 +157,7 @@ Character::Character ()
   dir = DOWN;
   img->LoadFromFile("media/images/characters/healer.png");
   img->SetSmooth(true);
-  animation = new ImgAnim (img, 8, 8);
+  animation = new ImgAnim (0.05, img, 8, 8);
   animation->SetX (WIDTH_MAP / 2);
   animation->SetY (HEIGHT_MAP / 2);
   animation->pause ();

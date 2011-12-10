@@ -19,7 +19,7 @@ public:
     *\param line Nombre de ligne d'animation
     *\param leReste Voir la documentation de sf::Sprite
     */
-   ImgAnim(sf::Image* Img, const unsigned int &nbFrame, const unsigned int &line=1,
+   ImgAnim(float delay_p, sf::Image* Img, const unsigned int &nbFrame, const unsigned int &line=1,
 	   const sf::Vector2f &Position=sf::Vector2f(0, 0),
 	   const sf::Vector2f &Scale=sf::Vector2f(1, 1), float Rotation=0.f,
 	   const sf::Color &Col=sf::Color(255, 255, 255, 255));

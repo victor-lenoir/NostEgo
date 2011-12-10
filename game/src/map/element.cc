@@ -8,57 +8,48 @@ Element::~Element ()
 void Element::process_keyboard_general ()
 {
   process_keyboard ();
-  /*
-  if ((g->player->animation.rect.x - g->xoff + g->player->animation.rect.w >= animation.rect.x) &&
-      (g->player->animation.rect.x - g->xoff <= animation.rect.x + animation.rect.w) &&
-      (g->player->animation.rect.y - g->yoff - g->player->get_speed () + g->player->animation.rect.h / 2 >= animation.rect.y) &&
-      (g->player->animation.rect.y - g->yoff - g->player->get_speed () + g->player->animation.rect.h / 2 <= animation.rect.y + animation.rect.h))
+  if ((g->player->animation->GetPosition().x - g->xoff + g->player->animation->GetSubRect().GetWidth() >= animation->GetPosition().x) &&
+      (g->player->animation->GetPosition().x - g->xoff <= animation->GetPosition().x + animation->GetSubRect().GetWidth()) &&
+      (g->player->animation->GetPosition().y - g->yoff - g->player->get_speed () + g->player->animation->GetSubRect().GetHeight() / 2 >= animation->GetPosition().y) &&
+      (g->player->animation->GetPosition().y - g->yoff - g->player->get_speed () + g->player->animation->GetSubRect().GetHeight() / 2 <= animation->GetPosition().y + animation->GetSubRect().GetHeight()))
     {
       g->player->canup = false;
-      process_keyboard_bottom (key);
+      process_keyboard_bottom ();
     }
-  if ((g->player->animation.rect.x - g->xoff + g->player->animation.rect.w >= animation.rect.x) &&
-      (g->player->animation.rect.x - g->xoff <= animation.rect.x + animation.rect.w) &&
-      (g->player->animation.rect.y - g->yoff + g->player->get_speed () + g->player->animation.rect.h  >= animation.rect.y) &&
-      (g->player->animation.rect.y - g->yoff + g->player->get_speed () + g->player->animation.rect.h <= animation.rect.y + animation.rect.h))
+  if ((g->player->animation->GetPosition().x - g->xoff + g->player->animation->GetSubRect().GetWidth() >= animation->GetPosition().x) &&
+      (g->player->animation->GetPosition().x - g->xoff <= animation->GetPosition().x + animation->GetSubRect().GetWidth()) &&
+      (g->player->animation->GetPosition().y - g->yoff + g->player->get_speed () + g->player->animation->GetSubRect().GetHeight()  >= animation->GetPosition().y) &&
+      (g->player->animation->GetPosition().y - g->yoff + g->player->get_speed () + g->player->animation->GetSubRect().GetHeight() <= animation->GetPosition().y + animation->GetSubRect().GetHeight()))
     {
       g->player->candown = false;
-      process_keyboard_top (key);
+      process_keyboard_top ();
     }
 
-  if ((g->player->animation.rect.x - g->xoff + g->player->get_speed () + g->player->animation.rect.w >= animation.rect.x) &&
-      (g->player->animation.rect.x - g->xoff + g->player->get_speed () <= animation.rect.x + animation.rect.w) &&
-      (g->player->animation.rect.y - g->yoff + g->player->animation.rect.h / 1.5 >= animation.rect.y) &&
-      (g->player->animation.rect.y - g->yoff + g->player->animation.rect.h / 1.5 <= animation.rect.y + animation.rect.h))
+  if ((g->player->animation->GetPosition().x - g->xoff + g->player->get_speed () + g->player->animation->GetSubRect().GetWidth() >= animation->GetPosition().x) &&
+      (g->player->animation->GetPosition().x - g->xoff + g->player->get_speed () <= animation->GetPosition().x + animation->GetSubRect().GetWidth()) &&
+      (g->player->animation->GetPosition().y - g->yoff + g->player->animation->GetSubRect().GetHeight() / 1.5 >= animation->GetPosition().y) &&
+      (g->player->animation->GetPosition().y - g->yoff + g->player->animation->GetSubRect().GetHeight() / 1.5 <= animation->GetPosition().y + animation->GetSubRect().GetHeight()))
     {
       g->player->canright = false;
-      process_keyboard_left (key);
+      process_keyboard_left ();
     }
 
-  if ((g->player->animation.rect.x - g->xoff - g->player->get_speed () + g->player->animation.rect.w >= animation.rect.x) &&
-      (g->player->animation.rect.x - g->xoff - g->player->get_speed () <= animation.rect.x + animation.rect.w) &&
-      (g->player->animation.rect.y - g->yoff + g->player->animation.rect.h / 1.5 >= animation.rect.y) &&
-      (g->player->animation.rect.y - g->yoff + g->player->animation.rect.h / 1.5 <= animation.rect.y + animation.rect.h))
+  if ((g->player->animation->GetPosition().x - g->xoff - g->player->get_speed () + g->player->animation->GetSubRect().GetWidth() >= animation->GetPosition().x) &&
+      (g->player->animation->GetPosition().x - g->xoff - g->player->get_speed () <= animation->GetPosition().x + animation->GetSubRect().GetWidth()) &&
+      (g->player->animation->GetPosition().y - g->yoff + g->player->animation->GetSubRect().GetHeight() / 1.5 >= animation->GetPosition().y) &&
+      (g->player->animation->GetPosition().y - g->yoff + g->player->animation->GetSubRect().GetHeight() / 1.5 <= animation->GetPosition().y + animation->GetSubRect().GetHeight()))
     {
       g->player->canleft = false;
-      process_keyboard_right (key);
+      process_keyboard_right ();
     }
-  */
 }
 
 void Element::display (int offsetx,
-		       int offsety)
+                       int offsety)
 {
-  /*
-  int backupx = animation.rect.x;
-  int backupy = animation.rect.y;
-
-  animation.rect.x += offsetx;
-  animation.rect.y += offsety;
-  animation.display (screen);
-  animation.rect.x = backupx;
-  animation.rect.y = backupy;
-  */
+  animation->Move(offsetx, offsety);
+  app->Draw (*animation);
+  animation->Move(-offsetx, -offsety);
 }
 
 void Element::set_global (std::string hash)
@@ -69,13 +60,13 @@ void Element::set_global (std::string hash)
 
 Element::Element (std::string element, int x, int y)
 {
-  /*
   std::string element_path = "media/maps/elements/";
   std::string img_path = "media/images/maps/elements/";
   int enable_animation;
   std::ifstream input;
   int nimage = 1;
-  int delay = 0;
+  float delay = 1.0;
+  sf::Image* img = new sf::Image;
 
   global = false;
   element_path += element;
@@ -87,18 +78,15 @@ Element::Element (std::string element, int x, int y)
     }
   input >> element_path;
   img_path += element_path;
-  SDL_Surface* tmp = IMG_Load (img_path.c_str ());
-  if (!tmp)
-    {
-      std::cerr << "Element image load error: " << img_path << std::endl;
-      return;
-    }
   input >> enable_animation;
   if (enable_animation)
     {
       input >> nimage;
       input >> delay;
     }
-  animation.load (tmp, x, y, nimage, delay);
-  */
+   img->LoadFromFile(img_path.c_str ());
+   img->SetSmooth(true);
+   animation = new ImgAnim (delay, img, nimage, 1);
+   animation->SetX (x);
+   animation->SetY (y);
 }

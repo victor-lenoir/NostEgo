@@ -1,8 +1,9 @@
 #include <SFML/ImgAnim.hh>
 
-ImgAnim::ImgAnim(sf::Image* Img, const unsigned int &nbFrame, const unsigned int &line,
+ImgAnim::ImgAnim(float delay_p, sf::Image* Img, const unsigned int &nbFrame, const unsigned int &line,
 		 const sf::Vector2f &Position, const sf::Vector2f &Scale_p,float Rotation, const sf::Color &Col)
-   : sf::Sprite(*Img,Position,Scale_p,Rotation,Col)
+   : sf::Sprite(*Img,Position,Scale_p,Rotation,Col),
+    Anim (delay_p)
 {
    m_animRow=0;
    Img_ = Img;

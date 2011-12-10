@@ -70,7 +70,7 @@ void Map::load_map (const char* map_path)
 
   if (!input.good ())
      return;
-  /*
+
   while (!input.eof())
     {
       std::string hash = map_path;
@@ -82,21 +82,19 @@ void Map::load_map (const char* map_path)
 
       if ((it = g->global_elements.find (hash)) != g->global_elements.end ())
       {
-	  char buffer[1024];
+          char buffer[1024];
 
-	  input.getline (buffer, 1024);
-	  elements.push_back (it->second);
-	}
+          input.getline (buffer, 1024);
+          elements.push_back (it->second);
+      }
       else
-	{
-	  if (element == "chest")
-	    elements.push_back (new Chest (x, y, input, hash));
-	  else
-	    elements.push_back (new Element (element, x, y));
-	}
-
+        {
+          if (element == "chest")
+            elements.push_back (new Chest (x, y, input, hash));
+          else
+            elements.push_back (new Element (element, x, y));
+        }
     }
-  */
 }
 
 static bool compare_element (Element* e1,
@@ -113,9 +111,8 @@ void Map::display_background (int offsetx,
   app->Draw (*background);
   background->Move (-offsetx, -offsety);
 }
-/*
-void Map::display (SDL_Surface* screen,
-		   int offsetx,
+
+void Map::display (int offsetx,
 		   int offsety,
 		   bool play_)
 {
@@ -125,16 +122,16 @@ void Map::display (SDL_Surface* screen,
   for (std::list<Element*>::iterator it = elements.begin();
        it != elements.end (); ++it)
     {
-      if ((!play) && (g->player->animation.rect.y - g->yoff <
-		      (*it)->animation.rect.y) && (g->player->animation.rect.y + g->player->animation.rect.h -  g->yoff <
-						   (*it)->animation.rect.y + (*it)->animation.rect.h))
+      if ((!play)
+            && (g->player->animation->GetPosition().y - g->yoff < (*it)->animation->GetPosition().y)
+            && (g->player->animation->GetPosition().y + g->player->animation->GetSubRect().GetHeight() -  g->yoff <
+						   (*it)->animation->GetPosition().y + (*it)->animation->GetSubRect().GetHeight()))
 	{
-	  g->player->display (screen);
+	  g->player->display ();
 	  play = true;
 	}
-      (*it)->display (screen, offsetx, offsety);
+      (*it)->display (offsetx, offsety);
     }
   if (!play)
-    g->player->display (screen);
+    g->player->display ();
 }
-*/

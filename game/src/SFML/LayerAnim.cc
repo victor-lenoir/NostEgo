@@ -1,6 +1,7 @@
 #include <SFML/LayerAnim.hh>
 
-LayerAnim::LayerAnim(void)
+LayerAnim::LayerAnim(float delay_p) :
+    Anim (delay_p)
 {
 }
 

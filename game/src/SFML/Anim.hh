@@ -11,7 +11,8 @@
 class Anim
 {
   public:
-   Anim(void);
+   bool once;
+   Anim(float delay_p);
    virtual ~Anim(void);
 
    //!Change au prochain frame d'animation

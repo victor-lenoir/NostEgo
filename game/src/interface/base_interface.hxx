@@ -74,6 +74,7 @@ sf::FloatRect BaseInterface<T>::add_hypertexte (int x,
 template <typename T>
 sf::IntRect BaseInterface<T>::add_animation (int x,
 					       int y,
+					       float delay_p,
 					       int nanimation,
 					       int nframe,
 					       const char* img_path,
@@ -84,7 +85,7 @@ sf::IntRect BaseInterface<T>::add_animation (int x,
   sf::Image* img = new sf::Image;
   img->LoadFromFile(img_path);
   img->SetSmooth(true);
-  ImgAnim* tmp = new ImgAnim (img, nframe, nanimation);
+  ImgAnim* tmp = new ImgAnim (delay_p, img, nframe, nanimation);
   if (center)
     tmp->SetX (x - tmp->GetSubRect().GetWidth () / 2);
   else

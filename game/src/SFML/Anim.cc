@@ -1,11 +1,13 @@
 #include <SFML/Anim.hh>
+#include <iostream>
 
-Anim::Anim(void) : m_time()
+Anim::Anim(float delay_p) : m_time()
 {
    m_frameCount=0;
-   m_delay=0.f;
+   m_delay=delay_p;
    m_isLoop=true;
    m_play=true;
+   once=false;
 }
 
 Anim::~Anim(void)
@@ -18,7 +20,7 @@ void Anim::nextFrame()
    {
       setFrame(0);
       if(!isLoop())
-	 stop();
+        stop();
    }
    else
       setFrame(currentFrame()+1);
@@ -93,15 +95,23 @@ void Anim::update()
    {
       if(delay() > 0.0)
       {
-	 unsigned int frameCount = (unsigned int)(m_time.GetElapsedTime()/delay());
-	 if(!isLoop() && frameCount>getSize())
-	    stop();
-	 else
-	 {
-	    frameCount = frameCount % getSize();
-	    setFrame(frameCount);
-	 }
+	     unsigned int frameCount = (unsigned int)(m_time.GetElapsedTime()/delay());
+	     if (once && (frameCount > getSize() - 1))
+            {
+             stop();
+             setFrame(getSize() - 1);
+            }
+         else if(!isLoop() && frameCount>getSize())
+            stop();
+         else
+         {
+            frameCount = frameCount % getSize();
+            setFrame(frameCount);
+         }
       }
-      else nextFrame();
+      else
+      {
+          std::cerr << "GIVE ME A DELAY" << std::endl;
+      }
    }
 }

@@ -11,7 +11,7 @@ class LayerAnim :
    public Anim, public Layer
 {
 public:
-   LayerAnim(void);
+   LayerAnim(float delay_p);
 
    //!Retourne le nombre de frame de l'animation
    virtual unsigned int getSize() const;
