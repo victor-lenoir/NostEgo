@@ -109,9 +109,5 @@ void Anim::update()
             setFrame(frameCount);
          }
       }
-      else
-      {
-          std::cerr << "GIVE ME A DELAY" << std::endl;
-      }
    }
 }

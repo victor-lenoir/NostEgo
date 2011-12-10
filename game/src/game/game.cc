@@ -56,7 +56,82 @@ Game::~Game ()
         delete (it->second);
     }
 }
+void Game::reload_maps (int i, int j)
+{
+    size_t x = 0;
+    size_t y = 0;
+    std::string tmp = "media/maps/" + world_map;
+    Map* backup[MAP_BUFFER];
 
+    if (i == 1)
+    {
+        for (size_t k = 0; k < MAP_BUFFER; ++k)
+            backup[k] = maps[0][k];
+        for (size_t k = 0; k < MAP_BUFFER - 1; ++k)
+            for (size_t j = 0; j < MAP_BUFFER; ++j)
+                maps[k][j] = maps[k + 1][j];
+        x = MAP_BUFFER - 1;
+        for (size_t k = 0; k < MAP_BUFFER; ++k)
+        {
+           y = k;
+           maps[x][y] = backup[k];
+           maps[x][y]->load_map ((tmp + int_to_string (xmap + (x - MAP_BUFFER / 2))
+			     + "-" +
+			    int_to_string (ymap + (y - MAP_BUFFER / 2))).c_str ());
+        }
+    }
+    else if (i == -1)
+    {
+        for (size_t k = 0; k < MAP_BUFFER; ++k)
+            backup[k] = maps[MAP_BUFFER - 1][k];
+        for (size_t k = MAP_BUFFER - 1; k > 0; --k)
+            for (size_t j = 0; j < MAP_BUFFER; ++j)
+                maps[k][j] = maps[k - 1][j];
+        x = 0;
+        for (size_t k = 0; k < MAP_BUFFER; ++k)
+        {
+           y = k;
+           maps[x][y] = backup[k];
+           maps[x][y]->load_map ((tmp + int_to_string (xmap + (x - MAP_BUFFER / 2))
+			     + "-" +
+			    int_to_string (ymap + (y - MAP_BUFFER / 2))).c_str ());
+        }
+    }
+    else  if (j == 1)
+    {
+        for (size_t k = 0; k < MAP_BUFFER; ++k)
+            backup[k] = maps[k][0];
+        for (size_t k = 0; k < MAP_BUFFER - 1; ++k)
+            for (size_t j = 0; j < MAP_BUFFER; ++j)
+                maps[j][k] = maps[j][k + 1];
+        y = MAP_BUFFER - 1;
+        for (size_t k = 0; k < MAP_BUFFER; ++k)
+        {
+           x = k;
+           maps[x][y] = backup[k];
+           maps[x][y]->load_map ((tmp + int_to_string (xmap + (x - MAP_BUFFER / 2))
+			     + "-" +
+			    int_to_string (ymap + (y - MAP_BUFFER / 2))).c_str ());
+        }
+    }
+    else  if (j == -1)
+    {
+        for (size_t k = 0; k < MAP_BUFFER; ++k)
+            backup[k] = maps[k][MAP_BUFFER - 1];
+        for (size_t k = MAP_BUFFER - 1; k > 0; --k)
+            for (size_t j = 0; j < MAP_BUFFER; ++j)
+                maps[j][k] = maps[j][k - 1];
+        y = 0;
+        for (size_t k = 0; k < MAP_BUFFER; ++k)
+        {
+           x = k;
+           maps[x][y] = backup[k];
+           maps[x][y]->load_map ((tmp + int_to_string (xmap + (x - MAP_BUFFER / 2))
+			     + "-" +
+			    int_to_string (ymap + (y - MAP_BUFFER / 2))).c_str ());
+        }
+    }
+}
 void Game::load_maps ()
 {
   std::string tmp = "media/maps/" + world_map;

@@ -27,6 +27,7 @@ struct Game
   ~Game ();
   void init_game ();
   void load_maps ();
+  void reload_maps (int x, int y);
   void process ();
   void display ();
   void set_state (int state_p);

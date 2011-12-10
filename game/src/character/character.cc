@@ -14,32 +14,30 @@ int Character::get_speed ()
 
 void Character::refresh_map ()
 {
-  /*
-  if (animation.rect.x - g->xoff > WIDTH_MAP)
+  if (animation->GetPosition().x - g->xoff > WIDTH_MAP)
     {
       g->xoff += WIDTH_MAP;
       ++g->xmap;
-      g->load_maps ();
+      g->reload_maps (1, 0);
     }
-  if (animation.rect.x - g->xoff < 0)
+  if (animation->GetPosition().x - g->xoff < 0)
     {
       g->xoff -= WIDTH_MAP;
       --g->xmap;
-      g->load_maps ();
+      g->reload_maps (-1, 0);
     }
-  if (animation.rect.y - g->yoff > HEIGHT_MAP)
+  if (animation->GetPosition().y - g->yoff > HEIGHT_MAP)
     {
       g->yoff += HEIGHT_MAP;
       ++g->ymap;
-      g->load_maps ();
+      g->reload_maps (0, 1);
     }
-  if (animation.rect.y - g->yoff < 0)
+  if (animation->GetPosition().y - g->yoff < 0)
     {
       g->yoff -= HEIGHT_MAP;
       --g->ymap;
-      g->load_maps ();
+      g->reload_maps (0, - 1);
     }
-*/
 }
 void Character::move_player (int deltax,
 			     int deltay)
