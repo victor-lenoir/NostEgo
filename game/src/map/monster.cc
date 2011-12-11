@@ -1,20 +1,21 @@
 #include "monster.hh"
 #include "../option/option.hh"
 #include <iostream>
+#include "../game/game.hh"
 
 enum
 {
-  LEFT,
-  DOWN,
-  UP,
-  RIGHT
+  MONSTER_LEFT,
+  MONSTER_DOWN,
+  MONSTER_UP,
+  MONSTER_RIGHT
 };
 
 Monster::Monster (int x, int y, std::ifstream& input, std::string hash, std::string element)
   : Element (element, x, y, 8)
 {
   animation->pause ();
-  dir = LEFT;
+  dir = MONSTER_LEFT;
   refresh_dir();
   state = STANDING;
   set_global(hash);
@@ -61,7 +62,29 @@ void Monster::refresh_dir ()
 
 void Monster::AI ()
 {
-    move (LEFT);
+    bool okay = false;
+    if ((g->player->animation->GetPosition().x - g->xoff + g->player->animation->GetSubRect().GetWidth() >= animation->GetPosition().x) &&
+      (g->player->animation->GetPosition().x - g->xoff <= animation->GetPosition().x + animation->GetSubRect().GetWidth()))
+        {
+            okay = true;
+        }
+    else if (animation->GetPosition().x > g->player->animation->GetPosition().x - g->xoff )
+        move (MONSTER_LEFT);
+    else
+        move (MONSTER_RIGHT);
+    if (okay)
+    {
+        if ((g->player->animation->GetPosition().y - g->yoff + g->player->animation->GetSubRect().GetHeight() / 1.5 >= animation->GetPosition().y) &&
+        (g->player->animation->GetPosition().y - g->yoff + g->player->animation->GetSubRect().GetHeight() / 1.5 <= animation->GetPosition().y + animation->GetSubRect().GetHeight()))
+      {
+
+      }
+      else if (animation->GetPosition().y > g->player->animation->GetPosition().y - g->yoff )
+        move (MONSTER_UP);
+    else
+        move (MONSTER_DOWN);
+    }
+
 }
 
 void Monster::move (int dir_p)
@@ -75,13 +98,13 @@ void Monster::move (int dir_p)
         animation->loop(true);
         animation->once = false;
         animation->play();
-        if (dir_p == LEFT)
+        if (dir_p == MONSTER_LEFT)
             animation->Move (-1, 0);
-        else if (dir_p == RIGHT)
+        else if (dir_p == MONSTER_RIGHT)
             animation->Move (1, 0);
-        else if (dir_p == UP)
+        else if (dir_p == MONSTER_UP)
             animation->Move (0, -1);
-        else if (dir_p == DOWN)
+        else if (dir_p == MONSTER_DOWN)
             animation->Move (0, 1);
     }
 }
@@ -103,28 +126,28 @@ void Monster::process_keyboard_bottom ()
 {
     if (app->GetInput().IsKeyDown (sf::Key::Space))
         hit (12);
-    attack (DOWN);
+    attack (MONSTER_DOWN);
 }
 
 void Monster::process_keyboard_top ()
 {
     if (app->GetInput().IsKeyDown (sf::Key::Space))
         hit (12);
-    attack (UP);
+    attack (MONSTER_UP);
 }
 
 void Monster::process_keyboard_left ()
 {
     if (app->GetInput().IsKeyDown (sf::Key::Space))
         hit (12);
-    attack (LEFT);
+    attack (MONSTER_LEFT);
 }
 
 void Monster::process_keyboard_right ()
 {
     if (app->GetInput().IsKeyDown (sf::Key::Space))
         hit (12);
-    attack (RIGHT);
+    attack (MONSTER_RIGHT);
 }
 
 void Monster::process_keyboard ()
