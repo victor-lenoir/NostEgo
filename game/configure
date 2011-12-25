@@ -20,4 +20,4 @@ do
     echo "" >> Makefile.inc
 done
 
-echo "OBJS="`find . -name '*.cc'|sed 's/\.cc/\.o/g'` >> Makefile.inc
+echo "OBJS="`find . -name '*.cc'|sed 's/\.cc/\.o/g'|sed 's/[^ ]*main.o//g'` >> Makefile.inc

@@ -9,6 +9,7 @@ Option* opt;
 sf::RenderWindow* app;
 MemoryManager<sf::Image>* img_mng;
 
+void listen_server (void* data);
 void listen_server (void* data)
 {
     sf::Clock clock;
@@ -19,6 +20,8 @@ void listen_server (void* data)
     size_t dir;
     std::string str;
     sf::Packet sPacket;
+
+    (void)data;
     sPacket << NETWORK_NEW_CHARACTER;
     g->Socket.Send(sPacket);
     while (app->IsOpened())

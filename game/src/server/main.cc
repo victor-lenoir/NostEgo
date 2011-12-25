@@ -21,6 +21,9 @@ std::vector<Client> clients;
 int currid = 0;
 std::map<std::string, Element*> global_elements;
 
+void broadcast (sf::Packet Packet, sf::SocketTCP* client);
+void handle (sf::Packet Packet, sf::SocketTCP client);
+
 void broadcast (sf::Packet Packet, sf::SocketTCP* client)
 {
     for (size_t i = 0; i < clients.size(); ++i)
