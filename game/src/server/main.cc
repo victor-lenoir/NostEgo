@@ -137,8 +137,9 @@ int main ()
   std::cout << "Server launch..." << std::endl;
   while (true)
   {
+    size_t i;
       unsigned int nsock = Selector.Wait();
-      for (size_t i = 0; i < nsock; ++i)
+      for (i = 0; i < nsock; ++i)
       {
             sf::SocketTCP Socket = Selector.GetSocketReady(i);;
 
@@ -164,15 +165,6 @@ int main ()
                 else
                 {
                     std::cout << "Client exit" << std::endl;
-                    /*
-                    for (std::vector<sf::SocketTCP>::iterator it = clients.begin();
-                         it != clients.end();
-                         it++)
-                         {
-                             if (Socket == (*it))
-                                clients.erase(it);
-                         }
-                    */
                     for (std::vector<Client>::iterator it = clients.begin();
                           it != clients.end(); it++)
                     {
@@ -185,10 +177,14 @@ int main ()
                     }
 
                     Selector.Remove(Socket);
-
+		    break;
                 }
             }
       }
+      if (i < nsock)
+	{
+	  break;
+	}
   }
   return 0;
 }

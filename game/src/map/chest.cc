@@ -47,11 +47,7 @@ Chest::Chest (int x, int y, std::string hash, std::string object)
 
 void Chest::process_keyboard_other_bottom ()
 {
-    if ((!open))
-      {
-        animation->play ();
-        open = true;
-      }
+  open = true;
 }
 
 void Chest::process_keyboard_bottom ()
