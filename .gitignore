@@ -1,5 +1,6 @@
 *~
 *#
 nostego
+nostego_server
 *.o
 Makefile.inc
