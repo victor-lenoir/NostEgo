@@ -92,20 +92,20 @@ void Monster::move (int dir_p)
     if ((state == STANDING) || (state == MOVING) || (state == RUNNING))
     {
         dir = dir_p;
-        if (state != MOVING)
+        if (state != RUNNING)
          animation->reset();
-        state = MOVING;
+        state = RUNNING;
         animation->loop(true);
         animation->once = false;
         animation->play();
         if (dir_p == MONSTER_LEFT)
-            animation->Move (-1, 0);
+            animation->Move (-2, 0);
         else if (dir_p == MONSTER_RIGHT)
-            animation->Move (1, 0);
+            animation->Move (2, 0);
         else if (dir_p == MONSTER_UP)
-            animation->Move (0, -1);
+            animation->Move (0, -2);
         else if (dir_p == MONSTER_DOWN)
-            animation->Move (0, 1);
+            animation->Move (0, 2);
     }
 }
 

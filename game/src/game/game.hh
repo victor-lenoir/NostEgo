@@ -2,12 +2,15 @@
 # define GAME_HH_
 
 # include <SFML/Graphics.hpp>
+# include <SFML/Network.hpp>
 # include <map>
 # include <string>
 # include "../interface/interface.hh"
 # include "../map/map.hh"
 # include "../character/character.hh"
 # include "../map/element.hh"
+
+# include "../network/network.hh"
 
 # define MAP_BUFFER 5
 
@@ -37,11 +40,13 @@ struct Game
   Map* maps[MAP_BUFFER][MAP_BUFFER];
 
   Character* player;
+  std::map<int, Character*> characters;
   std::string world_map;
   int xmap;
   int ymap;
   int xoff;
   int yoff;
+  sf::SocketTCP Socket;
   bool init;
   std::map<std::string, Element*> global_elements;
 private:

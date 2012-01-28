@@ -43,7 +43,7 @@ Map::~Map ()
 }
 
 
-void Map::load_map (const char* map_path)
+void Map::load_map (const char* map_path, int xmap_, int ymap_)
 {
   std::ifstream input (map_path);
   std::string background_str;
@@ -52,6 +52,8 @@ void Map::load_map (const char* map_path)
   int y;
   std::string hash_background;
 
+  xmap = xmap_;
+  ymap = ymap_;
   clean ();
   if (!input.good ())
     background_str = "media/images/maps/background/grass.png";
@@ -89,9 +91,8 @@ void Map::load_map (const char* map_path)
       input >> element;
       input >> x;
       input >> y;
-      hash += int_to_string(x) + "#" + int_to_string(y) + "#" + element;
-      std::map<std::string, Element*>::iterator it;
-
+      hash += "#" + int_to_string(x) + "#" + int_to_string(y) + "#" + element;
+      /*
       if ((it = g->global_elements.find (hash)) != g->global_elements.end ())
       {
           char buffer[1024];
@@ -100,14 +101,15 @@ void Map::load_map (const char* map_path)
           elements.push_back (it->second);
       }
       else
-        {
+      {*/
           if (element == "chest")
             elements.push_back (new Chest (x, y, input, hash));
           else if (element[0] == '_')
             elements.push_back (new Monster (x, y, input, hash, element));
           else
             elements.push_back (new Element (element, x, y, 1));
-        }
+        /*
+      }*/
     }
 }
 
@@ -148,4 +150,7 @@ void Map::display (int offsetx,
     }
   if (!play)
     g->player->display ();
+  for (std::map<int, Character*>::iterator it = g->characters.begin() ; it != g->characters.end(); it++)
+      if ((it->second->xmap == xmap) && (it->second->ymap == ymap))
+    it->second->display (offsetx, offsety);
 }

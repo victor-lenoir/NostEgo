@@ -27,6 +27,15 @@ void Game::init_game ()
 
 Game::Game ()
 {
+  std::string ip = "127.0.0.1";
+  int port = 2012;
+
+  sf::IPAddress ServerAddress = ip;
+  if (Socket.Connect(port, ServerAddress) != sf::Socket::Done)
+    {
+        std::cerr << "Could not connect to server " << ip << " on port " << port << std::endl;
+        exit (32);
+    }
   init = false;
   player = 0;
   interface = 0;
@@ -55,6 +64,7 @@ Game::~Game ()
     {
         delete (it->second);
     }
+  Socket.Close();
 }
 void Game::reload_maps (int o, int p)
 {
@@ -77,7 +87,9 @@ void Game::reload_maps (int o, int p)
            maps[x][y] = backup[k];
            maps[x][y]->load_map ((tmp + int_to_string (xmap + (x - MAP_BUFFER / 2))
 			     + "-" +
-			    int_to_string (ymap + (y - MAP_BUFFER / 2))).c_str ());
+			    int_to_string (ymap + (y - MAP_BUFFER / 2))).c_str (),
+                                xmap + (x - MAP_BUFFER / 2),
+                                 ymap + (y - MAP_BUFFER / 2));
         }
     }
     else if (o == -1)
@@ -94,7 +106,9 @@ void Game::reload_maps (int o, int p)
            maps[x][y] = backup[k];
            maps[x][y]->load_map ((tmp + int_to_string (xmap + (x - MAP_BUFFER / 2))
 			     + "-" +
-			    int_to_string (ymap + (y - MAP_BUFFER / 2))).c_str ());
+			    int_to_string (ymap + (y - MAP_BUFFER / 2))).c_str (),
+                                xmap + (x - MAP_BUFFER / 2),
+                                 ymap + (y - MAP_BUFFER / 2));
         }
     }
     else  if (p == 1)
@@ -111,7 +125,9 @@ void Game::reload_maps (int o, int p)
            maps[x][y] = backup[k];
            maps[x][y]->load_map ((tmp + int_to_string (xmap + (x - MAP_BUFFER / 2))
 			     + "-" +
-			    int_to_string (ymap + (y - MAP_BUFFER / 2))).c_str ());
+			    int_to_string (ymap + (y - MAP_BUFFER / 2))).c_str (),
+                                xmap + (x - MAP_BUFFER / 2),
+                                 ymap + (y - MAP_BUFFER / 2));
         }
     }
     else  if (p == -1)
@@ -128,7 +144,9 @@ void Game::reload_maps (int o, int p)
            maps[x][y] = backup[k];
            maps[x][y]->load_map ((tmp + int_to_string (xmap + (x - MAP_BUFFER / 2))
 			     + "-" +
-			    int_to_string (ymap + (y - MAP_BUFFER / 2))).c_str ());
+			    int_to_string (ymap + (y - MAP_BUFFER / 2))).c_str (),
+                                xmap + (x - MAP_BUFFER / 2),
+                                 ymap + (y - MAP_BUFFER / 2));
         }
     }
 }
@@ -140,7 +158,9 @@ void Game::load_maps ()
     for (size_t x = 0; x < MAP_BUFFER; ++x)
       maps[x][y]->load_map ((tmp + int_to_string (xmap + (x - MAP_BUFFER / 2))
 			     + "-" +
-			    int_to_string (ymap + (y - MAP_BUFFER / 2))).c_str ());
+			    int_to_string (ymap + (y - MAP_BUFFER / 2))).c_str (),
+                            xmap + (x - MAP_BUFFER / 2),
+                            ymap + (y - MAP_BUFFER / 2));
 }
 
 int Game::get_state ()

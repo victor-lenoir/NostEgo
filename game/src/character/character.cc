@@ -2,9 +2,31 @@
 #include "../game/game.hh"
 #include <iostream>
 
+void Character::share_position ()
+{
+   sf::Packet Packet;
+   std::cout << "CLIENT MOVING ID = " << id << std::endl;
+   std::cout << "SEND X = " << animation->GetPosition().x - g->xoff
+             << "; Y = " << animation->GetPosition().y - g->yoff << std::endl;
+  Packet << NETWORK_CHARACTER_MOVE
+         << id
+         << g->xmap
+         << g->ymap
+         << (size_t)(animation->GetPosition().x - g->xoff)
+         << (size_t)(animation->GetPosition().y - g->yoff)
+         << (size_t)dir;
+    g->Socket.Send(Packet);
+}
+
 void Character::display ()
 {
   app->Draw (*animation);
+}
+void Character::display (int offsetx, int offsety)
+{
+    animation->Move(offsetx, offsety);
+    app->Draw (*animation);
+    animation->Move(-offsetx, -offsety);
 }
 
 int Character::get_speed ()
@@ -89,6 +111,7 @@ void Character::move (float x,
   animation->play ();
   move_player (deltax, deltay);
   refresh_map ();
+  share_position ();
 }
 
 void Character::stand ()
@@ -151,6 +174,7 @@ void Character::process_keyboard ()
 
 Character::Character ()
 {
+  id = -1;
   sf::Image* img;
   dir = DOWN;
   if (!img_mng->get ("media/images/characters/healer.png", img))

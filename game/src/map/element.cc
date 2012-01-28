@@ -57,7 +57,16 @@ void Element::display (int offsetx,
 void Element::set_global (std::string hash)
 {
   global = true;
+  hash_ = hash;
+  sf::Packet sPacket;
+  sPacket << NETWORK_GLOBAL_ELEMENT << hash;
+  g->Socket.Send(sPacket);
   g->global_elements.insert (std::pair<std::string, Element*>(hash, this));
+}
+
+Element::Element ()
+{
+
 }
 
 Element::Element (std::string element, int x, int y, int nanim)
