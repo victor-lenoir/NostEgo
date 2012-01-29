@@ -38,6 +38,7 @@ void Chest::sendPacket (sf::SocketTCP& client)
 
 Chest::Chest (int x, int y, std::string hash, std::string object)
 {
+   animation = 0;
   (void)x;
   (void)y;
   hash_ = hash;
@@ -47,7 +48,13 @@ Chest::Chest (int x, int y, std::string hash, std::string object)
 
 void Chest::process_keyboard_other_bottom ()
 {
-  open = true;
+  if (!open)
+  {
+      open = true;
+      if (animation)
+        animation->play ();
+  }
+
 }
 
 void Chest::process_keyboard_bottom ()

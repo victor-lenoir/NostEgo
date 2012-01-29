@@ -181,10 +181,6 @@ int main ()
                 }
             }
       }
-      if (i < nsock)
-	{
-	  break;
-	}
   }
   return 0;
 }
