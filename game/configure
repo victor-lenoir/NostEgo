@@ -20,4 +20,16 @@ do
     echo "" >> Makefile.inc
 done
 
+for file in `find . -name '*.hh'`;
+do
+    echo -n "${file}: "  >> Makefile.inc
+    BASENAME=`basename "$file"`
+    DIR=`echo "$file"|sed "s/$BASENAME//"`
+    for deps in `grep 'include \"' "$file" 2>/dev/null|sed 's/#//g'|sed 's/include//g'|sed 's/\"//g'`; do
+        echo -n " $DIR$deps"  >> Makefile.inc
+    done
+    echo ""  >> Makefile.inc
+    echo "" >> Makefile.inc
+done
+
 echo "OBJS="`find . -name '*.cc'|sed 's/\.cc/\.o/g'|sed 's/[^ ]*main.o//g'` >> Makefile.inc

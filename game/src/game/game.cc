@@ -64,6 +64,12 @@ Game::~Game ()
     {
         delete (it->second);
     }
+  for (std::map<int, Character*>::iterator it = characters.begin();
+       it != characters.end (); ++it)
+    {
+      delete (it->second);
+    }
+
   Socket.Close();
 }
 void Game::reload_maps (int o, int p)

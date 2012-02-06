@@ -136,7 +136,7 @@ int main ()
     else
      sf::Sleep((1.0/ (float)opt->fps) - clock.GetElapsedTime());
   }
-
+  tr.Terminate ();
   delete g;
   delete opt;
   delete img_mng;

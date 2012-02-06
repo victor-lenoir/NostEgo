@@ -148,7 +148,7 @@ int main ()
                 sf::IPAddress Address;
                 sf::SocketTCP client;
                 Listener.Accept(client, &Address);
-                std::cout << "Client connected ! (" << Address << ")" << std::endl;
+		std::cout << "Client connected ! (" << Address << ")" << std::endl;
                 Selector.Add(client);
                 Client c1;
                 c1.socket = client;
@@ -173,11 +173,12 @@ int main ()
                             sf::Packet sPacketd;
                             sPacketd << NETWORK_DISCONNECT << it->id;
                             broadcast (sPacketd, &Socket);
+			    clients.erase (it);
+			    break;
                         }
                     }
 
                     Selector.Remove(Socket);
-		    break;
                 }
             }
       }
