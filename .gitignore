@@ -2,5 +2,8 @@
 *#
 nostego
 nostego_server
+nostego_debug
+nostego_server_debug
 *.o
+*.so*
 Makefile.inc
