@@ -14,8 +14,8 @@ sf::SelectorTCP Selector;
 sf::SocketTCP Listener;
 struct Client
 {
-    size_t id;
-    sf::SocketTCP socket;
+  int id;
+  sf::SocketTCP socket;
 };
 std::vector<Client> clients;
 int currid = 0;
@@ -171,7 +171,9 @@ int main ()
                         if (it->socket == Socket)
                         {
                             sf::Packet sPacketd;
-                            sPacketd << NETWORK_DISCONNECT << it->id;
+                            sPacketd << NETWORK_DISCONNECT;
+                            sPacketd << it->id;
+
                             broadcast (sPacketd, &Socket);
 			    clients.erase (it);
 			    break;

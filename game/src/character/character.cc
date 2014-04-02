@@ -9,12 +9,12 @@ void Character::share_position ()
    std::cout << "SEND X = " << animation->GetPosition().x - g->xoff
              << "; Y = " << animation->GetPosition().y - g->yoff << std::endl;
   Packet << NETWORK_CHARACTER_MOVE
-         << id
+         << (int)id
          << g->xmap
          << g->ymap
-         << (size_t)(animation->GetPosition().x - g->xoff)
-         << (size_t)(animation->GetPosition().y - g->yoff)
-         << (size_t)dir;
+         << (int)(animation->GetPosition().x - g->xoff)
+         << (int)(animation->GetPosition().y - g->yoff)
+         << (int)dir;
     g->Socket.Send(Packet);
 }
 

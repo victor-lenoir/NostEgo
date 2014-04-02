@@ -1,4 +1,4 @@
-CFLAGS=-W -Wall -Wextra -Werror -Wfloat-equal -Wshadow -Wpointer-arith \
+CFLAGS=-W -Wall -Wextra -Wfloat-equal -Wshadow -Wpointer-arith \
 -Wcast-qual -Wcast-align -Wmissing-declarations -Wunused -Winline -pedantic \
 -Wuninitialized -Winit-self -O3
 IFLAGS=-I src/
@@ -20,7 +20,7 @@ Makefile.inc: # Build the included makefile
 include Makefile.inc
 
 nostego_server: ${OBJS} src/server/main.o # Build nostego server
-	${CC} ${CFLAGS} ${LINK} $^ -o nostego_server
+	${CC} ${CFLAGS} $^ ${LINK} -o nostego_server
 
 nostego: ${OBJS} src/main.o # Build nostego client
-	${CC} ${CFLAGS} ${LINK} $^ -o nostego
+	${CC} ${CFLAGS} $^ ${LINK} -o nostego
