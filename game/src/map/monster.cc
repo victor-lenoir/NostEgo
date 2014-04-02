@@ -14,6 +14,7 @@ enum
 Monster::Monster (int x, int y, std::ifstream& input, std::string hash, std::string element)
   : Element (element, x, y, 8)
 {
+  dead = false;
   (void)input;
   animation->pause ();
   dir = MONSTER_LEFT;
@@ -38,6 +39,7 @@ void Monster::attack (int dir_p)
 
 void Monster::die ()
 {
+  if (!dead) {
     state = DYING;
     refresh_dir ();
     animation->loop(false);
@@ -45,6 +47,7 @@ void Monster::die ()
     animation->reset();
     animation->play();
     dead = true;
+  }
 }
 void Monster::refresh_dir ()
 {
