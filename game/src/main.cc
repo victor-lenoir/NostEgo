@@ -13,11 +13,11 @@ void listen_server (void* data);
 void listen_server (void* data)
 {
     sf::Clock clock;
-    size_t n;
+    int n;
     int id;
-    size_t x;
-    size_t y;
-    size_t dir;
+    int x;
+    int y;
+    int dir;
     std::string str;
     sf::Packet sPacket;
 
