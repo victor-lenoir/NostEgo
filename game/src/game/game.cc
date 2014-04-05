@@ -15,10 +15,7 @@ void Game::init_game ()
 {
   if (!init)
   {
-    player = new Character;
     interface = new Interface;
-    map = new Map;
-    load_map();
     init = true;
   }
 }
@@ -35,9 +32,8 @@ Game::Game ()
     exit (32);
   }
   init = false;
-  player = 0;
   interface = 0;
-  map  = 0;
+  map  = new Map;
   state = START;
   done = false;
 }
@@ -47,8 +43,6 @@ Game::~Game ()
   init = false;
   if (interface)
     delete interface;
-  if (player)
-    delete player;
   if (map)
     delete map;
   for (std::map<int, Character*>::iterator it = characters.begin();
@@ -62,12 +56,12 @@ Game::~Game ()
 
 void Game::load_map()
 {
-  std::string tmp = "media/maps/" + player->world_map;
+  std::string tmp = "media/maps/" + characters.begin()->second->world_map;
 
-  map->load_map ((tmp + int_to_string (player->xmap) + "-" +
-                  int_to_string (player->ymap)).c_str (),
-                 player->xmap,
-                 player->ymap);
+  map->load_map ((tmp + int_to_string (characters.begin()->second->xmap) + "-" +
+                  int_to_string (characters.begin()->second->ymap)).c_str (),
+                 characters.begin()->second->xmap,
+                 characters.begin()->second->ymap);
 }
 
 int Game::get_state ()
@@ -107,10 +101,8 @@ void Game::process ()
         sf::Packet Packet;
 
         Packet << NETWORK_KEYBOARD_PRESSED
-               << Event.Key.Code;
+               << (int)Event.Key.Code;
         Socket.Send(Packet);
-        //maps[MAP_BUFFER / 2][MAP_BUFFER / 2]->process_keyboard ();
-        //player->process_keyboard ();
       }
       break;
     case sf::Event::KeyReleased:

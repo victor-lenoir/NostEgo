@@ -3,7 +3,9 @@
 
 # include <string>
 # include <map>
+# include <vector>
 # include <SFML/ImgAnim.hh>
+# include <server/server.hh>
 
 # define SQRT2 sqrt(2) / 2.0
 
@@ -22,8 +24,11 @@ enum
 class Character
 {
 public:
-  Character ();
+  Character();
+  Character(std::string world_map_, int xmap_, int ymap_, int x_, int y_);
+
   ~Character ();
+  void broadcast_maps();
   void move (float x, float y, int dir_p);
   void process_keyboard ();
   void display ();
@@ -42,14 +47,17 @@ public:
   int ymap;
   int width;
   int height;
-
+  
+  void load_characters(std::vector<Client*>* on_map_);
+  std::vector<Client*>* on_map;
   std::string world_map;
-  std::map<sf::Key::Code, bool> keydowns;
-  bool is_key_down(sf::Key::Code key);
-  void keyboard_pressed(sf::Key::Code key);
-  void keyboard_released(sf::Key::Code key);
-  void process();
+  std::map<int, bool> keydowns;
   void share_position();
+  bool is_key_down(int key);
+  void keyboard_pressed(int key);
+  void keyboard_released(int key);
+  void process();
+  std::string hash_map();
 };
 
 #endif

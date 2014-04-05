@@ -2,28 +2,11 @@
 #include "../game/game.hh"
 #include <iostream>
 
-void Character::share_position ()
-{
-  sf::Packet Packet;
-  /*std::cout << "CLIENT MOVING ID = " << id << std::endl;
-    std::cout << "SEND X = " << animation->GetPosition().x - xoff
-    << "; Y = " << animation->GetPosition().y - yoff << std::endl;
-  */
-  Packet << NETWORK_CHARACTER_MOVE
-         << (int)id
-         << xmap
-         << ymap
-         << (int)x
-         << (int)y
-         << (int)dir;
-  g->Socket.Send(Packet);
-}
-
-void Character::keyboard_pressed(sf::Key::Code key) {
+void Character::keyboard_pressed(int key) {
   keydowns[key] = true;
 }
 
-void Character::keyboard_released(sf::Key::Code key) {
+void Character::keyboard_released(int key) {
   keydowns[key] = false;
 }
 
@@ -42,16 +25,17 @@ void Character::display ()
     }
     animation = new ImgAnim (0.05, img, 8, 8);
     animation->pause ();
-
+    animation->once = true;
   }
-  animation->SetX (x);
-  animation->SetY (y);
+  animation->SetX(x);
+  animation->SetY(y);
+  animation->setAnimRow(dir);
   app->Draw(*animation);
 }
 
 int Character::get_speed ()
 {
-  return (400 / (1 + opt->curr_fps));
+  return (400 / (1 + 40));
 }
 
 void Character::move (float xpar,
@@ -63,11 +47,12 @@ void Character::move (float xpar,
 
   deltax *= xpar;
   deltay *= ypar;
-
+  x += deltax;
+  y += deltay;
   dir = dir_p;
 }
 
-bool Character::is_key_down(sf::Key::Code key) {
+bool Character::is_key_down(int key) {
   return keydowns[key];
 }
 void Character::process_keyboard ()
@@ -76,6 +61,7 @@ void Character::process_keyboard ()
   bool down = is_key_down(sf::Key::Down);
   bool left = is_key_down(sf::Key::Left);
   bool right = is_key_down(sf::Key::Right);
+
 
   if (up && canup && right && canright)
     move (SQRT2, -SQRT2, UP_RIGHT);
@@ -116,12 +102,55 @@ void Character::process_keyboard ()
   canleft = true;
   candown = true;
   canup = true;
+
   if (up || down || left || right)
     share_position();
 }
 
+void Character::share_position()
+{
+  sf::Packet Packet;
+
+  Packet << NETWORK_CHARACTER_MOVE
+         << (int)id
+         << (int)x
+         << (int)y
+         << (int)dir;
+  for (size_t k = 0; k < on_map->size(); ++k) {
+    (*on_map)[k]->socket.Send(Packet);
+  }
+}
+
+void Character::broadcast_maps() {
+  sf::Packet sPacket;
+
+  sPacket << NETWORK_NEW_MAP;
+  sPacket << world_map << xmap << ymap;
+  sPacket << (int)on_map->size();
+
+  for (size_t k = 0; k < (int)on_map->size(); ++k) {
+    sPacket << (*on_map)[k]->c->id << (*on_map)[k]->c->x << (*on_map)[k]->c->y;
+  }
+  // SEND ALL CHARACTERS ON CURRENT MAP.
+  // AND ALL ELEMENTS
+  for (size_t k = 0; k < (int)on_map->size(); ++k) {
+    (*on_map)[k]->socket.Send(sPacket);
+  }
+}
+
+std::string Character::hash_map()
+{
+  return world_map + "#" + int_to_string(xmap) + "#" + int_to_string(ymap);
+}
+void Character::load_characters(std::vector<Client*>* on_map_) {
+  on_map = on_map_;
+}
+
+
+
 Character::Character ()
 {
+  animation = 0;
   id = -1;
   dir = DOWN;
   x = WIDTH_MAP / 2;
@@ -131,7 +160,17 @@ Character::Character ()
   ymap = 0;
   width = 32;
   height = 64;
+}
+
+Character::Character(std::string world_map_, int xmap_, int ymap_, int x_, int y_)
+{
   animation = 0;
+  Character();
+  world_map = world_map_;
+  xmap = xmap_;
+  ymap = ymap_;
+  x = x_;
+  y = y_;
 }
 
 Character::~Character ()

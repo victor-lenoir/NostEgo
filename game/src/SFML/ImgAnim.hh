@@ -27,7 +27,7 @@ public:
 
    //!Définis les dimension d'un frame
    void setFrameDim(const unsigned int &w, const unsigned int &h);
-
+   void play_once();
    //!Retourne la dimension d'un frame
    sf::IntRect frameDim() const;
 

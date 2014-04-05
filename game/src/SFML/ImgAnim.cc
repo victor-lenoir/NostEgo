@@ -18,6 +18,10 @@ ImgAnim::~ImgAnim ()
 {
   img_mng->free (Img_);
 }
+
+void ImgAnim::play_once() {
+  setFrame(1);
+}
 void ImgAnim::setAnimRow(const unsigned int &row)
 {
    m_animRow=row;

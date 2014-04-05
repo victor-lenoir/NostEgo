@@ -38,7 +38,6 @@ struct Game
   Interface* interface;
   Map* map;
 
-  Character* player;
   std::map<int, Character*> characters;
   sf::SocketTCP Socket;
   bool init;

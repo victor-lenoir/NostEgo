@@ -112,23 +112,12 @@ void Map::display_background ()
 
 void Map::display ()
 {
-  bool play = false;
-
   elements.sort (compare_element);
   for (std::list<Element*>::iterator it = elements.begin();
        it != elements.end (); ++it)
     {
-      if ((!play)
-            && (g->player->y < (*it)->y)
-          && (g->player->y + g->player->height < (*it)->y + (*it)->height()))
-	{
-	  g->player->display ();
-	  play = true;
-	}
       (*it)->display ();
     }
-  if (!play)
-    g->player->display ();
   for (std::map<int, Character*>::iterator it = g->characters.begin() ; it != g->characters.end(); it++)
       if ((it->second->xmap == xmap) && (it->second->ymap == ymap))
     it->second->display();

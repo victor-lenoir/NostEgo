@@ -8,80 +8,74 @@ Game* g;
 Option* opt;
 sf::RenderWindow* app;
 MemoryManager<sf::Image>* img_mng;
-bool g_display = true;
 
 void listen_server (void* data);
 void listen_server (void* data)
 {
-    sf::Clock clock;
-    int n;
-    int id;
-    int x;
-    int y;
-    int dir;
-    std::string str;
-    sf::Packet sPacket;
+  sf::Clock clock;
+  int n;
+  int id;
+  int x;
+  int y;
+  int xmap;
+  int ymap;
+  int dir;
+  std::string str;
+  std::string world_map;
+  sf::Packet sPacket;
 
-    (void)data;
-    sPacket << NETWORK_NEW_CHARACTER;
-    g->Socket.Send(sPacket);
-    while (app->IsOpened())
+  (void)data;
+  sPacket << NETWORK_NEW_CHARACTER;
+  g->Socket.Send(sPacket);
+  while (app->IsOpened())
+  {
+    if (clock.GetElapsedTime() * 1000 > (1000 / opt->fps))
     {
-        if (clock.GetElapsedTime() * 1000 > (1000 / opt->fps))
-        {
-            sf::Packet Packet;
-            int code;
-            g->Socket.Receive(Packet);
-            Packet >> code;
-            switch (code)
-            {
-                case NETWORK_NEW_CHARACTER:
-                    Packet >> n;
-                    std::cout << "A new player on the server id = "
-                              << n
-                              << std::endl;
-                    if (g->player->id >= 0)
-                        g->player->share_position();
-                    g->characters.insert (std::pair<int, Character*>(n, new Character()));
-                break;
-                case NETWORK_CHARACTER_MOVE:
-                    Packet >> n; //id
-                    id = n;
-                    Packet >> g->characters[id]->xmap; //g->xmap
-                    Packet >> g->characters[id]->ymap; //g->ymap
-                    Packet >> x; //animation->GetPosition().x
-                    Packet >> y; //animation->GetPosition().y
-                    Packet >> dir;
-                    g->characters[id]->animation->setAnimRow(dir);
-
-                    if (g->characters[id]->animation->currentFrame() + 1 >= g->characters[id]->animation->getSize())
-                        g->characters[id]->animation->setFrame(0);
-                    else
-                        g->characters[id]->animation->setFrame(g->characters[id]->animation->currentFrame() + 1);
-                    g->characters[id]->animation->SetPosition (x, y);
-                break;
-                case NETWORK_ID:
-                    Packet >> n;
-                    g->player->id = n;
-                    g->player->share_position ();
-                break;
-                case NETWORK_DISCONNECT:
-                    Packet >> n;
-                    g->characters.erase(n);
-                break;
-                default:
-                    std::cerr << "ERR CODE NOT HANDLE ("
-                              << code << ")"
-                              << std::endl;
-                break;
-            }
-
-            clock.Reset ();
+      sf::Packet Packet;
+      int code;
+      g->Socket.Receive(Packet);
+      Packet >> code;
+      switch (code)
+      {
+      case NETWORK_NEW_MAP:
+        Packet >> world_map >> xmap >> ymap;
+        Packet >> n;
+        
+        for (std::map<int, Character*>::iterator it = g->characters.begin(); it != g->characters.end(); it++) {
+          delete it->second;
         }
-        else
-            sf::Sleep((1.0/ (float)opt->fps) - clock.GetElapsedTime());
+        g->characters.clear();
+        for (size_t k = 0; k < n; ++k) {
+          Packet >> id >> x >> y;
+          // LOAD PLAYER
+          g->characters[id] = new Character(world_map, xmap, ymap, x, y);
+        }
+        g->load_map();
+        //g->player->id = n;
+        break;
+      case NETWORK_CHARACTER_MOVE:
+        Packet >> id >> x >> y >> dir;
+        g->characters[id]->x = x;
+        g->characters[id]->y = y;
+        g->characters[id]->dir = dir;
+        g->characters[id]->animation->play();
+        break;
+      case NETWORK_EXIT_MAP:
+        Packet >> n;
+        g->characters.erase(n);
+        break;
+      default:
+        std::cerr << "ERR CODE NOT HANDLE ("
+                  << code << ")"
+                  << std::endl;
+        break;
+      }
 
+      clock.Reset ();
     }
+    else
+      sf::Sleep((1.0/ (float)opt->fps) - clock.GetElapsedTime());
+  }
 }
 
 int main ()
@@ -111,7 +105,7 @@ int main ()
       app->Display();
     }
     else
-     sf::Sleep((1.0/ (float)opt->fps) - clock.GetElapsedTime());
+      sf::Sleep((1.0/ (float)opt->fps) - clock.GetElapsedTime());
   }
   tr.Terminate ();
   delete g;

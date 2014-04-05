@@ -4,57 +4,42 @@
 #include <vector>
 #include <map/chest.hh>
 #include <game/game.hh>
+#include <server/server.hh>
 
 sf::SelectorTCP Selector;
 sf::SocketTCP Listener;
 Game* g;
 Option* opt;
 sf::RenderWindow* app;
-bool g_display = false;
 MemoryManager<sf::Image>* img_mng;
 
-struct Client
-{
-  int id;
-  sf::SocketTCP socket;
-  Character* c;
-};
-std::map<sf::SocketTCP, Client> clients;
+
+std::map<std::string, std::vector<Client*> > clients_per_map;
+std::map<sf::SocketTCP, Client*> clients;
+
 int currid = 0;
 
-void broadcast (sf::Packet Packet, sf::SocketTCP* client = 0);
 void handle (sf::Packet Packet, sf::SocketTCP client);
-
-
-void broadcast(sf::Packet Packet, sf::SocketTCP* client)
-{
-  for (std::map<sf::SocketTCP, Client>::iterator it=clients.begin(); it != clients.end(); ++it) {
-    if ((!client) || ((*client) != it->first))
-      it->second.socket.Send(Packet);
-  }
-}
-
 void handle (sf::Packet Packet, sf::SocketTCP client)
 {
   int code;
   sf::Packet sPacket;
-  sf::Key::Code key;
-    
+  int key;
+  std::vector<Client*> on_map;
   Packet >> code;
 
   switch (code)
   {
   case NETWORK_NEW_CHARACTER:
-    sPacket << NETWORK_NEW_CHARACTER << clients[client].id;
-    broadcast(sPacket);
+    clients[client]->c->broadcast_maps();
     break;
   case NETWORK_KEYBOARD_PRESSED:
     Packet >> key;
-    clients[client].c->keyboard_pressed(key);
+    clients[client]->c->keyboard_pressed(key);
     break;
   case NETWORK_KEYBOARD_RELEASED:
     Packet >> key;
-    clients[client].c->keyboard_released(key);
+    clients[client]->c->keyboard_released(key);
     break;
   default:
     std::cerr << "Unknown code (" << code << ")" << std::endl;
@@ -70,8 +55,8 @@ void processing_server(void* data) {
   while (1) {
     if (clock.GetElapsedTime() * 1000 > (1000 / fps))
     {
-      for (std::map<sf::SocketTCP, Client>::iterator it=clients.begin(); it != clients.end(); ++it) {
-        it->second.c->process();
+      for (std::map<sf::SocketTCP, Client*>::iterator it=clients.begin(); it != clients.end(); ++it) {
+        it->second->c->process();
       }
       clock.Reset();
     }
@@ -106,11 +91,16 @@ int main ()
         Listener.Accept(client, &Address);
         std::cout << "Client connected ! (" << Address << ")" << std::endl;
         Selector.Add(client);
-        Client c1;
-        c1.socket = client;
-        c1.id = currid;
-        c1.c = new Character();
-        clients.insert(std::pair<sf::SocketTCP, Client>(client, c1));
+        Client* c1 = new Client;
+        c1->socket = client;
+        c1->c = new Character();
+        c1->c->id = currid++;
+
+        clients.insert(std::pair<sf::SocketTCP, Client*>(client, c1));
+        if (clients_per_map.count(c1->c->hash_map()) == 0)
+          clients_per_map.insert(std::pair<std::string, std::vector<Client*> >(c1->c->hash_map(), std::vector<Client*>()));
+        clients_per_map[c1->c->hash_map()].push_back(c1);
+        c1->c->load_characters(&clients_per_map[c1->c->hash_map()]);
       }
       else
       {
@@ -123,10 +113,22 @@ int main ()
         {
           std::cout << "Client exit" << std::endl;
           sf::Packet sPacketd;
-          sPacketd << NETWORK_DISCONNECT;
-          sPacketd << clients[Socket].id;
-          broadcast (sPacketd, &Socket);
+          sPacketd << NETWORK_EXIT_MAP;
+          sPacketd << clients[Socket]->c->id;
+          std::vector<Client*>& oh = clients_per_map[clients[Socket]->c->hash_map()];
+
+          for (std::vector<Client*>::iterator it = oh.begin() ; it != oh.end(); ++it) {
+            if ((*it)->c->id == clients[Socket]->c->id) {
+              oh.erase(it);
+              clients[Socket]->c->broadcast_maps();
+              delete (*it)->c;
+              delete (*it);
+
+              break;
+            }
+          }
           clients.erase(Socket);
+          
           Selector.Remove(Socket);
         }
       }
