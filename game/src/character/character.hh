@@ -2,6 +2,7 @@
 # define CHARACTER_HH_
 
 # include <string>
+# include <map>
 # include <SFML/ImgAnim.hh>
 
 # define SQRT2 sqrt(2) / 2.0
@@ -24,25 +25,31 @@ public:
   Character ();
   ~Character ();
   void move (float x, float y, int dir_p);
-  void share_position ();
   void process_keyboard ();
   void display ();
-  void display (int offsetx, int offsety);
   ImgAnim* animation;
   int dir;
   std::string name;
-  void stand ();
   int get_speed ();
   bool canup;
   bool candown;
   bool canright;
   bool canleft;
   int id;
+  int x;
+  int y;
   int xmap;
   int ymap;
-private:
-  void move_player (int deltax, int deltay);
-  void refresh_map ();
+  int width;
+  int height;
+
+  std::string world_map;
+  std::map<sf::Key::Code, bool> keydowns;
+  bool is_key_down(sf::Key::Code key);
+  void keyboard_pressed(sf::Key::Code key);
+  void keyboard_released(sf::Key::Code key);
+  void process();
+  void share_position();
 };
 
 #endif

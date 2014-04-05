@@ -8,6 +8,7 @@ Game* g;
 Option* opt;
 sf::RenderWindow* app;
 MemoryManager<sf::Image>* img_mng;
+bool g_display = true;
 
 void listen_server (void* data);
 void listen_server (void* data)
@@ -64,33 +65,9 @@ void listen_server (void* data)
                     g->player->id = n;
                     g->player->share_position ();
                 break;
-                case NETWORK_ELEMENT_KEYBOARD_BOTTOM:
-                    Packet >> str;
-                    g->global_elements[str]->process_keyboard_other_bottom();
-                break;
-                case NETWORK_ELEMENT_KEYBOARD_TOP:
-                    Packet >> str;
-                    g->global_elements[str]->process_keyboard_other_top();
-                break;
-                case NETWORK_ELEMENT_KEYBOARD_LEFT:
-                    Packet >> str;
-                    g->global_elements[str]->process_keyboard_other_left();
-                break;
-                case NETWORK_ELEMENT_KEYBOARD_RIGHT:
-                    Packet >> str;
-                    g->global_elements[str]->process_keyboard_other_right();
-                break;
-                case NETWORK_ELEMENT_KEYBOARD:
-                    Packet >> str;
-                    g->global_elements[str]->process_keyboard_other();
-                break;
                 case NETWORK_DISCONNECT:
                     Packet >> n;
                     g->characters.erase(n);
-                break;
-                case NETWORK_GLOBAL_ELEMENT:
-                    Packet >> str;
-                    g->global_elements[str]->affect(Packet);
                 break;
                 default:
                     std::cerr << "ERR CODE NOT HANDLE ("

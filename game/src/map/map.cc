@@ -87,70 +87,49 @@ void Map::load_map (const char* map_path, int xmap_, int ymap_)
 
   while (!input.eof())
     {
-      std::string hash = map_path;
       input >> element;
       input >> x;
       input >> y;
-      hash += "#" + int_to_string(x) + "#" + int_to_string(y) + "#" + element;
-      /*
-      if ((it = g->global_elements.find (hash)) != g->global_elements.end ())
-      {
-          char buffer[1024];
-
-          input.getline (buffer, 1024);
-          elements.push_back (it->second);
-      }
+      if (element == "chest")
+        elements.push_back (new Chest (x, y, input));
+      else if (element[0] == '_')
+        elements.push_back (new Monster (x, y, input, element));
       else
-      {*/
-          if (element == "chest")
-            elements.push_back (new Chest (x, y, input, hash));
-          else if (element[0] == '_')
-            elements.push_back (new Monster (x, y, input, hash, element));
-          else
-            elements.push_back (new Element (element, x, y, 1));
-        /*
-      }*/
+        elements.push_back (new Element (element, x, y, 1));
     }
 }
 
 static bool compare_element (Element* e1,
 			     Element* e2)
 {
-  return (e1->animation->GetPosition().y < e2->animation->GetPosition().y);
+  return (e1->y < e2->y);
 }
 
-void Map::display_background (int offsetx,
-			      int offsety)
+void Map::display_background ()
 {
-
-  background->Move (offsetx, offsety);
   app->Draw (*background);
-  background->Move (-offsetx, -offsety);
 }
 
-void Map::display (int offsetx,
-		   int offsety,
-		   bool play_)
+void Map::display ()
 {
-  bool play = play_;
+  bool play = false;
 
   elements.sort (compare_element);
   for (std::list<Element*>::iterator it = elements.begin();
        it != elements.end (); ++it)
     {
       if ((!play)
-            && (g->player->animation->GetPosition().y - g->yoff < (*it)->animation->GetPosition().y)
-            && (g->player->animation->GetPosition().y + g->player->animation->GetSubRect().GetHeight() -  g->yoff <
-						   (*it)->animation->GetPosition().y + (*it)->animation->GetSubRect().GetHeight()))
+            && (g->player->y < (*it)->y)
+          && (g->player->y + g->player->height < (*it)->y + (*it)->height()))
 	{
 	  g->player->display ();
 	  play = true;
 	}
-      (*it)->display (offsetx, offsety);
+      (*it)->display ();
     }
   if (!play)
     g->player->display ();
   for (std::map<int, Character*>::iterator it = g->characters.begin() ; it != g->characters.end(); it++)
       if ((it->second->xmap == xmap) && (it->second->ymap == ymap))
-    it->second->display (offsetx, offsety);
+    it->second->display();
 }

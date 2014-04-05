@@ -1,6 +1,8 @@
+#ADDFLAG=-O3
+ADDFLAG=-g -ggdb
 CFLAGS=-W -Wall -Wextra -Wfloat-equal -Wshadow -Wpointer-arith \
 -Wcast-qual -Wcast-align -Wmissing-declarations -Wunused -Winline -pedantic \
--Wuninitialized -Winit-self -O3
+-Wuninitialized -Winit-self ${ADDFLAG}
 IFLAGS=-I src/
 LINK=-lsfml-graphics -lsfml-network -lsfml-system -lsfml-window
 CC=g++

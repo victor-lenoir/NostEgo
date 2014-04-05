@@ -14,15 +14,13 @@ std::string int_to_string (int n)
 void Game::init_game ()
 {
   if (!init)
-    {
-      player = new Character;
-      interface = new Interface;
-      for (size_t x = 0; x < MAP_BUFFER; ++x)
-	for (size_t y = 0; y < MAP_BUFFER; ++y)
-	  maps[x][y] = new Map;
-      load_maps ();
-      init = true;
-    }
+  {
+    player = new Character;
+    interface = new Interface;
+    map = new Map;
+    load_map();
+    init = true;
+  }
 }
 
 Game::Game ()
@@ -32,21 +30,14 @@ Game::Game ()
 
   sf::IPAddress ServerAddress = ip;
   if (Socket.Connect(port, ServerAddress) != sf::Socket::Done)
-    {
-        std::cerr << "Could not connect to server " << ip << " on port " << port << std::endl;
-        exit (32);
-    }
+  {
+    std::cerr << "Could not connect to server " << ip << " on port " << port << std::endl;
+    exit (32);
+  }
   init = false;
   player = 0;
   interface = 0;
-  for (size_t x = 0; x < MAP_BUFFER; ++x)
-    for (size_t y = 0; y < MAP_BUFFER; ++y)
-      maps[x][y] = 0;
-  xoff = 0;
-  yoff = 0;
-  world_map = "test";
-  xmap = 0;
-  ymap = 0;
+  map  = 0;
   state = START;
   done = false;
 }
@@ -54,184 +45,96 @@ Game::Game ()
 Game::~Game ()
 {
   init = false;
-  delete interface;
-  delete player;
-  for (size_t x = 0; x < MAP_BUFFER; ++x)
-    for (size_t y = 0; y < MAP_BUFFER; ++y)
-      delete maps[x][y];
-  for (std::map<std::string, Element*>::iterator it = global_elements.begin();
-       it != global_elements.end (); ++it)
-    {
-        delete (it->second);
-    }
+  if (interface)
+    delete interface;
+  if (player)
+    delete player;
+  if (map)
+    delete map;
   for (std::map<int, Character*>::iterator it = characters.begin();
        it != characters.end (); ++it)
-    {
-      delete (it->second);
-    }
+  {
+    delete (it->second);
+  }
 
   Socket.Close();
 }
-void Game::reload_maps (int o, int p)
-{
-    size_t x = 0;
-    size_t y = 0;
-    std::string tmp = "media/maps/" + world_map;
-    Map* backup[MAP_BUFFER];
 
-    if (o == 1)
-    {
-        for (size_t k = 0; k < MAP_BUFFER; ++k)
-            backup[k] = maps[0][k];
-        for (size_t k = 0; k < MAP_BUFFER - 1; ++k)
-            for (size_t j = 0; j < MAP_BUFFER; ++j)
-                maps[k][j] = maps[k + 1][j];
-        x = MAP_BUFFER - 1;
-        for (size_t k = 0; k < MAP_BUFFER; ++k)
-        {
-           y = k;
-           maps[x][y] = backup[k];
-           maps[x][y]->load_map ((tmp + int_to_string (xmap + (x - MAP_BUFFER / 2))
-			     + "-" +
-			    int_to_string (ymap + (y - MAP_BUFFER / 2))).c_str (),
-                                xmap + (x - MAP_BUFFER / 2),
-                                 ymap + (y - MAP_BUFFER / 2));
-        }
-    }
-    else if (o == -1)
-    {
-        for (size_t k = 0; k < MAP_BUFFER; ++k)
-            backup[k] = maps[MAP_BUFFER - 1][k];
-        for (size_t k = MAP_BUFFER - 1; k > 0; --k)
-            for (size_t j = 0; j < MAP_BUFFER; ++j)
-                maps[k][j] = maps[k - 1][j];
-        x = 0;
-        for (size_t k = 0; k < MAP_BUFFER; ++k)
-        {
-           y = k;
-           maps[x][y] = backup[k];
-           maps[x][y]->load_map ((tmp + int_to_string (xmap + (x - MAP_BUFFER / 2))
-			     + "-" +
-			    int_to_string (ymap + (y - MAP_BUFFER / 2))).c_str (),
-                                xmap + (x - MAP_BUFFER / 2),
-                                 ymap + (y - MAP_BUFFER / 2));
-        }
-    }
-    else  if (p == 1)
-    {
-        for (size_t k = 0; k < MAP_BUFFER; ++k)
-            backup[k] = maps[k][0];
-        for (size_t k = 0; k < MAP_BUFFER - 1; ++k)
-            for (size_t j = 0; j < MAP_BUFFER; ++j)
-                maps[j][k] = maps[j][k + 1];
-        y = MAP_BUFFER - 1;
-        for (size_t k = 0; k < MAP_BUFFER; ++k)
-        {
-           x = k;
-           maps[x][y] = backup[k];
-           maps[x][y]->load_map ((tmp + int_to_string (xmap + (x - MAP_BUFFER / 2))
-			     + "-" +
-			    int_to_string (ymap + (y - MAP_BUFFER / 2))).c_str (),
-                                xmap + (x - MAP_BUFFER / 2),
-                                 ymap + (y - MAP_BUFFER / 2));
-        }
-    }
-    else  if (p == -1)
-    {
-        for (size_t k = 0; k < MAP_BUFFER; ++k)
-            backup[k] = maps[k][MAP_BUFFER - 1];
-        for (size_t k = MAP_BUFFER - 1; k > 0; --k)
-            for (size_t j = 0; j < MAP_BUFFER; ++j)
-                maps[j][k] = maps[j][k - 1];
-        y = 0;
-        for (size_t k = 0; k < MAP_BUFFER; ++k)
-        {
-           x = k;
-           maps[x][y] = backup[k];
-           maps[x][y]->load_map ((tmp + int_to_string (xmap + (x - MAP_BUFFER / 2))
-			     + "-" +
-			    int_to_string (ymap + (y - MAP_BUFFER / 2))).c_str (),
-                                xmap + (x - MAP_BUFFER / 2),
-                                 ymap + (y - MAP_BUFFER / 2));
-        }
-    }
-}
-void Game::load_maps ()
+void Game::load_map()
 {
-  std::string tmp = "media/maps/" + world_map;
+  std::string tmp = "media/maps/" + player->world_map;
 
-  for (size_t y = 0; y < MAP_BUFFER; ++y)
-    for (size_t x = 0; x < MAP_BUFFER; ++x)
-      maps[x][y]->load_map ((tmp + int_to_string (xmap + (x - MAP_BUFFER / 2))
-			     + "-" +
-			    int_to_string (ymap + (y - MAP_BUFFER / 2))).c_str (),
-                            xmap + (x - MAP_BUFFER / 2),
-                            ymap + (y - MAP_BUFFER / 2));
+  map->load_map ((tmp + int_to_string (player->xmap) + "-" +
+                  int_to_string (player->ymap)).c_str (),
+                 player->xmap,
+                 player->ymap);
 }
 
 int Game::get_state ()
 {
-   return state;
+  return state;
 }
 
 void Game::set_state (int state_p)
 {
-   state = state_p;
-   interface->clean ();
+  state = state_p;
+  interface->clean ();
 }
 
 void Game::process ()
 {
   sf::Event Event;
 
-  if (state == MAP)
-  {
-    maps[MAP_BUFFER / 2][MAP_BUFFER / 2]->process_keyboard ();
-    player->process_keyboard ();
-  }
 
   while (app->GetEvent(Event))
+  {
+    switch (Event.Type)
     {
-      switch (Event.Type)
-	{
-	case sf::Event::Closed:
-	  app->Close();
-	  break;
-	case sf::Event::MouseMoved:
-	  interface->process_mouse_move (Event.MouseMove.X, Event.MouseMove.Y);
-	  break;
-	case sf::Event::MouseButtonPressed:
-	  interface->process_mouse_click (Event.MouseButton.X, Event.MouseButton.Y);
-	  break;
-	case sf::Event::KeyPressed:
-	  if (Event.Key.Code == sf::Key::Escape)
-	    app->Close();
-	  break;
-	default:
-	  break;
-	}
+    case sf::Event::Closed:
+      app->Close();
+      break;
+    case sf::Event::MouseMoved:
+      interface->process_mouse_move (Event.MouseMove.X, Event.MouseMove.Y);
+      break;
+    case sf::Event::MouseButtonPressed:
+      interface->process_mouse_click (Event.MouseButton.X, Event.MouseButton.Y);
+      break;
+    case sf::Event::KeyPressed:
+      if (Event.Key.Code == sf::Key::Escape)
+        app->Close();
+      else if (state == MAP)
+      {
+        sf::Packet Packet;
+
+        Packet << NETWORK_KEYBOARD_PRESSED
+               << Event.Key.Code;
+        Socket.Send(Packet);
+        //maps[MAP_BUFFER / 2][MAP_BUFFER / 2]->process_keyboard ();
+        //player->process_keyboard ();
+      }
+      break;
+    case sf::Event::KeyReleased:
+      if (state == MAP)
+      {
+        sf::Packet Packet;
+
+        Packet << NETWORK_KEYBOARD_RELEASED
+               << Event.Key.Code;
+        Socket.Send(Packet);
+      }
+      break;
+    default:
+      break;
     }
+  }
 }
 
 void Game::display ()
 {
   if (g->get_state() == MAP)
-    {
-      for (int y = MAP_BUFFER - 1; y >= 0; --y)
-	for (size_t x = 0; x < MAP_BUFFER; ++x)
-	  {
-	    maps[x][y]->display_background ((x - MAP_BUFFER / 2) *
-					    WIDTH_MAP + xoff,
-					    (y - MAP_BUFFER / 2) *
-					    HEIGHT_MAP + yoff);
-	  }
-    for (int y = MAP_BUFFER - 1; y >= 0; --y)
-      for (size_t x = 0; x < MAP_BUFFER; ++x)
-	{
-	  maps[x][y]->display ((x - MAP_BUFFER / 2) * WIDTH_MAP + xoff,
-			       (y - MAP_BUFFER / 2) * HEIGHT_MAP + yoff,
-			       (x != MAP_BUFFER / 2) || (y != MAP_BUFFER / 2));
-	}
-    }
+  {
+    map->display_background();
+    map->display();
+  }
   interface->display ();
 }

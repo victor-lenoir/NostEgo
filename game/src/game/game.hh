@@ -29,30 +29,24 @@ struct Game
   Game ();
   ~Game ();
   void init_game ();
-  void load_maps ();
-  void reload_maps (int x, int y);
+  void load_map();
   void process ();
   void display ();
   void set_state (int state_p);
   int get_state ();
   bool done;
   Interface* interface;
-  Map* maps[MAP_BUFFER][MAP_BUFFER];
+  Map* map;
 
   Character* player;
   std::map<int, Character*> characters;
-  std::string world_map;
-  int xmap;
-  int ymap;
-  int xoff;
-  int yoff;
   sf::SocketTCP Socket;
   bool init;
-  std::map<std::string, Element*> global_elements;
 private:
   int state;
 };
 
 extern Game* g;
+extern bool g_display;
 
 #endif

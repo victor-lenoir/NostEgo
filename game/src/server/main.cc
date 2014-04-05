@@ -5,129 +5,85 @@
 #include <map/chest.hh>
 #include <game/game.hh>
 
+sf::SelectorTCP Selector;
+sf::SocketTCP Listener;
 Game* g;
 Option* opt;
 sf::RenderWindow* app;
+bool g_display = false;
 MemoryManager<sf::Image>* img_mng;
 
-sf::SelectorTCP Selector;
-sf::SocketTCP Listener;
 struct Client
 {
   int id;
   sf::SocketTCP socket;
+  Character* c;
 };
-std::vector<Client> clients;
+std::map<sf::SocketTCP, Client> clients;
 int currid = 0;
-std::map<std::string, Element*> global_elements;
 
-void broadcast (sf::Packet Packet, sf::SocketTCP* client);
+void broadcast (sf::Packet Packet, sf::SocketTCP* client = 0);
 void handle (sf::Packet Packet, sf::SocketTCP client);
 
-void broadcast (sf::Packet Packet, sf::SocketTCP* client)
+
+void broadcast(sf::Packet Packet, sf::SocketTCP* client)
 {
-    for (size_t i = 0; i < clients.size(); ++i)
-    {
-        if ((!client) || ((*client) != clients[i].socket))
-             clients[i].socket.Send(Packet);
-    }
+  for (std::map<sf::SocketTCP, Client>::iterator it=clients.begin(); it != clients.end(); ++it) {
+    if ((!client) || ((*client) != it->first))
+      it->second.socket.Send(Packet);
+  }
 }
 
 void handle (sf::Packet Packet, sf::SocketTCP client)
 {
-    int code;
-    std::string str;
-    sf::Packet sPacket;
-    sf::Packet sPacket2;
-    std::map<std::string, Element*>::iterator it;
+  int code;
+  sf::Packet sPacket;
+  sf::Key::Code key;
+    
+  Packet >> code;
 
-    Packet >> code;
+  switch (code)
+  {
+  case NETWORK_NEW_CHARACTER:
+    sPacket << NETWORK_NEW_CHARACTER << clients[client].id;
+    broadcast(sPacket);
+    break;
+  case NETWORK_KEYBOARD_PRESSED:
+    Packet >> key;
+    clients[client].c->keyboard_pressed(key);
+    break;
+  case NETWORK_KEYBOARD_RELEASED:
+    Packet >> key;
+    clients[client].c->keyboard_released(key);
+    break;
+  default:
+    std::cerr << "Unknown code (" << code << ")" << std::endl;
+    break;
+  }
+}
+void processing_server(void* data);
 
-    switch (code)
+void processing_server(void* data) {
+  sf::Clock clock;
+  (void)data;
+  float fps = 40;
+  while (1) {
+    if (clock.GetElapsedTime() * 1000 > (1000 / fps))
     {
-        case NETWORK_NEW_CHARACTER:
-            std::cout << "Welcome new character" << std::endl;
-            sPacket2 << NETWORK_NEW_CHARACTER << currid;
-            for (size_t i = 0; i < clients.size(); ++i)
-            {
-                if (client != clients[i].socket)
-                {
-                    sf::Packet sPacket3;
-                    sPacket3 << NETWORK_NEW_CHARACTER << clients[i].id;
-                    client.Send(sPacket3);
-                    clients[i].socket.Send(sPacket2);
-                }
-                else
-                    clients[i].id = currid;
-            }
-            sPacket << NETWORK_ID << currid;
-            ++currid;
-            client.Send(sPacket);
-        break;
-        case NETWORK_CHARACTER_MOVE:
-            broadcast (Packet, &client);
-        break;
-        case NETWORK_ELEMENT_KEYBOARD_BOTTOM:
-            broadcast (Packet, &client);
-            Packet >> str;
-            global_elements[str]->process_keyboard_other_bottom();
-        break;
-        case NETWORK_GLOBAL_ELEMENT:
-            Packet >> str;
-            std::cout << "Request element : <" << str << ">" << std::endl;
-            if ((it = global_elements.find (str)) != global_elements.end ())
-            {
-                std::cout << "LITTLE DERP EXIST" << std::endl;
-                it->second->sendPacket(client);
-            }
-            else
-            {
-              size_t ko = 0;
-              size_t l = 0;
-              std::string world_map;
-              std::string xmap;
-              std::string ymap;
-              std::string object;
-              l = str.find_first_of("#");
-              world_map = str.substr(0, l);
-              while (l != std::string::npos)
-              {
-                std::string tmp;
-                size_t k = l;
-                l = str.find_first_of("#", l + 1);
-                if (l == std::string::npos)
-                    tmp = str.substr(k + 1, l - k - 1);
-                else
-                    tmp = str.substr(k + 1, l - k - 1);
-                switch (ko)
-                {
-                    case 0:
-                        xmap = tmp;
-                    break;
-                    case 1:
-                        ymap = tmp;
-                    break;
-                    case 2:
-                        object = tmp;
-                    break;
-                }
-                ++ko;
-              }
-              if (object == "chest")
-              {
-                  global_elements.insert (std::pair<std::string, Element*>(str, new Chest (atoi (xmap.c_str()), atoi (ymap.c_str()), str, "")));
-              }
-
-            }
-        break;
-        default:
-            std::cerr << "Unknown code (" << code << ")" << std::endl;
-        break;
+      for (std::map<sf::SocketTCP, Client>::iterator it=clients.begin(); it != clients.end(); ++it) {
+        it->second.c->process();
+      }
+      clock.Reset();
     }
+    else
+      sf::Sleep((1.0/ fps) - clock.GetElapsedTime());
+  }
 }
 
 int main ()
 {
+  sf::Thread tr (processing_server);
+  tr.Launch();
   if (!Listener.Listen(2012))
   {
     std::cerr << "Binding to port 2012 failed" << std::endl;
@@ -138,52 +94,43 @@ int main ()
   while (true)
   {
     size_t i;
-      unsigned int nsock = Selector.Wait();
-      for (i = 0; i < nsock; ++i)
+    unsigned int nsock = Selector.Wait();
+    for (i = 0; i < nsock; ++i)
+    {
+      sf::SocketTCP Socket = Selector.GetSocketReady(i);;
+
+      if (Socket == Listener)
       {
-            sf::SocketTCP Socket = Selector.GetSocketReady(i);;
-
-            if (Socket == Listener)
-            {
-                sf::IPAddress Address;
-                sf::SocketTCP client;
-                Listener.Accept(client, &Address);
-		std::cout << "Client connected ! (" << Address << ")" << std::endl;
-                Selector.Add(client);
-                Client c1;
-                c1.socket = client;
-                c1.id = currid;
-                clients.push_back (c1);
-            }
-            else
-            {
-                sf::Packet Packet;
-                if (Socket.Receive(Packet) == sf::Socket::Done)
-                {
-                    handle (Packet, Socket);
-                }
-                else
-                {
-                    std::cout << "Client exit" << std::endl;
-                    for (std::vector<Client>::iterator it = clients.begin();
-                          it != clients.end(); it++)
-                    {
-                        if (it->socket == Socket)
-                        {
-                            sf::Packet sPacketd;
-                            sPacketd << NETWORK_DISCONNECT;
-                            sPacketd << it->id;
-
-                            broadcast (sPacketd, &Socket);
-			    clients.erase (it);
-			    break;
-                        }
-                    }
-
-                    Selector.Remove(Socket);
-                }
-            }
+        sf::IPAddress Address;
+        sf::SocketTCP client;
+        Listener.Accept(client, &Address);
+        std::cout << "Client connected ! (" << Address << ")" << std::endl;
+        Selector.Add(client);
+        Client c1;
+        c1.socket = client;
+        c1.id = currid;
+        c1.c = new Character();
+        clients.insert(std::pair<sf::SocketTCP, Client>(client, c1));
       }
+      else
+      {
+        sf::Packet Packet;
+        if (Socket.Receive(Packet) == sf::Socket::Done)
+        {
+          handle (Packet, Socket);
+        }
+        else
+        {
+          std::cout << "Client exit" << std::endl;
+          sf::Packet sPacketd;
+          sPacketd << NETWORK_DISCONNECT;
+          sPacketd << clients[Socket].id;
+          broadcast (sPacketd, &Socket);
+          clients.erase(Socket);
+          Selector.Remove(Socket);
+        }
+      }
+    }
   }
   return 0;
 }
