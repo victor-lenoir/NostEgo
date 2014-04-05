@@ -129,7 +129,7 @@ void Character::broadcast_maps() {
   sPacket << (int)on_map->size();
 
   for (size_t k = 0; k < (int)on_map->size(); ++k) {
-    sPacket << (*on_map)[k]->c->id << (*on_map)[k]->c->x << (*on_map)[k]->c->y;
+    sPacket << (*on_map)[k]->c->id << (*on_map)[k]->c->x << (*on_map)[k]->c->y << (*on_map)[k]->c->dir;
   }
   // SEND ALL CHARACTERS ON CURRENT MAP.
   // AND ALL ELEMENTS
@@ -147,9 +147,7 @@ void Character::load_characters(std::vector<Client*>* on_map_) {
 }
 
 
-
-Character::Character ()
-{
+void Character::init_chara() {
   animation = 0;
   id = -1;
   dir = DOWN;
@@ -161,16 +159,20 @@ Character::Character ()
   width = 32;
   height = 64;
 }
-
-Character::Character(std::string world_map_, int xmap_, int ymap_, int x_, int y_)
+Character::Character ()
 {
-  animation = 0;
-  Character();
+  init_chara();
+}
+
+Character::Character(std::string world_map_, int xmap_, int ymap_, int x_, int y_, int dir_)
+{
+  init_chara();
   world_map = world_map_;
   xmap = xmap_;
   ymap = ymap_;
   x = x_;
   y = y_;
+  dir = dir_;
 }
 
 Character::~Character ()

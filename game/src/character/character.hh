@@ -25,10 +25,12 @@ class Character
 {
 public:
   Character();
-  Character(std::string world_map_, int xmap_, int ymap_, int x_, int y_);
+  Character(std::string world_map_, int xmap_, int ymap_, int x_, int y_, int dir_);
 
   ~Character ();
   void broadcast_maps();
+
+  void init_chara();
   void move (float x, float y, int dir_p);
   void process_keyboard ();
   void display ();

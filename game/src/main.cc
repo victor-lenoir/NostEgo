@@ -40,9 +40,8 @@ void listen_server (void* data)
     }
     g->characters.clear();
     for (size_t k = 0; k < n; ++k) {
-      Packet >> id >> x >> y;
-      // LOAD PLAYER
-      g->characters[id] = new Character(world_map, xmap, ymap, x, y);
+      Packet >> id >> x >> y >> dir;
+      g->characters[id] = new Character(world_map, xmap, ymap, x, y, dir);
     }
     g->load_map();
     //g->player->id = n;
@@ -69,8 +68,8 @@ void listen_server (void* data)
 int main ()
 {
   sf::Clock clock;
-  //sf::VideoMode vm = sf::VideoMode::GetDesktopMode();
-  sf::VideoMode vm = sf::VideoMode(800, 600);
+  sf::VideoMode vm = sf::VideoMode::GetDesktopMode();
+  //sf::VideoMode vm = sf::VideoMode(800, 600);
   sf::Packet sPacket;
 
 
