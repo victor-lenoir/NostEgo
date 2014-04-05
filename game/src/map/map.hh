@@ -14,13 +14,11 @@ public:
   ~Map();
   void clean ();
   void process_keyboard ();
-  void load_map (const char* map_path, int xmap_, int ymap_);
+  bool load_map (const char* map_path, bool display_on = true);
   void display ();
   void display_background ();
   sf::Sprite* background;
   sf::Image* img;
-  int xmap;
-  int ymap;
   std::list<Element*> elements;
 };
 

@@ -59,9 +59,7 @@ void Game::load_map()
   std::string tmp = "media/maps/" + characters.begin()->second->world_map;
 
   map->load_map ((tmp + int_to_string (characters.begin()->second->xmap) + "-" +
-                  int_to_string (characters.begin()->second->ymap)).c_str (),
-                 characters.begin()->second->xmap,
-                 characters.begin()->second->ymap);
+                  int_to_string (characters.begin()->second->ymap)).c_str ());
 }
 
 int Game::get_state ()

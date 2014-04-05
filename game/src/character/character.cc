@@ -10,7 +10,7 @@ void Character::keyboard_released(int key) {
   keydowns[key] = false;
 }
 
-void Character::process() {
+void Character::process(Map* m) {
   process_keyboard();
 }
 

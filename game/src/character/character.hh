@@ -20,6 +20,7 @@ enum
     UP_LEFT,
     UP_RIGHT
   };
+class Map;
 
 class Character
 {
@@ -58,7 +59,7 @@ public:
   bool is_key_down(int key);
   void keyboard_pressed(int key);
   void keyboard_released(int key);
-  void process();
+  void process(Map* m);
   std::string hash_map();
 };
 

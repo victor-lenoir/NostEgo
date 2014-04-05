@@ -16,8 +16,30 @@ MemoryManager<sf::Image>* img_mng;
 
 std::map<std::string, std::vector<Client*> > clients_per_map;
 std::map<sf::SocketTCP, Client*> clients;
+std::map<std::string, Map*> maps;
 
 int currid = 0;
+void load_all_maps();
+
+void load_all_maps() {
+  std::string world_map = "test";
+
+  std::string prefix = "media/maps/" + world_map;
+  Map* n;
+  for (int y = -2; y <= 2; ++y)
+    for (int x = -2; x <= 2; ++x)
+    {
+      std::string name = prefix + int_to_string(x) + "-" + int_to_string(y);
+      n = new Map;
+
+      if (!n->load_map(name.c_str(), false))
+        delete n;
+      else
+      {
+        maps.insert(std::pair<std::string, Map*>(world_map + "#" + int_to_string(x) + "#" + int_to_string(y), n));
+      }
+    }
+}
 
 void handle (sf::Packet Packet, sf::SocketTCP client);
 void handle (sf::Packet Packet, sf::SocketTCP client)
@@ -56,7 +78,8 @@ void processing_server(void* data) {
     if (clock.GetElapsedTime() * 1000 > (1000 / fps))
     {
       for (std::map<sf::SocketTCP, Client*>::iterator it=clients.begin(); it != clients.end(); ++it) {
-        it->second->c->process();
+        Map* m = (Map*)0;
+        it->second->c->process(m);
       }
       clock.Reset();
     }
@@ -68,6 +91,7 @@ void processing_server(void* data) {
 int main ()
 {
   sf::Thread tr (processing_server);
+  load_all_maps();
   tr.Launch();
   if (!Listener.Listen(2012))
   {
@@ -128,7 +152,7 @@ int main ()
             }
           }
           clients.erase(Socket);
-          
+
           Selector.Remove(Socket);
         }
       }
