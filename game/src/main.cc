@@ -92,7 +92,6 @@ int main ()
   sf::VideoMode vm = sf::VideoMode(WIDTH_MAP, HEIGHT_MAP);
   sf::Packet sPacket;
 
-
   img_mng = new MemoryManager<sf::Image>;
   app = new sf::RenderWindow(vm, "Nost ego", sf::Style::Fullscreen);
   //app = new sf::RenderWindow(vm, "Nost ego");

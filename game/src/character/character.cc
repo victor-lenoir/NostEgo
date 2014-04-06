@@ -53,6 +53,18 @@ void Character::move (float xpar,
   deltay *= ypar;
   x += deltax;
   y += deltay;
+  if (x >= WIDTH_MAP) {
+    x = 1;
+  }
+  else if (x < 0) {
+    x = WIDTH_MAP - 1;
+  }
+  else if (y >= HEIGHT_MAP) {
+    y = 1;
+  }
+  else if (y < 0) {
+    y = HEIGHT_MAP - 1;
+  }
   dir = dir_p;
 }
 
