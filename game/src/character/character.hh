@@ -33,8 +33,8 @@ public:
   void broadcast_local(sf::Packet& sPacket);
 
   void init_chara();
-  void move (float x, float y, int dir_p);
-  void process_keyboard ();
+  void move (float x, float y, int dir_p, Map* m, std::map<std::string, std::vector<Client*> >& clients_per_map, std::map<std::string, Map*>& maps);
+  void process_keyboard (Map* m, std::map<std::string, std::vector<Client*> >& clients_per_map, std::map<std::string, Map*>& maps);
   void display (int offsetx, int offsety);
   ImgAnim* animation;
   int dir;
@@ -60,7 +60,7 @@ public:
   bool is_key_down(int key);
   void keyboard_pressed(int key);
   void keyboard_released(int key);
-  void process(Map* m);
+  void process(Map* m, std::map<std::string, std::vector<Client*> >& clients_per_map, std::map<std::string, Map*>& maps);
   std::string hash_map();
 };
 

@@ -48,6 +48,7 @@ bool Map::load_map (const char* map_path, bool display_on)
   clean ();
   if (!input.good ())
   {
+    return false;
     background_str = "media/images/maps/background/grass.png";
   }
   else
@@ -75,8 +76,7 @@ bool Map::load_map (const char* map_path, bool display_on)
     if (!background)
       std::cerr << "Invalid background file: " << background_str << std::endl;
   }
-  if (!input.good ())
-    return false;
+
   int cid = 0;
 
   while (!input.eof())

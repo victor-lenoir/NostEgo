@@ -10,12 +10,13 @@ void Character::keyboard_released(int key) {
   keydowns[key] = false;
 }
 
-void Character::process(Map* m) {
+void Character::process(Map* m, std::map<std::string, std::vector<Client*> >& clients_per_map,
+                        std::map<std::string, Map*>& maps) {
   // Process key_board for * element
   for (std::list<Element*>::iterator it = m->elements.begin(); it != m->elements.end(); ++it) {
     (*it)->process_keyboard_general(this);
   }
-  process_keyboard();
+  process_keyboard(m, clients_per_map, maps);
 }
 
 void Character::display (int offsetx, int offsety)
@@ -44,7 +45,10 @@ int Character::get_speed ()
 
 void Character::move (float xpar,
                       float ypar,
-                      int dir_p)
+                      int dir_p,
+                      Map* m,
+                      std::map<std::string, std::vector<Client*> >& clients_per_map,
+                      std::map<std::string, Map*>& maps)
 {
   float deltax = get_speed ();
   float deltay = get_speed ();
@@ -53,17 +57,43 @@ void Character::move (float xpar,
   deltay *= ypar;
   x += deltax;
   y += deltay;
+  bool changemap = (x >= WIDTH_MAP) || (x < 0) || (y >= HEIGHT_MAP) || (y < 0);
+  Client* toreadd = 0;
+
+  if (changemap) {
+    for (std::vector<Client*>::iterator it = on_map->begin() ; it != on_map->end(); ++it) {
+      if ((*it)->c->id == id) {
+        toreadd = (*it);
+        on_map->erase(it);
+        break;
+      }
+    }
+    broadcast_maps(m);
+  }
+
   if (x >= WIDTH_MAP) {
     x = 1;
+    xmap++;
   }
   else if (x < 0) {
     x = WIDTH_MAP - 1;
+    xmap--;
   }
   else if (y >= HEIGHT_MAP) {
     y = 1;
+    ymap++;
   }
   else if (y < 0) {
     y = HEIGHT_MAP - 1;
+    ymap--;
+  }
+
+  if (changemap) {
+    if (clients_per_map.count(hash_map()) == 0)
+      clients_per_map.insert(std::pair<std::string, std::vector<Client*> >(hash_map(), std::vector<Client*>()));
+    clients_per_map[hash_map()].push_back(toreadd);
+    load_characters(&clients_per_map[hash_map()]);
+    broadcast_maps(maps[hash_map()]);
   }
   dir = dir_p;
 }
@@ -71,7 +101,7 @@ void Character::move (float xpar,
 bool Character::is_key_down(int key) {
   return keydowns[key];
 }
-void Character::process_keyboard ()
+void Character::process_keyboard (Map* m, std::map<std::string, std::vector<Client*> >& clients_per_map, std::map<std::string, Map*>& maps)
 {
   bool up = is_key_down(sf::Key::Up);
   bool down = is_key_down(sf::Key::Down);
@@ -80,21 +110,21 @@ void Character::process_keyboard ()
 
 
   if (up && canup && right && canright)
-    move (SQRT2, -SQRT2, UP_RIGHT);
+    move (SQRT2, -SQRT2, UP_RIGHT, m, clients_per_map, maps);
   else if (down && candown && right && canright)
-    move (SQRT2, SQRT2, DOWN_RIGHT);
+    move (SQRT2, SQRT2, DOWN_RIGHT, m, clients_per_map, maps);
   else if (up && canup && left && canleft)
-    move (-SQRT2, -SQRT2, UP_LEFT);
+    move (-SQRT2, -SQRT2, UP_LEFT, m, clients_per_map, maps);
   else if (down && candown && left && canleft)
-    move (-SQRT2, SQRT2, DOWN_LEFT);
+    move (-SQRT2, SQRT2, DOWN_LEFT, m, clients_per_map, maps);
   else if (up && canup)
-    move (0, -1, UP);
+    move (0, -1, UP, m, clients_per_map, maps);
   else if (down && candown)
-    move (0, 1, DOWN);
+    move (0, 1, DOWN, m, clients_per_map, maps);
   else if (right && canright)
-    move (1, 0, RIGHT);
+    move (1, 0, RIGHT, m, clients_per_map, maps);
   else if (left && canleft)
-    move (-1, 0, LEFT);
+    move (-1, 0, LEFT, m, clients_per_map, maps);
   else
   {
     if (up && right)
@@ -137,7 +167,7 @@ void Character::share_position()
   }
 }
 
-void Character::broadcast_local(sf::Packet& sPacket){ 
+void Character::broadcast_local(sf::Packet& sPacket){
   for (size_t k = 0; k < (int)on_map->size(); ++k) {
     (*on_map)[k]->socket.Send(sPacket);
   }

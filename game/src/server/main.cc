@@ -79,7 +79,7 @@ void processing_server(void* data) {
     {
       for (std::map<sf::SocketTCP, Client*>::iterator it=clients.begin(); it != clients.end(); ++it) {
         Map* m = maps[it->second->c->hash_map()];
-        it->second->c->process(m);
+        it->second->c->process(m, clients_per_map, maps);
       }
       clock.Reset();
     }
