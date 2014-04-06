@@ -26,6 +26,7 @@ void listen_server (void* data)
   sf::Packet Packet;
   int code;
   Chest* ch;
+  int code2;
 
   g->Socket.SetBlocking(false);
   if (g->Socket.Receive(Packet) != sf::Socket::Done)
@@ -52,6 +53,17 @@ void listen_server (void* data)
       g->characters[id] = new Character(world_map, xmap, ymap, x, y, dir);
     }
     g->load_map();
+    while (1) {
+      Packet >> code2;
+      if (code2 == NETWORK_EOF) break;
+      switch (code2) {
+      case NETWORK_CHEST_IS_OPEN:
+        Packet >> id;
+        ch = (Chest*)g->map->get_element_by_id(id);
+        ch->open_chest();
+        break;
+      }
+    }
     //g->player->id = n;
     break;
   case NETWORK_CHARACTER_MOVE:

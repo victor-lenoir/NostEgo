@@ -12,8 +12,14 @@ Chest::Chest (int x_, int y_, std::ifstream& input, int id_)
 
 void Chest::open_chest() {
   open = true;
+  load_animation();
   animation->once = true;
   animation->play();
+}
+
+void Chest::update(sf::Packet& packet) {
+  if (open)
+    packet << NETWORK_CHEST_IS_OPEN << id;
 }
 
 void Chest::process_keyboard_bottom (Character* p) {
@@ -22,7 +28,6 @@ void Chest::process_keyboard_bottom (Character* p) {
   if ((!open) && space) {
     sf::Packet sPacket;
 
-    modified = true;
     sPacket << NETWORK_CHEST
             << object
             << p->id

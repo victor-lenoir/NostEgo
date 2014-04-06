@@ -18,7 +18,7 @@ public:
   Element (std::string element, int x, int y, int nanim, int id_);
   ~Element ();
   virtual void affect (sf::Packet& packet) {(void)packet;}
-  virtual void sendPacket (sf::SocketTCP& client) {(void)client;}
+  virtual void update(sf::Packet& packet) {(void)packet;}
   void process_keyboard_general (Character* p);
   virtual void process_keyboard (Character* p) {(void)p;}
   virtual void process_keyboard_bottom (Character* p) {(void)p;}
@@ -34,7 +34,6 @@ public:
   int x;
   int y;
   int id;
-  bool modified;
   int stop_animation;
   std::string img_path;
   bool global;

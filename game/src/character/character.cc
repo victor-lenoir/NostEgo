@@ -131,7 +131,7 @@ void Character::broadcast_local(sf::Packet& sPacket){
   }
 }
 
-void Character::broadcast_maps() {
+void Character::broadcast_maps(Map* m) {
   sf::Packet sPacket;
 
   sPacket << NETWORK_NEW_MAP;
@@ -141,6 +141,13 @@ void Character::broadcast_maps() {
   for (size_t k = 0; k < (int)on_map->size(); ++k) {
     sPacket << (*on_map)[k]->c->id << (*on_map)[k]->c->x << (*on_map)[k]->c->y << (*on_map)[k]->c->dir;
   }
+  //sPacket << (int)map
+  for (std::list<Element*>::iterator it = m->elements.begin();
+       it != m->elements.end (); ++it)
+  {
+    (*it)->update(sPacket);
+  }
+  sPacket << NETWORK_EOF;
   // SEND ALL CHARACTERS ON CURRENT MAP.
   // AND ALL ELEMENTS
   broadcast_local(sPacket);

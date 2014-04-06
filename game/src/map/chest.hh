@@ -15,6 +15,8 @@ public:
   virtual void process_keyboard_bottom (Character* p);  
   bool open;
   void open_chest();
+  virtual void update(sf::Packet& packet);
+  
   std::string object;
 };
 

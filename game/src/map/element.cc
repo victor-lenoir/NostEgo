@@ -84,7 +84,6 @@ Element::Element (std::string element, int x_, int y_, int nanim_, int id_)
   int enable_animation;
   std::ifstream input;
 
-  modified=false;
   id=id_;
   x=x_;
   y=y_;

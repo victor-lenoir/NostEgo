@@ -29,7 +29,7 @@ public:
   Character(std::string world_map_, int xmap_, int ymap_, int x_, int y_, int dir_);
 
   ~Character ();
-  void broadcast_maps();
+  void broadcast_maps(Map* m);
   void broadcast_local(sf::Packet& sPacket);
 
   void init_chara();

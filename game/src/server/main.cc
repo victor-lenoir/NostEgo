@@ -53,7 +53,7 @@ void handle (sf::Packet Packet, sf::SocketTCP client)
   switch (code)
   {
   case NETWORK_NEW_CHARACTER:
-    clients[client]->c->broadcast_maps();
+    clients[client]->c->broadcast_maps(maps[clients[client]->c->hash_map()]);
     break;
   case NETWORK_KEYBOARD_PRESSED:
     Packet >> key;
@@ -146,7 +146,7 @@ int main ()
           for (std::vector<Client*>::iterator it = oh.begin() ; it != oh.end(); ++it) {
             if ((*it)->c->id == clients[Socket]->c->id) {
               oh.erase(it);
-              clients[Socket]->c->broadcast_maps();
+              clients[Socket]->c->broadcast_maps(maps[clients[Socket]->c->hash_map()]);
               delete (*it)->c;
               delete (*it);
 
