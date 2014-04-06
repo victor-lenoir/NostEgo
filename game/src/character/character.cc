@@ -125,6 +125,12 @@ void Character::share_position()
   }
 }
 
+void Character::broadcast_local(sf::Packet& sPacket){ 
+  for (size_t k = 0; k < (int)on_map->size(); ++k) {
+    (*on_map)[k]->socket.Send(sPacket);
+  }
+}
+
 void Character::broadcast_maps() {
   sf::Packet sPacket;
 
@@ -137,9 +143,7 @@ void Character::broadcast_maps() {
   }
   // SEND ALL CHARACTERS ON CURRENT MAP.
   // AND ALL ELEMENTS
-  for (size_t k = 0; k < (int)on_map->size(); ++k) {
-    (*on_map)[k]->socket.Send(sPacket);
-  }
+  broadcast_local(sPacket);
 }
 
 std::string Character::hash_map()

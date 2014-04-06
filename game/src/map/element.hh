@@ -15,22 +15,17 @@ class Character;
 class Element
 {
 public:
-  Element (std::string element, int x, int y, int nanim);
-  Element ();
+  Element (std::string element, int x, int y, int nanim, int id_);
   ~Element ();
   virtual void affect (sf::Packet& packet) {(void)packet;}
-  virtual void sendPacket (sf::SocketTCP& client) {std::cout << "WRONG CALL" << std::endl; (void)client;}
+  virtual void sendPacket (sf::SocketTCP& client) {(void)client;}
   void process_keyboard_general (Character* p);
-  virtual void process_keyboard () {}
-  virtual void process_keyboard_bottom () {}
-  virtual void process_keyboard_top () {}
-  virtual void process_keyboard_left () {}
-  virtual void process_keyboard_right () {}
-  virtual void process_keyboard_other () {}
-  virtual void process_keyboard_other_bottom () {}
-  virtual void process_keyboard_other_top () {}
-  virtual void process_keyboard_other_left () {}
-  virtual void process_keyboard_other_right () {}
+  virtual void process_keyboard (Character* p) {(void)p;}
+  virtual void process_keyboard_bottom (Character* p) {(void)p;}
+  virtual void process_keyboard_top (Character* p) {(void)p;}
+  virtual void process_keyboard_left (Character* p) {(void)p;}
+  virtual void process_keyboard_right (Character* p) {(void)p;}
+  virtual void process_keyboard_other (Character* p) {(void)p;}
   void display ();
   void load_animation();
   int width();
@@ -38,6 +33,8 @@ public:
   ImgAnim* animation;
   int x;
   int y;
+  int id;
+  bool modified;
   int stop_animation;
   std::string img_path;
   bool global;

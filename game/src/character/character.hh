@@ -30,6 +30,7 @@ public:
 
   ~Character ();
   void broadcast_maps();
+  void broadcast_local(sf::Packet& sPacket);
 
   void init_chara();
   void move (float x, float y, int dir_p);

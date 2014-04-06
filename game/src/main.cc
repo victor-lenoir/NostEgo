@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Network.hpp>
 #include <iostream>
+#include <map/chest.hh>
 
 Game* g;
 Option* opt;
@@ -24,6 +25,7 @@ void listen_server (void* data)
   (void)data;
   sf::Packet Packet;
   int code;
+  Chest* ch;
 
   g->Socket.SetBlocking(false);
   if (g->Socket.Receive(Packet) != sf::Socket::Done)
@@ -31,6 +33,12 @@ void listen_server (void* data)
   Packet >> code;
   switch (code)
   {
+  case NETWORK_CHEST:
+    Packet >> str >> id >> n;
+    ch = (Chest*)g->map->get_element_by_id(n);
+    ch->open_chest();
+    // Player id received object str from chest n
+    break;
   case NETWORK_NEW_MAP:
     Packet >> world_map >> xmap >> ymap;
     Packet >> n;

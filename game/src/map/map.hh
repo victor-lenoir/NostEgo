@@ -16,6 +16,7 @@ public:
   bool load_map (const char* map_path, bool display_on = true);
   void display ();
   void display_background ();
+  Element* get_element_by_id(int id);
   sf::Sprite* background;
   sf::Image* img;
   std::list<Element*> elements;

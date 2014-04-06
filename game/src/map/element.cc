@@ -7,14 +7,14 @@ Element::~Element ()
 
 void Element::process_keyboard_general(Character* p)
 {
-  process_keyboard ();
+  process_keyboard (p);
   if ((p->x + p->width >= x) &&
       (p->x <= x + width()) &&
       (p->y  - p->get_speed () + p->height / 2 >= y) &&
       (p->y  - p->get_speed () + p->height / 2 <= y + height()))
   {
     p->canup = false;
-    process_keyboard_bottom ();
+    process_keyboard_bottom (p);
   }
   if ((p->x + p->width >= x) &&
       (p->x <= x + width()) &&
@@ -22,7 +22,7 @@ void Element::process_keyboard_general(Character* p)
       (p->y  + p->get_speed () + p->height <= y + height()))
   {
     p->candown = false;
-    process_keyboard_top ();
+    process_keyboard_top (p);
   }
 
   if ((p->x + p->get_speed () + p->width >= x) &&
@@ -31,7 +31,7 @@ void Element::process_keyboard_general(Character* p)
       (p->y  + p->height / 1.5 <= y + height()))
   {
     p->canright = false;
-    process_keyboard_left ();
+    process_keyboard_left (p);
   }
 
   if ((p->x - p->get_speed () + p->width >= x) &&
@@ -40,7 +40,7 @@ void Element::process_keyboard_general(Character* p)
       (p->y  + p->height / 1.5 <= y + height()))
   {
     p->canleft = false;
-    process_keyboard_right ();
+    process_keyboard_right (p);
   }
 }
 
@@ -77,18 +77,15 @@ void Element::display ()
   app->Draw (*animation);
 }
 
-
-Element::Element ()
-{
-
-}
-
-Element::Element (std::string element, int x_, int y_, int nanim_)
+Element::Element (std::string element, int x_, int y_, int nanim_, int id_)
 {
   std::string element_path = "media/maps/elements/";
   img_path = "media/images/maps/elements/";
   int enable_animation;
   std::ifstream input;
+
+  modified=false;
+  id=id_;
   x=x_;
   y=y_;
   stop_animation=false;

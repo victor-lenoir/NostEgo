@@ -11,8 +11,8 @@ enum
   MONSTER_RIGHT
 };
 
-Monster::Monster (int x_, int y_, std::ifstream& input, std::string element)
-  : Element (element, x_, y_, 8)
+Monster::Monster (int x_, int y_, std::ifstream& input, std::string element, int id_)
+  : Element (element, x_, y_, 8, id_)
 {
   dead = false;
   (void)input;

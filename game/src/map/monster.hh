@@ -31,7 +31,7 @@ public:
   virtual void process_keyboard_left ();
   virtual void process_keyboard_right ();
   void refresh_dir ();
-  Monster (int x, int y, std::ifstream& input, std::string element);
+  Monster (int x, int y, std::ifstream& input, std::string element, int id_);
   int dir;
   int state;
   bool dead;

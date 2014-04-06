@@ -77,6 +77,7 @@ bool Map::load_map (const char* map_path, bool display_on)
   }
   if (!input.good ())
     return false;
+  int cid = 0;
 
   while (!input.eof())
   {
@@ -84,11 +85,12 @@ bool Map::load_map (const char* map_path, bool display_on)
     input >> x;
     input >> y;
     if (element == "chest")
-      elements.push_back (new Chest (x, y, input));
+      elements.push_back (new Chest (x, y, input, cid));
     else if (element[0] == '_')
-      elements.push_back (new Monster (x, y, input, element));
+      elements.push_back (new Monster (x, y, input, element, cid));
     else
-      elements.push_back (new Element (element, x, y, 1));
+      elements.push_back (new Element (element, x, y, 1, cid));
+    cid++;
   }
   return true;
 }
@@ -99,6 +101,15 @@ static bool compare_element (Element* e1,
   return (e1->y < e2->y);
 }
 
+Element* Map::get_element_by_id(int id) {
+  for (std::list<Element*>::iterator it = elements.begin();
+       it != elements.end (); ++it)
+  {
+    if ((*it)->id == id) return (*it);
+  }
+  return 0;
+}
+  
 void Map::display_background ()
 {
   app->Draw (*background);
