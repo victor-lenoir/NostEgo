@@ -18,7 +18,7 @@ void Character::process(Map* m) {
   process_keyboard();
 }
 
-void Character::display ()
+void Character::display (int offsetx, int offsety)
 {
   if (!animation) {
     sf::Image* img;
@@ -31,8 +31,8 @@ void Character::display ()
     animation->pause ();
     animation->once = true;
   }
-  animation->SetX(x);
-  animation->SetY(y);
+  animation->SetX(x + offsetx);
+  animation->SetY(y + offsetx);
   animation->setAnimRow(dir);
   app->Draw(*animation);
 }

@@ -88,14 +88,14 @@ void listen_server (void* data)
 int main ()
 {
   sf::Clock clock;
-  sf::VideoMode vm = sf::VideoMode::GetDesktopMode();
-  //sf::VideoMode vm = sf::VideoMode(800, 600);
+  //sf::VideoMode vm = sf::VideoMode::GetDesktopMode();
+  sf::VideoMode vm = sf::VideoMode(WIDTH_MAP, HEIGHT_MAP);
   sf::Packet sPacket;
 
 
   img_mng = new MemoryManager<sf::Image>;
-  //app = new sf::RenderWindow(vm, "Nost ego", sf::Style::Fullscreen);
-  app = new sf::RenderWindow(vm, "Nost ego");
+  app = new sf::RenderWindow(vm, "Nost ego", sf::Style::Fullscreen);
+  //app = new sf::RenderWindow(vm, "Nost ego");
   opt = new Option;
   g = new Game;
   g->init_game ();

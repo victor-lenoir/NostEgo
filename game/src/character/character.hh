@@ -35,7 +35,7 @@ public:
   void init_chara();
   void move (float x, float y, int dir_p);
   void process_keyboard ();
-  void display ();
+  void display (int offsetx, int offsety);
   ImgAnim* animation;
   int dir;
   std::string name;

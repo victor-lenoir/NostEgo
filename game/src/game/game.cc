@@ -121,10 +121,13 @@ void Game::process ()
 
 void Game::display ()
 {
+  int offsetx = 0;
+  int offsety = 0;
+
   if (g->get_state() == MAP)
   {
-    map->display_background();
-    map->display();
+    map->display_background(offsetx, offsety);
+    map->display(offsetx, offsety);
   }
   interface->display ();
 }

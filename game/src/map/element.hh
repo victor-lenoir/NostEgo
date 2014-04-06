@@ -26,7 +26,7 @@ public:
   virtual void process_keyboard_left (Character* p) {(void)p;}
   virtual void process_keyboard_right (Character* p) {(void)p;}
   virtual void process_keyboard_other (Character* p) {(void)p;}
-  void display ();
+  void display (int offsetx, int offsety);
   void load_animation();
   int width();
   int height();

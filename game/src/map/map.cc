@@ -110,19 +110,21 @@ Element* Map::get_element_by_id(int id) {
   return 0;
 }
   
-void Map::display_background ()
+void Map::display_background (int offsetx, int offsety)
 {
+  background->SetX (offsetx);
+  background->SetY (offsety);
   app->Draw (*background);
 }
 
-void Map::display ()
+void Map::display (int offsetx, int offsety)
 {
   elements.sort (compare_element);
   for (std::list<Element*>::iterator it = elements.begin();
        it != elements.end (); ++it)
   {
-    (*it)->display ();
+    (*it)->display(offsetx, offsety);
   }
   for (std::map<int, Character*>::iterator it = g->characters.begin() ; it != g->characters.end(); it++)
-    it->second->display();
+    it->second->display(offsetx, offsety);
 }

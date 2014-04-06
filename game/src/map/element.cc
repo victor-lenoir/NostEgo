@@ -69,11 +69,11 @@ int Element::height() {
   return animation->GetSubRect().GetHeight();
 }
 
-void Element::display ()
+void Element::display (int offsetx, int offsety)
 {
   load_animation();
-  animation->SetX (x);
-  animation->SetY (y);
+  animation->SetX (x + offsetx);
+  animation->SetY (y + offsety);
   app->Draw (*animation);
 }
 
