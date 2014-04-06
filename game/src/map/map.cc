@@ -10,12 +10,6 @@ Map::Map ()
   background = 0;
 }
 
-void Map::process_keyboard ()
-{
-  for (std::list<Element*>::iterator it = elements.begin();
-       it != elements.end (); ++it)
-    (*it)->process_keyboard_general ();
-}
 void Map::clean ()
 {
   if (img)

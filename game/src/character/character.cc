@@ -11,6 +11,10 @@ void Character::keyboard_released(int key) {
 }
 
 void Character::process(Map* m) {
+  // Process key_board for * element
+  for (std::list<Element*>::iterator it = m->elements.begin(); it != m->elements.end(); ++it) {
+    (*it)->process_keyboard_general(this);
+  }
   process_keyboard();
 }
 

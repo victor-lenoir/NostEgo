@@ -11,6 +11,7 @@
 # include <SFML/Network.hpp>
 # include <network/network.hh>
 
+class Character;
 class Element
 {
 public:
@@ -19,7 +20,7 @@ public:
   ~Element ();
   virtual void affect (sf::Packet& packet) {(void)packet;}
   virtual void sendPacket (sf::SocketTCP& client) {std::cout << "WRONG CALL" << std::endl; (void)client;}
-  void process_keyboard_general ();
+  void process_keyboard_general (Character* p);
   virtual void process_keyboard () {}
   virtual void process_keyboard_bottom () {}
   virtual void process_keyboard_top () {}

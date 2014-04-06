@@ -78,7 +78,7 @@ void processing_server(void* data) {
     if (clock.GetElapsedTime() * 1000 > (1000 / fps))
     {
       for (std::map<sf::SocketTCP, Client*>::iterator it=clients.begin(); it != clients.end(); ++it) {
-        Map* m = (Map*)0;
+        Map* m = maps[it->second->c->hash_map()];
         it->second->c->process(m);
       }
       clock.Reset();
@@ -91,6 +91,8 @@ void processing_server(void* data) {
 int main ()
 {
   sf::Thread tr (processing_server);
+
+  img_mng = new MemoryManager<sf::Image>;
   load_all_maps();
   tr.Launch();
   if (!Listener.Listen(2012))

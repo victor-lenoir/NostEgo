@@ -5,45 +5,43 @@ Element::~Element ()
 {
 }
 
-void Element::process_keyboard_general ()
+void Element::process_keyboard_general(Character* p)
 {
-  /*
-    process_keyboard ();
-    if ((g->player->xp - g->player->xoff + g->player->width >= animation->GetPosition().x) &&
-    (g->player->xp - g->player->xoff <= animation->GetPosition().x + animation->GetSubRect().GetWidth()) &&
-    (g->player->yp - g->player->yoff - g->player->get_speed () + g->player->height / 2 >= animation->GetPosition().y) &&
-    (g->player->yp - g->player->yoff - g->player->get_speed () + g->player->height / 2 <= animation->GetPosition().y + animation->GetSubRect().GetHeight()))
-    {
-    g->player->canup = false;
+  process_keyboard ();
+  if ((p->x + p->width >= x) &&
+      (p->x <= x + width()) &&
+      (p->y  - p->get_speed () + p->height / 2 >= y) &&
+      (p->y  - p->get_speed () + p->height / 2 <= y + height()))
+  {
+    p->canup = false;
     process_keyboard_bottom ();
-    }
-    if ((g->player->xp - g->player->xoff + g->player->width >= animation->GetPosition().x) &&
-    (g->player->xp - g->player->xoff <= animation->GetPosition().x + animation->GetSubRect().GetWidth()) &&
-    (g->player->yp - g->player->yoff + g->player->get_speed () + g->player->height  >= animation->GetPosition().y) &&
-    (g->player->yp - g->player->yoff + g->player->get_speed () + g->player->height <= animation->GetPosition().y + animation->GetSubRect().GetHeight()))
-    {
-    g->player->candown = false;
+  }
+  if ((p->x + p->width >= x) &&
+      (p->x <= x + width()) &&
+      (p->y  + p->get_speed () + p->height  >= y) &&
+      (p->y  + p->get_speed () + p->height <= y + height()))
+  {
+    p->candown = false;
     process_keyboard_top ();
-    }
+  }
 
-    if ((g->player->xp - g->player->xoff + g->player->get_speed () + g->player->width >= animation->GetPosition().x) &&
-    (g->player->xp - g->player->xoff + g->player->get_speed () <= animation->GetPosition().x + animation->GetSubRect().GetWidth()) &&
-    (g->player->yp - g->player->yoff + g->player->height / 1.5 >= animation->GetPosition().y) &&
-    (g->player->yp - g->player->yoff + g->player->height / 1.5 <= animation->GetPosition().y + animation->GetSubRect().GetHeight()))
-    {
-    g->player->canright = false;
+  if ((p->x + p->get_speed () + p->width >= x) &&
+      (p->x + p->get_speed () <= x + width()) &&
+      (p->y  + p->height / 1.5 >= y) &&
+      (p->y  + p->height / 1.5 <= y + height()))
+  {
+    p->canright = false;
     process_keyboard_left ();
-    }
+  }
 
-    if ((g->player->xp - g->player->xoff - g->player->get_speed () + g->player->width >= animation->GetPosition().x) &&
-    (g->player->xp - g->player->xoff - g->player->get_speed () <= animation->GetPosition().x + animation->GetSubRect().GetWidth()) &&
-    (g->player->yp - g->player->yoff + g->player->height / 1.5 >= animation->GetPosition().y) &&
-    (g->player->yp - g->player->yoff + g->player->height / 1.5 <= animation->GetPosition().y + animation->GetSubRect().GetHeight()))
-    {
-    g->player->canleft = false;
+  if ((p->x - p->get_speed () + p->width >= x) &&
+      (p->x - p->get_speed () <= x + width()) &&
+      (p->y  + p->height / 1.5 >= y) &&
+      (p->y  + p->height / 1.5 <= y + height()))
+  {
+    p->canleft = false;
     process_keyboard_right ();
-    }
-  */
+  }
 }
 
 void Element::load_animation() {
