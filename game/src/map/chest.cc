@@ -17,6 +17,10 @@ void Chest::open_chest() {
   animation->play();
 }
 
+Chest::~Chest() {
+
+}
+  
 void Chest::update(sf::Packet& packet) {
   if (open)
     packet << NETWORK_CHEST_IS_OPEN << id;

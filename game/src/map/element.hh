@@ -16,7 +16,7 @@ class Element
 {
 public:
   Element (std::string element, int x, int y, int nanim, int id_);
-  ~Element ();
+  virtual ~Element ();
   virtual void affect (sf::Packet& packet) {(void)packet;}
   virtual void update(sf::Packet& packet) {(void)packet;}
   void process_keyboard_general (Character* p);
@@ -37,7 +37,6 @@ public:
   int stop_animation;
   std::string img_path;
   bool global;
-  std::string hash_;
   int nanim;
   float delay;
   int nimage;

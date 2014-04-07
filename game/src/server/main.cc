@@ -13,7 +13,6 @@ Option* opt;
 sf::RenderWindow* app;
 MemoryManager<sf::Image>* img_mng;
 
-
 std::map<std::string, std::vector<Client*> > clients_per_map;
 std::map<sf::SocketTCP, Client*> clients;
 std::map<std::string, Map*> maps;
@@ -68,11 +67,10 @@ void handle (sf::Packet Packet, sf::SocketTCP client)
     break;
   }
 }
-void processing_server(void* data);
-
-void processing_server(void* data) {
+void processing_server();
+bool server(float timeout);
+void processing_server() {
   sf::Clock clock;
-  (void)data;
   float fps = 40;
   while (1) {
     if (clock.GetElapsedTime() * 1000 > (1000 / fps))
@@ -83,18 +81,75 @@ void processing_server(void* data) {
       }
       clock.Reset();
     }
-    else
-      sf::Sleep((1.0/ fps) - clock.GetElapsedTime());
+    else if (!server((1.0/ fps) - clock.GetElapsedTime()))
+      break;
+    //sf::Sleep((1.0/ fps) - clock.GetElapsedTime());
   }
 }
 
+bool server(float timeout) {
+  unsigned int nsock = Selector.Wait(0.0001 + timeout);
+  size_t i;
+  for (i = 0; i < nsock; ++i)
+  {
+    sf::SocketTCP Socket = Selector.GetSocketReady(i);;
+
+    if (Socket == Listener)
+    {
+      sf::IPAddress Address;
+      sf::SocketTCP client;
+      Listener.Accept(client, &Address);
+      std::cout << "Client connected ! (" << Address << ")" << std::endl;
+      Selector.Add(client);
+      Client* c1 = new Client;
+      c1->socket = client;
+      c1->c = new Character();
+      c1->c->id = currid++;
+
+      clients.insert(std::pair<sf::SocketTCP, Client*>(client, c1));
+      if (clients_per_map.count(c1->c->hash_map()) == 0)
+        clients_per_map.insert(std::pair<std::string, std::vector<Client*> >(c1->c->hash_map(), std::vector<Client*>()));
+      clients_per_map[c1->c->hash_map()].push_back(c1);
+      c1->c->load_characters(&clients_per_map[c1->c->hash_map()]);
+    }
+    else
+    {
+      sf::Packet Packet;
+      if (Socket.Receive(Packet) == sf::Socket::Done)
+      {
+        handle (Packet, Socket);
+      }
+      else
+      {
+        std::cout << "Client exit" << std::endl;
+        sf::Packet sPacketd;
+        sPacketd << NETWORK_EXIT_MAP;
+        sPacketd << clients[Socket]->c->id;
+        std::vector<Client*>& oh = clients_per_map[clients[Socket]->c->hash_map()];
+
+        for (std::vector<Client*>::iterator it = oh.begin() ; it != oh.end(); ++it) {
+          if ((*it)->c->id == clients[Socket]->c->id) {
+            oh.erase(it);
+            clients[Socket]->c->broadcast_maps(maps[clients[Socket]->c->hash_map()]);
+            delete (*it)->c;
+            delete (*it);
+
+            break;
+          }
+        }
+        clients.erase(Socket);
+
+        Selector.Remove(Socket);
+        return false; // to remove
+      }
+    }
+  }
+  return true;
+}
 int main ()
 {
-  sf::Thread tr (processing_server);
-
   img_mng = new MemoryManager<sf::Image>;
   load_all_maps();
-  tr.Launch();
   if (!Listener.Listen(2012))
   {
     std::cerr << "Binding to port 2012 failed" << std::endl;
@@ -102,63 +157,14 @@ int main ()
   }
   Selector.Add(Listener);
   std::cout << "Server launch..." << std::endl;
-  while (true)
-  {
-    size_t i;
-    unsigned int nsock = Selector.Wait();
-    for (i = 0; i < nsock; ++i)
-    {
-      sf::SocketTCP Socket = Selector.GetSocketReady(i);;
-
-      if (Socket == Listener)
-      {
-        sf::IPAddress Address;
-        sf::SocketTCP client;
-        Listener.Accept(client, &Address);
-        std::cout << "Client connected ! (" << Address << ")" << std::endl;
-        Selector.Add(client);
-        Client* c1 = new Client;
-        c1->socket = client;
-        c1->c = new Character();
-        c1->c->id = currid++;
-
-        clients.insert(std::pair<sf::SocketTCP, Client*>(client, c1));
-        if (clients_per_map.count(c1->c->hash_map()) == 0)
-          clients_per_map.insert(std::pair<std::string, std::vector<Client*> >(c1->c->hash_map(), std::vector<Client*>()));
-        clients_per_map[c1->c->hash_map()].push_back(c1);
-        c1->c->load_characters(&clients_per_map[c1->c->hash_map()]);
-      }
-      else
-      {
-        sf::Packet Packet;
-        if (Socket.Receive(Packet) == sf::Socket::Done)
-        {
-          handle (Packet, Socket);
-        }
-        else
-        {
-          std::cout << "Client exit" << std::endl;
-          sf::Packet sPacketd;
-          sPacketd << NETWORK_EXIT_MAP;
-          sPacketd << clients[Socket]->c->id;
-          std::vector<Client*>& oh = clients_per_map[clients[Socket]->c->hash_map()];
-
-          for (std::vector<Client*>::iterator it = oh.begin() ; it != oh.end(); ++it) {
-            if ((*it)->c->id == clients[Socket]->c->id) {
-              oh.erase(it);
-              clients[Socket]->c->broadcast_maps(maps[clients[Socket]->c->hash_map()]);
-              delete (*it)->c;
-              delete (*it);
-
-              break;
-            }
-          }
-          clients.erase(Socket);
-
-          Selector.Remove(Socket);
-        }
-      }
-    }
+  processing_server();
+  std::cout << "server done" << std::endl;
+  for (std::map<std::string, Map*>::iterator it = maps.begin(); it != maps.end(); ++it)
+    delete it->second;
+  for (std::map<sf::SocketTCP, Client*>::iterator it=clients.begin(); it != clients.end(); ++it) {
+    delete it->second->c;
+    delete it->second;
   }
+  delete img_mng;
   return 0;
 }

@@ -48,7 +48,7 @@ void listen_server (void* data)
       delete it->second;
     }
     g->characters.clear();
-    for (size_t k = 0; k < n; ++k) {
+    for (int k = 0; k < n; ++k) {
       Packet >> id >> x >> y >> dir;
       g->characters[id] = new Character(world_map, xmap, ymap, x, y, dir);
     }

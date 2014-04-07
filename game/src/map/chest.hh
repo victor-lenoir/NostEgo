@@ -11,7 +11,8 @@
 class Chest : public Element
 {
 public:
-  Chest (int x, int y, std::ifstream& input, int id_);
+  Chest(int x, int y, std::ifstream& input, int id_);
+  virtual ~Chest();
   virtual void process_keyboard_bottom (Character* p);  
   bool open;
   void open_chest();

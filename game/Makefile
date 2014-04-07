@@ -2,7 +2,7 @@
 ADDFLAG=-g -ggdb
 CFLAGS=-W -Wall -Wextra -Wfloat-equal -Wshadow -Wpointer-arith \
 -Wcast-qual -Wcast-align -Wmissing-declarations -Wunused -Winline -pedantic \
--Wuninitialized -Winit-self ${ADDFLAG}
+-Wuninitialized -Winit-self -Werror ${ADDFLAG}
 IFLAGS=-I src/
 LINK=-lsfml-graphics -lsfml-network -lsfml-system -lsfml-window
 CC=g++
@@ -26,3 +26,9 @@ nostego_server: ${OBJS} src/server/main.o # Build nostego server
 
 nostego: ${OBJS} src/main.o # Build nostego client
 	${CC} ${CFLAGS} $^ ${LINK} -o nostego
+
+debug_server: nostego_server
+	valgrind --leak-check=full --show-reachable=yes --suppressions=./sup_file ./nostego_server
+
+debug_client: nostego
+	valgrind --leak-check=full  --show-reachable=yes --suppressions=./sup_file ./nostego

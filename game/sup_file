@@ -1,0 +1,85 @@
+{
+   opengl
+   Memcheck:Leak
+   ...
+   obj:*GL.so*     
+}
+
+{
+   opengl2
+   Memcheck:Leak
+   ...
+   obj:*i965_dri.so*     
+}
+
+{
+   opengl2
+   Memcheck:Leak
+   ...
+   fun:*LoadFromFile* 
+}
+
+{
+   opengl2
+   Memcheck:Leak
+   ...
+   obj:*libdricore*     
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   fun:_Znwm
+   fun:_ZNSs4_Rep9_S_createEmmRKSaIcE
+   fun:_ZNSs4_Rep8_M_cloneERKSaIcEm
+   fun:_ZNSs7reserveEm
+   fun:_ZNSs6appendERKSs
+   fun:_ZStplIcSt11char_traitsIcESaIcEESbIT_T0_T1_ERKS6_S8_
+   fun:_ZN9Character8hash_mapEv
+   fun:_Z6serverf
+   fun:_Z17processing_serverv
+   fun:main
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   fun:_Znwm
+   fun:_ZNSs4_Rep9_S_createEmmRKSaIcE
+   fun:_ZNSs4_Rep8_M_cloneERKSaIcEm
+   fun:_ZNSs7reserveEm
+   fun:_ZNSs6appendERKSs
+   fun:_ZStplIcSt11char_traitsIcESaIcEESbIT_T0_T1_ERKS6_S8_
+   fun:_ZN9Character8hash_mapEv
+   fun:_Z6handleN2sf6PacketENS_9SocketTCPE
+   fun:_Z6serverf
+   fun:_Z17processing_serverv
+   fun:main
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   fun:_Znwm
+   ...
+   fun:_ZNSs6appendEPKcm
+   ...
+   fun:main
+}
+
+{
+   ok
+   Memcheck:Leak
+   fun:_Znwm
+   ...
+   fun:_ZNSs6appendERKSs
+   ...
+   fun:main
+}
+
+{
+   stlstring
+   Memcheck:Leak
+   ...
+   fun:_ZStplIcSt11char_traitsIcESaIcEESbIT_T0_T1_ERKS6_S8_
+}

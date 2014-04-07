@@ -8,6 +8,8 @@ template <class T>
 class MemoryManager
 {
 public:
+  ~MemoryManager();
+
   bool isset (const char* path);
   bool get (const char* path, T*& ptr);
   void free (T* element);

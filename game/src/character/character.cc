@@ -33,7 +33,7 @@ void Character::display (int offsetx, int offsety)
     animation->once = true;
   }
   animation->SetX(x + offsetx);
-  animation->SetY(y + offsetx);
+  animation->SetY(y + offsety);
   animation->setAnimRow(dir);
   app->Draw(*animation);
 }
@@ -168,7 +168,7 @@ void Character::share_position()
 }
 
 void Character::broadcast_local(sf::Packet& sPacket){
-  for (size_t k = 0; k < (int)on_map->size(); ++k) {
+  for (size_t k = 0; k < on_map->size(); ++k) {
     (*on_map)[k]->socket.Send(sPacket);
   }
 }
@@ -180,7 +180,7 @@ void Character::broadcast_maps(Map* m) {
   sPacket << world_map << xmap << ymap;
   sPacket << (int)on_map->size();
 
-  for (size_t k = 0; k < (int)on_map->size(); ++k) {
+  for (size_t k = 0; k < on_map->size(); ++k) {
     sPacket << (*on_map)[k]->c->id << (*on_map)[k]->c->x << (*on_map)[k]->c->y << (*on_map)[k]->c->dir;
   }
   //sPacket << (int)map
