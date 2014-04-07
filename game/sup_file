@@ -78,6 +78,41 @@
 }
 
 {
+   ok
+   Memcheck:Leak
+   ...
+   fun:_dl_init
+}
+
+{
+   ok
+   Memcheck:Leak
+   ...
+   fun:call_init.part.0
+}
+
+{
+   ok
+   Memcheck:Leak
+   ...
+   fun:XOpenIM
+}
+
+{
+   ok
+   Memcheck:Leak
+   ...
+   fun:_dl_catch_error
+}
+
+{
+   ok
+   Memcheck:Leak
+   ...
+   fun:(below main)
+}
+
+{
    stlstring
    Memcheck:Leak
    ...
