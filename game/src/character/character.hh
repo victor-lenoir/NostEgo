@@ -58,6 +58,7 @@ public:
   std::map<int, bool> keydowns;
   void share_position();
   bool is_key_down(int key);
+  void load_animation();
   void keyboard_pressed(int key);
   void keyboard_released(int key);
   void process(Map* m, std::map<std::string, std::vector<Client*> >& clients_per_map, std::map<std::string, Map*>& maps);

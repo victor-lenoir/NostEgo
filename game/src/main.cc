@@ -29,59 +29,61 @@ void listen_server (void* data)
   int code2;
 
   g->Socket.SetBlocking(false);
-  if (g->Socket.Receive(Packet) != sf::Socket::Done)
-    return;
-  Packet >> code;
-  switch (code)
+  while (g->Socket.Receive(Packet) == sf::Socket::Done)
   {
-  case NETWORK_CHEST:
-    Packet >> str >> id >> n;
-    ch = (Chest*)g->map->get_element_by_id(n);
-    ch->open_chest();
-    // Player id received object str from chest n
-    break;
-  case NETWORK_NEW_MAP:
-    Packet >> world_map >> xmap >> ymap;
-    Packet >> n;
-
-    for (std::map<int, Character*>::iterator it = g->characters.begin(); it != g->characters.end(); it++) {
-      delete it->second;
-    }
-    g->characters.clear();
-    for (int k = 0; k < n; ++k) {
-      Packet >> id >> x >> y >> dir;
-      g->characters[id] = new Character(world_map, xmap, ymap, x, y, dir);
-    }
-    g->load_map();
-    while (1) {
-      Packet >> code2;
-      if (code2 == NETWORK_EOF) break;
-      switch (code2) {
-      case NETWORK_CHEST_IS_OPEN:
-        Packet >> id;
-        ch = (Chest*)g->map->get_element_by_id(id);
-        ch->open_chest();
-        break;
+    Packet >> code;
+    switch (code)
+    {
+    case NETWORK_CHEST:
+      Packet >> str >> id >> n;
+      ch = (Chest*)g->map->get_element_by_id(n);
+      ch->open_chest();
+      // Player id received object str from chest n
+      break;
+    case NETWORK_NEW_MAP:
+      Packet >> world_map >> xmap >> ymap;
+      Packet >> n;
+      for (std::map<int, Character*>::iterator it = g->characters.begin(); it != g->characters.end(); it++) {
+        delete it->second;
       }
+      g->characters.clear();
+      for (int k = 0; k < n; ++k) {
+        Packet >> id >> x >> y >> dir;
+        g->characters[id] = new Character(world_map, xmap, ymap, x, y, dir);
+      }
+      g->load_map();
+      while (1) {
+        Packet >> code2;
+        if (code2 == NETWORK_EOF) break;
+        switch (code2) {
+        case NETWORK_CHEST_IS_OPEN:
+          Packet >> id;
+          ch = (Chest*)g->map->get_element_by_id(id);
+          ch->open_chest();
+          break;
+        }
+      }
+      break;
+    case NETWORK_CHARACTER_MOVE:
+      Packet >> id >> x >> y >> dir;
+      g->characters[id]->x = x;
+      g->characters[id]->y = y;
+      g->characters[id]->dir = dir;
+      g->characters[id]->load_animation();
+      g->characters[id]->animation->play();
+      break;
+
+      break;
+    case NETWORK_EXIT_MAP:
+      Packet >> n;
+      g->characters.erase(n);
+      break;
+    default:
+      std::cerr << "ERR CODE NOT HANDLE ("
+                << code << ")"
+                << std::endl;
+      break;
     }
-    //g->player->id = n;
-    break;
-  case NETWORK_CHARACTER_MOVE:
-    Packet >> id >> x >> y >> dir;
-    g->characters[id]->x = x;
-    g->characters[id]->y = y;
-    g->characters[id]->dir = dir;
-    g->characters[id]->animation->play();
-    break;
-  case NETWORK_EXIT_MAP:
-    Packet >> n;
-    g->characters.erase(n);
-    break;
-  default:
-    std::cerr << "ERR CODE NOT HANDLE ("
-              << code << ")"
-              << std::endl;
-    break;
   }
 }
 

@@ -19,9 +19,9 @@ void Character::process(Map* m, std::map<std::string, std::vector<Client*> >& cl
   process_keyboard(m, clients_per_map, maps);
 }
 
-void Character::display (int offsetx, int offsety)
+void Character::load_animation()
 {
-  if (!animation) {
+if (!animation) {
     sf::Image* img;
     if (!img_mng->get ("media/images/characters/healer.png", img))
     {
@@ -32,6 +32,10 @@ void Character::display (int offsetx, int offsety)
     animation->pause ();
     animation->once = true;
   }
+}
+void Character::display (int offsetx, int offsety)
+{
+  load_animation();
   animation->SetX(x + offsetx);
   animation->SetY(y + offsety);
   animation->setAnimRow(dir);
