@@ -61,7 +61,6 @@ sf::FloatRect BaseInterface<T>::add_hypertexte (int x,
 						bool center)
 {
    sf::String* tmp = new sf::String(text, *font, 50);
-
    if (center)
      tmp->SetX (x - tmp->GetRect().GetWidth () / 2);
    else

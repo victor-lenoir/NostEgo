@@ -106,13 +106,6 @@
 }
 
 {
-   ok
-   Memcheck:Leak
-   ...
-   fun:(below main)
-}
-
-{
    stlstring
    Memcheck:Leak
    ...

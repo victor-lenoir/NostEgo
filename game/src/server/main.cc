@@ -87,6 +87,8 @@ void processing_server() {
   }
 }
 
+
+int nclient;
 bool server(float timeout) {
   unsigned int nsock = Selector.Wait(0.0001 + timeout);
   size_t i;
@@ -138,18 +140,21 @@ bool server(float timeout) {
           }
         }
         clients.erase(Socket);
-
+        ++nclient;
         Selector.Remove(Socket);
-        return false; // to remove
+        //if (nclient == 2)
+        //return false; // to remove
       }
     }
   }
   return true;
 }
+
 int main ()
 {
   img_mng = new MemoryManager<sf::Image>;
   load_all_maps();
+  nclient = 0;
   if (!Listener.Listen(2012))
   {
     std::cerr << "Binding to port 2012 failed" << std::endl;

@@ -77,7 +77,6 @@ void Game::process ()
 {
   sf::Event Event;
 
-
   while (app->GetEvent(Event))
   {
     switch (Event.Type)
@@ -117,6 +116,7 @@ void Game::process ()
       break;
     }
   }
+  
 }
 
 void Game::display ()

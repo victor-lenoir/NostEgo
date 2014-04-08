@@ -25,8 +25,7 @@ void Map::clean ()
   for (std::list<Element*>::iterator it = elements.begin();
        it != elements.end (); ++it)
   {
-    if (!(*it)->global)
-      delete (*it);
+    delete (*it);
   }
   elements.clear ();
 }

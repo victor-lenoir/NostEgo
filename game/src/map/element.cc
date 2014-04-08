@@ -93,7 +93,6 @@ Element::Element (std::string element, int x_, int y_, int nanim_, int id_)
   nimage = 1;
   delay = 1.0;
   nanim=nanim_;
-  global = false;
   element_path += element;
   input.open (element_path.c_str());
   if (!input.good())

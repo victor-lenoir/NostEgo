@@ -36,7 +36,6 @@ public:
   int id;
   int stop_animation;
   std::string img_path;
-  bool global;
   int nanim;
   float delay;
   int nimage;
